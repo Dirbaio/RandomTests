@@ -31,6 +31,14 @@ try
 	$pages = getPages();
 	$path = Url::getPath();
 
+	//Kill trailing and extra slashes.
+	$origpath = $path;
+	$path = preg_replace("#/+$#", "", $path);
+	$path = preg_replace("#//+#", "/", $path);
+	if($path == '') $path = '/';
+	if($path != $origpath)
+		Url::redirect($path);
+
 	$input = array();
 	foreach($_GET as $key => $value)
 		$input[$key] = $value;

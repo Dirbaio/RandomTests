@@ -19,7 +19,7 @@ function request($fid)
 
 	var_dump($forum);
 
-	Url::setCanonicalUrl('/'.$fid.'-'.Url::slugify($forum['title']));
+	Url::setCanonicalUrl('/'.$forum['id'].'-'.Url::slugify($forum['title']));
 
 	echo "This is forum $fid";
 }

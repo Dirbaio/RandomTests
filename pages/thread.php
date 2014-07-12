@@ -27,7 +27,7 @@ function request($tid)
 	var_dump($thread);
 	var_dump($forum);
 
-	Url::setCanonicalUrl('/'.$fid.'-'.Url::slugify($forum['title']).'/'.$tid.'-'.Url::slugify($thread['title']));
+	Url::setCanonicalUrl('/'.$forum['id'].'-'.Url::slugify($forum['title']).'/'.$thread['id'].'-'.Url::slugify($thread['title']));
 
 	echo "This is thread $tid";
 }
