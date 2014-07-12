@@ -1,4 +1,5 @@
 <?php
+//page /logout
 
 function request()
 {

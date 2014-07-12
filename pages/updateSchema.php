@@ -1,5 +1,5 @@
 <?php
-
+//page /updateschema
 
 function request()
 {

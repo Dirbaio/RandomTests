@@ -2,63 +2,75 @@
 
 require(__DIR__."/includes.php");
 
-function getPages() 
+function getPages()
 {
+	$prefix = '//page ';
+	
 	$pages = array();
 	foreach(glob(__DIR__.'/pages/*.php') as $file) 
 	{
 		$handle = @fopen($file, "r");
 		if (!$handle)  continue;
 
-		$line = fgets($handle, 4096);
+	    while (($line = fgets($handle, 4096)) !== false)
+			if(startsWith($line, $prefix))
+			{
+				$page = substr($line, strlen($prefix));
+				$page = trim($page);
+				$pages[$page] = $file;
+			}
+		
 		fclose($handle);
-		$prefix = '<?php //page ';
-		if(!startsWith($line, $prefix)) continue;
-
-		$page = substr($line, strlen($prefix));
-		$page = trim($page);
-		$pages[$page] = $file;
 	}
 	return $pages;	
 }
 
-function getPath() 
-{
-	if (!empty($_SERVER['PATH_INFO']))
-		return $_SERVER['PATH_INFO'];
-
-	if (!empty($_SERVER['ORIG_PATH_INFO']) && $_SERVER['ORIG_PATH_INFO'] !== '/index.php')
-		return $_SERVER['ORIG_PATH_INFO'];
-
-	if (!empty($_SERVER['REQUEST_URI']))
-		return (strpos($_SERVER['REQUEST_URI'], '?') > 0) ? strstr($_SERVER['REQUEST_URI'], '?', true) : $_SERVER['REQUEST_URI'];
-
-	return '/';
-}
 
 try
 {
 	$pages = getPages();
-	$path = getPath();
+	$path = Url::getPath();
 
-	if(!isset($pages[$path]))
+	$input = array();
+	foreach($_GET as $key => $value)
+		$input[$key] = $value;
+	foreach($_POST as $key => $value)
+		$input[$key] = $value;
+
+	$foundPagefile = null;
+	foreach($pages as $page=>$pagefile) 
+	{
+		//match $path against $page
+		$names = array();
+		$pattern = preg_replace_callback('/(:|#)([a-zA-Z][a-zA-Z0-9]*|)/', function($matches) use (&$names) {
+			if($matches[1] == '#')
+				$regex = '[0-9]+';
+			else
+				$regex = '[a-zA-Z0-9-_]+';
+			if($matches[2])
+			{
+				$names[] = $matches[2];
+				return "($regex)";
+			}
+			else
+				return $regex;
+		}, $page);
+
+        if (preg_match('#^' . $pattern . '$#', $path, $matches)) {
+        	foreach($names as $idx => $name)
+        		$input[$name] = $matches[$idx+1];
+
+        	$foundPagefile = $pagefile;
+            break;
+        }
+	}
+
+	if(!$foundPagefile)
 		fail("404 Not Found");
 
-	$pagefile = $pages[$path];
-	require($pagefile);
-
-	//Calculate input
-	if ($_SERVER["REQUEST_METHOD"] === "POST") {
-		$input = file_get_contents("php://input");
-		$input = json_decode($input, true);
-	}
-	else
-	{
-		$input = $_GET;
-		unset($input["req"]);
-	}
-
 	$input["input"] = $input;
+
+	require($foundPagefile);
 
 	//Calculate parameters
 	$params = array();
@@ -73,13 +85,7 @@ try
 	}
 
 	//Call the thing
-	$res = call_user_func_array("request", $params);
-
-	if($res !== "THIS_IS_HTML")
-	{
-		header('Content-type: application/json');
-		echo json_encode($res);
-	}
+	call_user_func_array("request", $params);
 }
 catch(Exception $e)
 {

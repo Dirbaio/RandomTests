@@ -5,6 +5,13 @@ class SchemaUpdater
 	private static $dbpref;
 	private static $dbname;
 
+	private static function typeOk($type) 
+	{
+		if(!is_array($type)) return false;
+		if(!$type['type']) return false;
+		return true;
+	}
+
 	private static function sqlToType($sql)
 	{
 		$res = array(
@@ -104,6 +111,14 @@ class SchemaUpdater
 
 		$foundFields = array();
 		$currFields = Sql::queryAll("show columns from `".self::$dbpref.$table."`");
+		$fields = $tableSchema['fields'];
+		if(!is_array($fields))
+			fail('Table '.$table.' is missing the fields array');
+
+		foreach($fields as $fieldName => $type)
+			if(!self::typeOk($type))
+				fail("Type for table $table, field $fieldName is not OK");
+
 		foreach($currFields as $field)
 		{
 			$fieldName = $field['Field'];
@@ -111,7 +126,7 @@ class SchemaUpdater
 			$type = self::sqlToType($field);
 			if(array_key_exists($fieldName, $tableSchema['fields']))
 			{
-				$wantedType = $tableSchema['fields'][$fieldName];
+				$wantedType = $fields[$fieldName];
 				if(!self::equalTypes($type, $wantedType))
 				{
 					$wantedType = self::typeToSql($wantedType);
@@ -121,7 +136,7 @@ class SchemaUpdater
 			}
 		}
 
-		foreach($tableSchema['fields'] as $fieldName => $type)
+		foreach($fields as $fieldName => $type)
 		{
 			if(!in_array($fieldName, $foundFields))
 			{
@@ -144,6 +159,9 @@ class SchemaUpdater
 			if(!$found)
 				$alters[] = "DROP KEY $keyName";
 		}
+
+		if(!is_array($keys))
+			fail('Table '.$table.' is missing the keys array');
 
 		foreach($keys as $key)
 		{

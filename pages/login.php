@@ -1,4 +1,5 @@
-<?php //page /login
+<?php
+//page /login
 
 function request($username, $password)
 {
