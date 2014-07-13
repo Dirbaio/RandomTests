@@ -5,6 +5,10 @@ class Url
 
 	public static function getPath()
 	{
+		//Legacy ABXD compat
+		if (!empty($_GET['page']))
+			return '/'.$_GET['page'].'.php';
+
 		if (!empty($_SERVER['PATH_INFO']))
 			return $_SERVER['PATH_INFO'];
 

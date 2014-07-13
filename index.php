@@ -1,13 +1,52 @@
 <?php
 
-require(__DIR__."/includes.php");
+// Error handling
+//==============================
+
+error_reporting(E_ALL ^ E_NOTICE | E_STRICT);
+
+function fail($why) {
+	throw new Exception($why);
+}
+
+function my_error_handler()
+{
+	$last_error = error_get_last();
+	if ($last_error && ($last_error['type']==E_ERROR || $last_error['type']==E_USER_ERROR))
+		header("HTTP/1.1 500 Internal Server Error");
+}
+register_shutdown_function('my_error_handler');
+
+
+// Load main module
+//============================
+
+require(__DIR__."/ModuleHandler.php");
+require(__DIR__."/vendor/autoload.php");
+ModuleHandler::init();
+ModuleHandler::loadModule('/modules/main');
+
+
+// Set up stuff
+//============================
+
+require(__DIR__."/config.php");
+
+Sql::connect($config["mysql"]);
+
+session_start(); //For Csrf class
+Session::load();
+
+
+// Run the page
+//============================
 
 function getPages()
 {
 	$prefix = '//page ';
 	
 	$pages = array();
-	foreach(glob(__DIR__.'/pages/*.php') as $file) 
+	foreach(ModuleHandler::getFilesMatching('/pages/**.php') as $file) 
 	{
 		$handle = @fopen($file, "r");
 		if (!$handle)  continue;
@@ -22,7 +61,7 @@ function getPages()
 		
 		fclose($handle);
 	}
-	return $pages;	
+	return $pages;
 }
 
 

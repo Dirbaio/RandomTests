@@ -1,3 +1,4 @@
-pma/
+pma
+vendor/
 config.php
 *~

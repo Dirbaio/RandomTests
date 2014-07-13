@@ -1,15 +1,18 @@
 <?php 
-//page /#/#tid
-//page /#/#tid-:
-//page /#-:/#tid
-//page /#-:/#tid-:
+//page /#/#id
+//page /#/#id-:
+//page /#-:/#id
+//page /#-:/#id-:
 
-//ABXD3 LEGACY
-//page /thread/#tid
-//page /thread/#tid-:
+//ABXD LEGACY
+//page /thread/#id
+//page /thread/#id-:
+//page /thread.php
 
-function request($tid)
+function request($id)
 {
+	$tid = $id;
+
 	$thread = Sql::querySingle("SELECT * FROM threads WHERE id=?", $tid);
 	if(!$thread)
 		Kill(__("Unknown thread ID."));
@@ -24,11 +27,8 @@ function request($tid)
 	if($forum['minpower'] > $pl)
 		Kill(__("You are not allowed to browse this forum."));
 
-	var_dump($thread);
-	var_dump($forum);
-
 	Url::setCanonicalUrl('/'.$forum['id'].'-'.Url::slugify($forum['title']).'/'.$thread['id'].'-'.Url::slugify($thread['title']));
 
-	echo "This is thread $tid";
+	Template::render('thread.html', array('thread' => $thread, 'forum' => $forum));
 }
 

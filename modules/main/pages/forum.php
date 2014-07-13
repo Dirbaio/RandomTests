@@ -2,9 +2,10 @@
 //page /#fid
 //page /#fid-:
 
-//ABXD3 LEGACY
+//ABXD LEGACY
 //page /forum/#fid
 //page /forum/#fid-:
+//page /forum.php
 
 function request($fid)
 {
