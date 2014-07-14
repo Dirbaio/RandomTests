@@ -2,3 +2,5 @@ hello world, this is thread #{{thread.id}}<br>
 
 thread = {{ thread | json_encode }}<br>
 forum = {{ forum | json_encode }}<br>
+
+<a href="/{{forum.id}}-{{forum.title | slugify}}">Go to Forum</a>

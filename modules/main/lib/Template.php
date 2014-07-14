@@ -26,15 +26,28 @@ class TemplateLoader implements Twig_LoaderInterface
 
 class Template
 {
-	public static function render($file, $vars)
+	private static $twig = null;
+
+	private static function load()
 	{
 		$loader = new TemplateLoader();
-		$twig = new Twig_Environment($loader, array(
+		self::$twig = new Twig_Environment($loader, array(
 		    'cache' => '/tmp/twig_cache',
 		    'auto_reload' => true,
 		));
+
+		self::$twig->addFilter(new Twig_SimpleFilter('slugify', function ($string) {
+		    return Url::slugify($string);
+		}));
+
+	}
+
+	public static function render($file, $vars)
+	{
+		if(!self::$twig)
+			self::load();
 		
-		$template = $twig->loadTemplate($file);
+		$template = self::$twig->loadTemplate($file);
 		echo $template->render($vars);
 	}
 }
