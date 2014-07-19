@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<base href="/">
+	<title>{{layout.title}}</title>
+	<meta http-equiv="Content-Type" content="text/html; CHARSET=utf-8" />
+	<meta name="description" content="{{layout.description}}" />
+	<meta name="keywords" content="{{layout.keyworkds}}" />
+	<link rel="shortcut icon" type="image/x-icon" href="{{layout.favicon}}" />
+{% for file in layout.css %}
+	<link rel="stylesheet" type="text/css" href="{{file}}" />
+{% endfor %}
+{% for file in layout.js %}
+	<script type="text/javascript" src="{{file}}"></script>
+{% endfor %}
+</head>
+
+
+<body style="width:100%;">
+	<div id="body">
+		<div id="body-wrapper">
+			<div id="main" style="padding:8px;">
+				<div class="outline margin" id="header">
+					<table class="outline margin">
+						<tr>
+							<td colspan="3" class="cell0">
+								<!-- Board header goes here -->
+								<table>
+									<tr>
+										<td style="border: 0px none; text-align: left;">
+											<a href="./">
+												<img id="theme_banner" src="{{layout.logo}}" alt="" title="{{layout.logotitle}}" style="padding: 8px;" />
+											</a>
+										</td>
+										{% if layout.pora %}
+										<td style="border: 0px none;">
+											<table class="message outline poratable">
+												<tr class="header0"><th>{{layout.poratitle}}</th></tr>
+												<tr class="cell0"><td>{{layout.poratext}}</td></tr>
+											</table>
+										</td>
+										{% endif %}
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr class="cell1">
+							<td class="smallFonts" style="text-align: center; width: 10%;">
+								13371337 views
+							</td>
+							<td class="smallFonts" style="text-align: center; width: 80%;">
+								NAV GOES HERE
+							</td>
+							<td class="smallFonts" style="text-align: center; width: 10%;">
+								Today, now
+							</td>
+						</tr>
+						<tr class="cell2">
+							<td colspan="3" class="smallFonts" style="text-align: center">
+								USERPANEL GOES HERE
+							</td>
+						</tr>
+						<tr class="cell2">
+							<td colspan="3" class="smallFonts" style="text-align: center">
+								ONLINE USERS: 598390
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<div class="margin breadcrumbs_bar">
+					<div style="float: right;">
+						LINKS
+					</div>
+					BREADCRUMBS
+				</div>
+
+				{% include layout.template %}
+
+				<div class="margin breadcrumbs_bar">
+					<div style="float: right;">
+						LINKS
+					</div>
+					BREADCRUMBS
+				</div>
+
+			</div>
+			<div class="footer" style='clear:both;'>
+				{{layout.footer}}
+			</div>
+		</div>
+	</div>
+</body>
+</html>

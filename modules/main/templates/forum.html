@@ -1,0 +1,42 @@
+forum = {{ forum | json_encode }}<br>
+
+<table class="outline margin width100">
+	<tr class="header1">
+		<th style="width: 20px;">&nbsp;</th>
+		<th style="width: 16px;">&nbsp;</th>
+		<th style="width: 35%;">Title</th>
+		
+		<th>Started by</th>
+		<th>Replies</th>
+		<th>Views</th>
+		<th style="min-width:150px">Last post</th>
+	</tr>
+
+{% for thread in threads %}
+	<tr class="cell0">
+		<td class="cell2 threadIcon"> NEW</td>
+		<td class="threadIcon" style="border-right: 0px none;">
+			ICON		 
+		</td>
+		<td style="border-left: 0px none;">
+			
+			 <a href="/{{forum.id}}-{{forum.title | slugify}}/{{thread.id}}-{{thread.title | slugify}}">{{thread.title | e}}</a>
+			 <span class="smallFonts">[pages]</span>
+		</td>
+		
+		<td class="center">
+			{{userlink(thread.su)}}
+		</td>
+		<td class="center">
+			{{thread.replies}}
+		</td>
+		<td class="center">
+			{{thread.views}}
+		</td>
+		<td class="smallFonts center">
+			{{thread.lastpostdate | date}}<br />
+			by {{userlink(thread.lu)}}
+		</td>
+	</tr>
+{% endfor %}
+</table>

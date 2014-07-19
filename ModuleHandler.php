@@ -15,7 +15,11 @@ class ModuleHandler
 	{
 		$path = __DIR__.$path;
 
-		require($path.'/lib/lib.php');
+		if(!is_dir($path))
+			throw new Exception("There is no module at path $path");
+
+		if(is_file($path.'/lib/lib.php'))
+			require($path.'/lib/lib.php');
 
 		foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path)) as $file) 
 		{
@@ -47,7 +51,7 @@ class ModuleHandler
 		$pattern = preg_quote($pattern);
 		$pattern = str_replace('\*\*', '[^/]*', $pattern);
 		$pattern = str_replace('\*', '.*', $pattern);
-		$pattern = '#'.$pattern.'#';
+		$pattern = '#^'.$pattern.'$#';
 
 		$res = array();
 		foreach(self::$files as $file => $files)
@@ -57,4 +61,13 @@ class ModuleHandler
 
 		return $res;
 	}
+	
+	public static function toWebPath($file)
+	{
+		if(is_array($file))
+			return array_map(array('ModuleHandler', 'toWebPath'), $file);
+		else
+			return substr($file, strlen(__DIR__)+1);
+	}
+
 }

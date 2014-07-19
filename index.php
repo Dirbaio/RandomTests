@@ -25,6 +25,7 @@ require(__DIR__."/ModuleHandler.php");
 require(__DIR__."/vendor/autoload.php");
 ModuleHandler::init();
 ModuleHandler::loadModule('/modules/main');
+ModuleHandler::loadModule('/modules/abxd30');
 
 
 // Set up stuff
@@ -64,8 +65,24 @@ function getPages()
 	return $pages;
 }
 
+function renderPage($template, $vars)
+{
+	$layout = array(
+		'template' => $template,
+		'css' => ModuleHandler::toWebPath(ModuleHandler::getFilesMatching('/css/**.css')),
+		'js' => ModuleHandler::toWebPath(ModuleHandler::getFilesMatching('/js/**.js')),
+		'title' => 'RandomTests',
+		'pora' => true,
+		'poratext' => 'Hello World',
+		'poratitle' => 'ASDF',
+	);
+	$vars['layout'] = $layout;
 
-try
+	Template::render('layout/main.html', $vars);
+
+}
+
+function runPage()
 {
 	$pages = getPages();
 	$path = Url::getPath();
@@ -133,6 +150,12 @@ try
 
 	//Call the thing
 	call_user_func_array("request", $params);
+}
+
+
+try
+{
+	runPage();
 }
 catch(Exception $e)
 {

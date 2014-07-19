@@ -29,6 +29,6 @@ function request($id)
 
 	Url::setCanonicalUrl('/'.$forum['id'].'-'.Url::slugify($forum['title']).'/'.$thread['id'].'-'.Url::slugify($thread['title']));
 
-	Template::render('thread.html', array('thread' => $thread, 'forum' => $forum));
+	renderPage('thread.html', array('thread' => $thread, 'forum' => $forum));
 }
 

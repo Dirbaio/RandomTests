@@ -39,6 +39,9 @@ class Template
 		self::$twig->addFilter(new Twig_SimpleFilter('slugify', function ($string) {
 		    return Url::slugify($string);
 		}));
+		self::$twig->addFunction(new Twig_SimpleFunction('userlink', function ($user) {
+		    self::render('util/userlink.html', array('user' => $user));
+		}));
 
 	}
 
