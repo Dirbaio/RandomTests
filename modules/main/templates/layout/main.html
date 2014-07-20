@@ -29,7 +29,7 @@
 									<tr>
 										<td style="border: 0px none; text-align: left;">
 											<a href="./">
-												<img id="theme_banner" src="{{layout.logo}}" alt="" title="{{layout.logotitle}}" style="padding: 8px;" />
+												<img id="theme_banner" src="{{modulefile('/img/logo.png')|e}}" alt="" title="{{layout.logotitle}}" style="padding: 8px;" />
 											</a>
 										</td>
 										{% if layout.pora %}
@@ -68,21 +68,13 @@
 					</table>
 				</div>
 
-				<div class="margin breadcrumbs_bar">
-					<div style="float: right;">
-						LINKS
-					</div>
-					BREADCRUMBS
-				</div>
 
+				{% include 'layout/breadcrumbbar.html' %}
+				{% include 'layout/pagelinks.html' %}
 				{% include layout.template %}
+				{% include 'layout/pagelinks.html' %}
+				{% include 'layout/breadcrumbbar.html' %}
 
-				<div class="margin breadcrumbs_bar">
-					<div style="float: right;">
-						LINKS
-					</div>
-					BREADCRUMBS
-				</div>
 
 			</div>
 			<div class="footer" style='clear:both;'>

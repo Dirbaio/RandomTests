@@ -1,0 +1,31 @@
+<table class="post margin table{{post.user.id}}" id="post{{post.id}}">
+	<tr class="row{{post.user.id}}_1">
+		<td class="side userlink topbar{{post.user.id}}_1">
+			<a name="{{post.id}}"></a>
+			{{userlink(post.user)}}
+		</td>
+		<td class="meta right topbar9_2">
+			<div style="float: left;" id="meta_36788">
+				Posted on {{post.date | date}}
+			</div>
+			<div style="float: left; text-align:left; display: none;" id="dyna_{{post.id}}">
+				Hi.
+			</div>
+			POSTLINKS
+		</td>
+	</tr>
+	<tr class="row{{post.user.id}}_2">
+		<td class="side sidebar{{post.user.id}}">
+			{{user.title | e}}<br />
+			{% if post.user.picture %}
+				<img src="/data/avatars/{{post.user.id}}" alt="" /><br />
+			{% endif %}
+			Karma: {{post.user.karma}}<br />
+			Posts: {{post.num}}/{{post.user.posts}}<br />
+			Since: {{post.user.regdate | date}}<br />
+		</td>
+		<td class="post mainbar{{post.user.id}}" id="post_{{post.id}}">
+			{{post.text | cleanUpPost | raw}}
+		</td>
+	</tr>
+</table>

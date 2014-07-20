@@ -20,7 +20,7 @@ function request($id, $from=0)
 	if($forum['minpower'] > $pl)
 		Kill(__("You are not allowed to browse this forum."));
 
-	Url::setCanonicalUrl('/'.$forum['id'].'-'.Url::slugify($forum['title']));
+	Url::setCanonicalUrl('/#-#', $forum['id'], $forum['title']);
 
 	$user = Session::get();
 	$loguserid = $user ? $user['id']:0;
@@ -46,6 +46,7 @@ function request($id, $from=0)
 		$threads = Sql::queryAll("
 			SELECT
 				t.*,
+				? readdate,
 				su.(_userfields),
 				lu.(_userfields)
 			FROM
@@ -55,8 +56,28 @@ function request($id, $from=0)
 			WHERE forum=?
 			ORDER BY sticky DESC, lastpostdate DESC 
 			LIMIT ?, ?", 
-			$fid, $from, $tpp);
+			time()-600, $fid, $from, $tpp);
 
-	renderPage('forum.html', array('forum' => $forum, 'threads' => $threads));
+	$breadcrumbs = array(
+		array('url' => Url::format('/#-#', $forum['id'], $forum['title']), 'title' => $forum['title'])
+	);
+
+	$actionlinks = array(
+		array('url' => Url::format('/#-#/newthread', $forum['id'], $forum['title']), 'title' => __('Post thread'))
+	);
+
+	renderPage('forum.html', array(
+		'forum' => $forum, 
+		'threads' => $threads, 
+		'hotcount' => 30, 
+		'paging' => array(
+			'perpage' => $tpp,
+			'from' => $from,
+			'total' => $forum['numthreads'],
+		),
+		'breadcrumbs' => $breadcrumbs, 
+		'actionlinks' => $actionlinks,
+		'title' => $forum['title'],
+	));
 }
 

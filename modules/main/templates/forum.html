@@ -1,4 +1,3 @@
-forum = {{ forum | json_encode }}<br>
 
 <table class="outline margin width100">
 	<tr class="header1">
@@ -12,15 +11,39 @@ forum = {{ forum | json_encode }}<br>
 		<th style="min-width:150px">Last post</th>
 	</tr>
 
+{% set sticky=0 %}
 {% for thread in threads %}
-	<tr class="cell0">
-		<td class="cell2 threadIcon"> NEW</td>
+	{% if thread.sticky %}
+		{% set sticky=1 %}
+	{% endif %}
+	{% if not thread.sticky and sticky==1 %}
+		<tr class="header1">
+			<th colspan="7" style="height: 8px;"></th>
+		</tr>
+		{% set sticky=2 %}
+	{% endif %}
+	<tr class="cell{{loop.index%2}}">
+		<td class="cell2 threadIcon">
+			{% set newicon='' %}
+			{% set newicon=newicon ~ (thread.closed ? 'off' : '') %}
+			{% set newicon=newicon ~ (thread.replies > hotcount ? 'hot' : '') %}
+			{% set newicon=newicon ~ (thread.lastpostdate > thread.readdate ? 'new' : '') %}
+
+			{% if newicon %}
+				<img src="{{modulefile('/img/status/'~newicon~'.png')|e}}"/>
+			{% endif %}
+		</td>
 		<td class="threadIcon" style="border-right: 0px none;">
-			ICON		 
+			{% if thread.icon %}
+				{% if thread.icon starts with 'img/' %}
+					<img class="smiley" src="{{modulefile('/' ~ thread.icon)|e}}"/>
+				{% else %}
+					<img class="smiley" src="{{thread.icon|e}}"/>
+				{% endif %}
+			{% endif %}
 		</td>
 		<td style="border-left: 0px none;">
-			
-			 <a href="/{{forum.id}}-{{forum.title | slugify}}/{{thread.id}}-{{thread.title | slugify}}">{{thread.title | e}}</a>
+			 <a href="{{urlformat('/#-#/#-#', forum.id, forum.title, thread.id, thread.title)}}">{{thread.title | e}}</a>
 			 <span class="smallFonts">[pages]</span>
 		</td>
 		
@@ -36,6 +59,7 @@ forum = {{ forum | json_encode }}<br>
 		<td class="smallFonts center">
 			{{thread.lastpostdate | date}}<br />
 			by {{userlink(thread.lu)}}
+			<a href='/post/{{thread.lastpostid}}'>&raquo;</a>
 		</td>
 	</tr>
 {% endfor %}

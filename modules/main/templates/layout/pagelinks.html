@@ -1,0 +1,22 @@
+{% if paging %}
+	<div class="smallFonts pages">
+		Pages: 
+		{% set pages = (paging.total + paging.perpage-1) // paging.perpage %}
+		{% for i in 1..pages %}
+			{% set from = (i-1)*paging.perpage %}
+			{% if from == paging.from %}
+				<span>{{i}}</span>
+			{% else %}
+				{% if loop.first %}
+					<a href='?from={{from}}'>&laquo;</a>
+					<a href='?from={{paging.from-paging.perpage}}'>&lsaquo;</a>
+				{% endif %}
+				<a href='?from={{from}}'>{{i}}</a>
+				{% if loop.last %}
+					<a href='?from={{paging.from+paging.perpage}}'>&rsaquo;</a>
+					<a href='?from={{from}}'>&raquo;</a>
+				{% endif %}
+			{% endif %}
+		{% endfor %}
+	</div>
+{% endif %}

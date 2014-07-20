@@ -27,8 +27,49 @@ function request($id)
 	if($forum['minpower'] > $pl)
 		Kill(__("You are not allowed to browse this forum."));
 
-	Url::setCanonicalUrl('/'.$forum['id'].'-'.Url::slugify($forum['title']).'/'.$thread['id'].'-'.Url::slugify($thread['title']));
+	Url::setCanonicalUrl('/#-#/#-#', $forum['id'], $forum['title'], $thread['id'], $thread['title']);
 
-	renderPage('thread.html', array('thread' => $thread, 'forum' => $forum));
+	$ppp = 20;
+
+	$posts = Sql::queryAll("
+		SELECT
+			p.*,
+			pt.text, pt.revision, pt.user AS revuser, pt.date AS revdate,
+			user.(_userfields,rankset,title,picture,posts,postheader,signature,signsep,lastposttime,lastactivity,regdate,globalblock),
+			useredited.(_userfields),
+			userdeleted.(_userfields)
+		FROM
+			{posts} p
+			LEFT JOIN {posts_text} pt ON pt.pid = p.id AND pt.revision = p.currentrevision
+			LEFT JOIN {users} user ON user.id = p.user
+			LEFT JOIN {users} useredited ON useredited.id = pt.user
+			LEFT JOIN {users} userdeleted ON userdeleted.id = p.deletedby
+		WHERE thread=?
+		ORDER BY date ASC LIMIT ?, ?", $tid, $from, $ppp);
+
+
+	$breadcrumbs = array(
+		array('url' => Url::format('/#-#', $forum['id'], $forum['title']), 'title' => $forum['title']),
+		array('url' => Url::format('/#-#/#-#', $forum['id'], $forum['title'], $thread['id'], $thread['title']), 'title' => $thread['title']),
+	);
+
+	$actionlinks = array(
+		array('url' => Url::format('/#-#/newthread', $forum['id'], $forum['title']), 'title' => __('Post thread'))
+	);
+
+	renderPage('thread.html', array(
+		'forum' => $forum, 
+		'thread' => $thread, 
+		'posts' => $posts, 
+		'paging' => array(
+			'perpage' => $ppp,
+			'from' => $from,
+			'total' => $thread['replies'] + 1, //+1 for the OP
+		),
+		'breadcrumbs' => $breadcrumbs, 
+		'actionlinks' => $actionlinks,
+		'title' => $forum['title'],
+	));
+
 }
 

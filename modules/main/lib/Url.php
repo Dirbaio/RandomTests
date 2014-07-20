@@ -21,13 +21,6 @@ class Url
 		return '/';
 	}
 
-	public static function setCanonicalUrl($url)
-	{
-		if(self::getPath() !== $url)
-			self::redirect($url);
-	}
-
-
 	public static function slugify($urlname)
 	{
 		$urlname = strtolower($urlname);
@@ -38,6 +31,28 @@ class Url
 		$urlname = preg_replace("/-$/", "", $urlname);
 		return $urlname;
 	}
+
+	public static function format()
+	{
+		//Get the string and the args
+		$args = func_get_args();
+		if (is_array($args[0])) $args = $args[0];
+
+		$format = array_shift($args);
+
+		$format = preg_replace_callback('/#/', function() use (&$args) {
+			return self::slugify(array_shift($args));
+		}, $format);
+		return $format;
+	}
+
+	public static function setCanonicalUrl()
+	{
+		$url = self::format(func_get_args());
+		if(self::getPath() !== $url)
+			self::redirect($url);
+	}
+
 
 	public static function redirect($url)
 	{

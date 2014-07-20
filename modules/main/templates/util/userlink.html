@@ -1,1 +1,1 @@
-<a href="u{{user.id}}-{{user.name | slugify}}">{{user.name | e}}</a>
+<a href="{{urlformat('/members/#-#', user.id, user.name)}}">{{usertext(user)}}</a>

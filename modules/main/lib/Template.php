@@ -32,17 +32,28 @@ class Template
 	{
 		$loader = new TemplateLoader();
 		self::$twig = new Twig_Environment($loader, array(
-		    'cache' => '/tmp/twig_cache',
-		    'auto_reload' => true,
+			'cache' => '/tmp/twig_cache',
+			'auto_reload' => true,
 		));
 
 		self::$twig->addFilter(new Twig_SimpleFilter('slugify', function ($string) {
-		    return Url::slugify($string);
+			return Url::slugify($string);
 		}));
 		self::$twig->addFunction(new Twig_SimpleFunction('userlink', function ($user) {
-		    self::render('util/userlink.html', array('user' => $user));
+			self::render('util/userlink.html', array('user' => $user));
 		}));
-
+		self::$twig->addFunction(new Twig_SimpleFunction('usertext', function ($user) {
+			self::render('util/usertext.html', array('user' => $user));
+		}));
+		self::$twig->addFunction(new Twig_SimpleFunction('urlformat', function () {
+			return Url::format(func_get_args());
+		}));
+		self::$twig->addFunction(new Twig_SimpleFunction('modulefile', function ($file) {
+			return ModuleHandler::toWebPath(ModuleHandler::getFile($file));
+		}));
+		self::$twig->addFilter(new Twig_SimpleFilter('cleanUpPost', function ($text) {
+			return cleanUpPost($text);
+		}));
 	}
 
 	public static function render($file, $vars)

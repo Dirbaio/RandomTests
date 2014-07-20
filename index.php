@@ -25,7 +25,7 @@ require(__DIR__."/ModuleHandler.php");
 require(__DIR__."/vendor/autoload.php");
 ModuleHandler::init();
 ModuleHandler::loadModule('/modules/main');
-ModuleHandler::loadModule('/modules/abxd30');
+ModuleHandler::loadModule('/themes/cheese');
 
 
 // Set up stuff
@@ -77,6 +77,15 @@ function renderPage($template, $vars)
 		'poratitle' => 'ASDF',
 	);
 	$vars['layout'] = $layout;
+	$vars['loguser'] = Session::get();
+
+	if(!isset($vars['breadcrumbs']) || !is_array($vars['breadcrumbs']))
+		throw new Exception('breadcrumbs not found in vars, must be there and be an array');
+	if(!isset($vars['actionlinks']) || !is_array($vars['actionlinks']))
+		throw new Exception('actionlinks not found in vars, must be there and be an array');
+
+	array_unshift($vars['breadcrumbs'], 
+		array('url' => Url::format('/'), 'title' => __('Main')));
 
 	Template::render('layout/main.html', $vars);
 
