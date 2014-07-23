@@ -1,0 +1,41 @@
+{% for category in categories %}
+	<table class="outline margin">
+		<tr class="header1">
+			<th style="width:32px;"></th>
+			<th>{{ category.name | e}}</th>
+			<th style="width:75px;">Threads</th>
+			<th style="width:50px;">Posts</th>
+			<th style="min-width:150px; width:15%;">Last post</th>
+		</tr>
+		{% for forum in category.forums %}
+			<tr class="cell1">
+				<td class="cell2 threadIcon newMarker">
+
+				</td>
+				<td>
+					<a href="{{urlformat('/#-#', forum.id, forum.title) }}">{{forum.title | e}}</a>
+					<span class='description'>{{ forum.description | e }}</span>
+					{% for subforum in forum.subforums %}
+						<div class="subforum">
+							<a href="{{urlformat('/#-#', subforum.id, subforum.title) }}">
+								{{subforum.title | e}}
+							</a> 
+							<span class='description'>{{subforum.description | e }}</span>
+						</div>
+					{% endfor %}
+				</td>
+				<td class="center cell2">
+					{{ forum.numthreads }}
+				</td>
+				<td class="center cell2">
+					{{ forum.numposts }}
+				</td>
+				<td class="smallFonts center">
+					{{forum.lastpostdate | date}} <br>
+					by {{userlink(forum.lu)}}
+					 <a href="/post/{{forum.lastpostid}}">&raquo;</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% endfor %}

@@ -108,7 +108,8 @@ class Sql
 	public static function fetch($result)
 	{
 		$res = $result->fetch(PDO::FETCH_ASSOC);
-		$res = self::postProcess($res);
+		if($res)
+			$res = self::postProcess($res);
 		return $res;
 	}
 
