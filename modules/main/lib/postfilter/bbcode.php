@@ -1,4 +1,5 @@
 <?php
+global $bbcode;
 $bbcode = array(
 	'b' => array(
 		'callback' => 'bbcodeBold',
@@ -244,11 +245,13 @@ function bbcodeImageScale($dom, $nodes, $title)
 
 function bbcodeUser($dom, $nothing, $id)
 {
-	return markupToMarkup($dom, UserLinkById((int) $id));
+	return markupToMarkup($dom, 'TODO [user]');
 }
 
 function bbcodeThread($dom, $nothing, $arg)
 {
+	return markupToMarkup($dom, 'TODO [thread]');
+
 	global $threadLinkCache, $loguser;
 	$id = (int)$arg;
 	if(!isset($threadLinkCache[$id]))
@@ -271,19 +274,23 @@ function bbcodeThread($dom, $nothing, $arg)
 
 function bbcodeForum($dom, $nothing, $arg)
 {
-	global $forumLinkCache, $loguser;
+	global $forumLinkCache;
 	$id = (int)$arg;
 	if(!isset($forumLinkCache[$id]))
 	{
-		$rForum = Query("SELECT
-							id, title
-						FROM {forums}
-						WHERE id={0} and minpower <= {1}", $id, $loguser["powerlevel"]);
-		if(NumRows($rForum))
-		{
-			$forum = Fetch($rForum);
-			$forumLinkCache[$id] = actionLinkTag($forum['title'], "forum", $forum['id']);
-		}
+		$user = Session::get();
+		if($user)
+			$pl = $user['powerlevel'];
+		else
+			$pl = 0;
+
+		$forum = Sql::querySingle("
+				SELECT id, title
+				FROM {forums}
+				WHERE id=? and minpower <= ?", $id, $pl);
+
+		if($forum)
+			$forumLinkCache[$id] = '<a href="'.Url::format('/#-#', $forum['id'], $forum['title']).'">'.htmlspecialchars($forum['title']).'</a>';
 		else
 			$forumLinkCache[$id] = "&lt;invalid forum ID&gt;";
 	}
@@ -320,7 +327,7 @@ function bbcodeQuoteGeneric($dom, $nodes, $arg, $attrs, $text)
 				$quote = parseQuoteLike($arg, strlen($matches[0]) + $continue, true);
 				$id = (int) $quote['substr'];
 				$user_name = $dom->createElement('a');
-				$user_name->setAttribute('href', actionLink("post", $id));
+				$user_name->setAttribute('href', Url::format('post/#',  $id));
 				$user_name->appendChild($dom->createTextNode($name));
 				$arg = $name;
 			}

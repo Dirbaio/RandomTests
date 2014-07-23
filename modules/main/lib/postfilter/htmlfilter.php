@@ -2,6 +2,8 @@
 
 require_once 'bbcode.php';
 
+global $filter_args, $filter_tags, $filter_mandatory;
+
 $filter_args = array(
 	'class'           => TRUE,
 	// For abusers, like Nina
