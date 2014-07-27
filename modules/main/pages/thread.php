@@ -62,7 +62,7 @@ function request($id, $from=0)
 	);
 
 	$actionlinks = array(
-		array('url' => Url::format('/#-#/newthread', $forum['id'], $forum['title']), 'title' => __('Post thread'))
+//		array('url' => Url::format('/#-#/newthread', $forum['id'], $forum['title']), 'title' => __('Post thread'))
 	);
 
 	renderPage('thread.html', array(
