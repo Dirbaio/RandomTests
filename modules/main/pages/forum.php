@@ -1,6 +1,8 @@
 <?php 
 //page /#id
 //page /#id-:
+//page /#id/p#from
+//page /#id-:/p#from
 
 //ABXD LEGACY
 //page /forum/#id
@@ -20,7 +22,10 @@ function request($id, $from=0)
 	if($forum['minpower'] > $pl)
 		Kill(__("You are not allowed to browse this forum."));
 
-	Url::setCanonicalUrl('/#-#', $forum['id'], $forum['title']);
+	if($from == 0)
+		Url::setCanonicalUrl('/#-#', $forum['id'], $forum['title']);
+	else
+		Url::setCanonicalUrl('/#-#/p#', $forum['id'], $forum['title'], $from);
 
 	$user = Session::get();
 	$loguserid = $user ? $user['id']:0;
@@ -74,6 +79,7 @@ function request($id, $from=0)
 			'perpage' => $tpp,
 			'from' => $from,
 			'total' => $forum['numthreads'],
+			'base' => Url::format('/#-#', $forum['id'], $forum['title']),
 		),
 		'breadcrumbs' => $breadcrumbs, 
 		'actionlinks' => $actionlinks,

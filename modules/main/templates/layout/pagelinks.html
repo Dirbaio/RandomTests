@@ -1,3 +1,13 @@
+{% macro pagelink(base, from, text) %}
+	{% if from != 0 %}
+		<a href='{{base}}/p{{from}}'>{{text | raw}}</a>
+	{% else %}
+		<a href='{{base}}'>{{text | raw}}</a>
+	{% endif %}
+{% endmacro %}
+
+{% import _self as pl %}
+
 {% if paging %}
 	<div class="smallFonts pages">
 		Pages: 
@@ -8,13 +18,13 @@
 				<span>{{i}}</span>
 			{% else %}
 				{% if loop.first %}
-					<a href='?from={{from}}'>&laquo;</a>
-					<a href='?from={{paging.from-paging.perpage}}'>&lsaquo;</a>
+					{{ pl.pagelink(paging.base, from, '&laquo;') }}
+					{{ pl.pagelink(paging.base, paging.from-paging.perpage, '&lsaquo;') }}
 				{% endif %}
-				<a href='?from={{from}}'>{{i}}</a>
+				{{ pl.pagelink(paging.base, from, i) }}
 				{% if loop.last %}
-					<a href='?from={{paging.from+paging.perpage}}'>&rsaquo;</a>
-					<a href='?from={{from}}'>&raquo;</a>
+					{{ pl.pagelink(paging.base, paging.from+paging.perpage, '&rsaquo;') }}
+					{{ pl.pagelink(paging.base, from, '&raquo;') }}
 				{% endif %}
 			{% endif %}
 		{% endfor %}

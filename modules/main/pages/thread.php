@@ -4,12 +4,17 @@
 //page /#-:/#id
 //page /#-:/#id-:
 
+//page /#/#id/p#from
+//page /#/#id-:/p#from
+//page /#-:/#id/p#from
+//page /#-:/#id-:/p#from
+
 //ABXD LEGACY
 //page /thread/#id
 //page /thread/#id-:
 //page /thread.php
 
-function request($id)
+function request($id, $from=0)
 {
 	$tid = $id;
 
@@ -27,7 +32,10 @@ function request($id)
 	if($forum['minpower'] > $pl)
 		Kill(__("You are not allowed to browse this forum."));
 
-	Url::setCanonicalUrl('/#-#/#-#', $forum['id'], $forum['title'], $thread['id'], $thread['title']);
+	if($from == 0)
+		Url::setCanonicalUrl('/#-#/#-#', $forum['id'], $forum['title'], $thread['id'], $thread['title']);
+	else
+		Url::setCanonicalUrl('/#-#/#-#/p#', $forum['id'], $forum['title'], $thread['id'], $thread['title'], $from);
 
 	$ppp = 20;
 
@@ -65,6 +73,7 @@ function request($id)
 			'perpage' => $ppp,
 			'from' => $from,
 			'total' => $thread['replies'] + 1, //+1 for the OP
+			'base' => Url::format('/#-#/#-#', $forum['id'], $forum['title'], $thread['id'], $thread['title']),
 		),
 		'breadcrumbs' => $breadcrumbs, 
 		'actionlinks' => $actionlinks,
