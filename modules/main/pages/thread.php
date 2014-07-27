@@ -20,17 +20,17 @@ function request($id, $from=0)
 
 	$thread = Sql::querySingle("SELECT * FROM threads WHERE id=?", $tid);
 	if(!$thread)
-		Kill(__("Unknown thread ID."));
+		fail(__("Unknown thread ID."));
 
 	$fid = $thread['forum'];
 	$forum = Sql::querySingle("SELECT * FROM forums WHERE id=?", $fid);
 	if(!$forum)
-		Kill(__("Unknown forum ID."));
+		fail(__("Unknown forum ID."));
 
 	$pl = 0;
 
 	if($forum['minpower'] > $pl)
-		Kill(__("You are not allowed to browse this forum."));
+		fail(__("You are not allowed to browse this forum."));
 
 	if($from == 0)
 		Url::setCanonicalUrl('/#-#/#-#', $forum['id'], $forum['title'], $thread['id'], $thread['title']);

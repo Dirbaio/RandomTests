@@ -37,10 +37,6 @@ function endsWith($haystack, $needle)
     return (substr($haystack, -$length) === $needle);
 }
 
-function Kill($what) {
-	fail($what);
-}
-
 function __($what) {
 	return $what;
 }
