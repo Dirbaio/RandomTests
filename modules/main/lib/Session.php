@@ -26,7 +26,7 @@ class Session
 		$sessionKey = Util::randomString();
 		Sql::query("INSERT INTO sessions (id, user, expiration) VALUES (?, ?, ?)", Util::hash($sessionKey), $user, time()+$expiration);
 
-		setcookie(self::$cookieName, $sessionKey, time()+$expiration, "/", null, Util::isHttps(), true);
+		setcookie(self::$cookieName, $sessionKey, time()+$expiration, "/", null, Url::isHttps(), true);
 
 		self::loadUser($user);
 	}
@@ -36,7 +36,7 @@ class Session
 		if(isset($_COOKIE[self::$cookieName]) && $_COOKIE[self::$cookieName])
 		{
 			Sql::query("DELETE FROM sessions WHERE id=?", Util::hash($_COOKIE[self::$cookieName]));
-			setcookie(self::$cookieName, "", time(), "/", null, Util::isHttps(), true);
+			setcookie(self::$cookieName, "", time(), "/", null, Url::isHttps(), true);
 		}
 
 		self::$user = null;
@@ -45,6 +45,22 @@ class Session
 	public static function get()
 	{
 		return self::$user;
+	}
+
+	public static function powerlevel()
+	{
+		if(self::$user !== null)
+			return self::$user['powerlevel'];
+
+		return 0;
+	}
+
+	public static function id()
+	{
+		if(self::$user !== null)
+			return self::$user['id'];
+
+		return 0;
 	}
 
 	public static function isLoggedIn()

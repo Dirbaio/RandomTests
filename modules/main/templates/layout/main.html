@@ -46,18 +46,18 @@
 						</tr>
 						<tr class="cell1">
 							<td class="smallFonts" style="text-align: center; width: 10%;">
-								13371337 views
+								{{ layout.views }} views
 							</td>
 							<td class="smallFonts" style="text-align: center; width: 80%;">
-								NAV GOES HERE
+								{% include 'layout/navigation.html' %}
 							</td>
 							<td class="smallFonts" style="text-align: center; width: 10%;">
-								Today, now
+								{{ 'now' | date }}
 							</td>
 						</tr>
 						<tr class="cell2">
 							<td colspan="3" class="smallFonts" style="text-align: center">
-								USERPANEL GOES HERE
+								{% include 'layout/userpanel.html' %}
 							</td>
 						</tr>
 						<tr class="cell2">

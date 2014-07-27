@@ -13,7 +13,7 @@ function my_error_handler()
 {
 	$last_error = error_get_last();
 	if ($last_error && ($last_error['type']==E_ERROR || $last_error['type']==E_USER_ERROR))
-		header("HTTP/1.1 500 Internal Server Error");
+		header('HTTP/1.1 500 Internal Server Error');
 }
 register_shutdown_function('my_error_handler');
 
@@ -21,8 +21,8 @@ register_shutdown_function('my_error_handler');
 // Load main module
 //============================
 
-require(__DIR__."/ModuleHandler.php");
-require(__DIR__."/vendor/autoload.php");
+require(__DIR__.'/ModuleHandler.php');
+require(__DIR__.'/vendor/autoload.php');
 ModuleHandler::init();
 ModuleHandler::loadModule('/modules/main');
 ModuleHandler::loadModule('/themes/cheese');
@@ -31,9 +31,9 @@ ModuleHandler::loadModule('/themes/cheese');
 // Set up stuff
 //============================
 
-require(__DIR__."/config.php");
+Config::load(__DIR__.'/config.php');
 
-Sql::connect($config["mysql"]);
+Sql::connect(Config::get('mysql'));
 
 session_start(); //For Csrf class
 Session::load();
@@ -67,6 +67,24 @@ function getPages()
 
 function renderPage($template, $vars)
 {
+	$navigation = array(
+		array('url' => '/', 'title' => __('Main')),
+		array('url' => '/members', 'title' => __('Members')),
+	);
+
+	$user = Session::get();
+
+	if($user)
+		$userpanel = array(
+			array('url' => Url::format('/members/#-#/edit', $user['id'], $user['name']), 'title' => __('Edit profile')),
+			array('url' => '/logout', 'title' => __('Log out')),
+		);
+	else
+		$userpanel = array(
+			array('url' => '/login', 'title' => __('Log in')),
+			array('url' => '/register', 'title' => __('Register')),
+		);
+
 	$layout = array(
 		'template' => $template,
 		'css' => ModuleHandler::toWebPath(ModuleHandler::getFilesMatching('/css/**.css')),
@@ -75,6 +93,10 @@ function renderPage($template, $vars)
 		'pora' => true,
 		'poratext' => 'Hello World',
 		'poratitle' => 'ASDF',
+		'views' => 12345678,
+		'user' => $user,
+		'navigation' => $navigation,
+		'userpanel' => $userpanel,
 	);
 	$vars['layout'] = $layout;
 	$vars['loguser'] = Session::get();
@@ -111,7 +133,7 @@ function runPage()
 		$input[$key] = $value;
 
 	$foundPagefile = null;
-	foreach($pages as $page=>$pagefile) 
+	foreach($pages as $page=>$pagefile)
 	{
 		//match $path against $page
 		$names = array();

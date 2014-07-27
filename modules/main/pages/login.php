@@ -1,15 +1,35 @@
 <?php
 //page /login
 
-function request($username, $password)
+function request($username='', $password='', $session=false)
 {
-	$salt = "blarg blarg blarg";
+	Url::setCanonicalUrl('/login');
 
-	$user = Sql::querySingle("SELECT * FROM users WHERE name=?", $username);
+	$error = '';
+	if($username) {
+		$salt = Config::get('salt');
 
-	if(!$user || $user["password"] != Util::hash($password.$salt.$user['pss']))
-		fail("Wrong username or password");
+		$user = Sql::querySingle("SELECT * FROM users WHERE name=?", $username);
 
-	Session::start($user["id"]);
-	return Session::get();
+		if(!$user || $user["password"] !== Util::hash($password.$salt.$user['pss']))
+			$error = "Wrong username or password";
+		else
+		{
+			Session::start($user["id"]);
+			Url::redirect('/');
+		}
+	}
+
+
+	$breadcrumbs = array(
+		array('url' => '/login', 'title' => __('Log in')),
+	);
+
+	renderPage('login.html', array(
+		'username' => $username,
+		'error' => $error,
+		'breadcrumbs' => $breadcrumbs, 
+		'actionlinks' => array(),
+		'title' => __('Log in'),
+	));
 }

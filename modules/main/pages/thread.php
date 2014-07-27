@@ -27,7 +27,7 @@ function request($id, $from=0)
 	if(!$forum)
 		fail(__("Unknown forum ID."));
 
-	$pl = 0;
+	$pl = Session::powerlevel();
 
 	if($forum['minpower'] > $pl)
 		fail(__("You are not allowed to browse this forum."));

@@ -17,7 +17,7 @@ function request($id, $from=0)
 	if(!$forum)
 		fail(__("Unknown forum ID."));
 
-	$pl = 0;
+	$pl = Session::powerlevel();
 
 	if($forum['minpower'] > $pl)
 		fail(__("You are not allowed to browse this forum."));
@@ -27,8 +27,7 @@ function request($id, $from=0)
 	else
 		Url::setCanonicalUrl('/#-#/p#', $forum['id'], $forum['title'], $from);
 
-	$user = Session::get();
-	$loguserid = $user ? $user['id']:0;
+	$loguserid = Session::id();
 	$tpp = 50;
 
 	if($loguserid)

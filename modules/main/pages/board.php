@@ -9,7 +9,7 @@ function request()
 {
 	Url::setCanonicalUrl('/');
 
-	$pl = 0;
+	$pl = Session::powerlevel();
 	$forums = Sql::queryAll(
 		"SELECT 
 			f.*,

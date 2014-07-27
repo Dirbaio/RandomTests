@@ -1,0 +1,7 @@
+<ul id="navigation" class="pipemenu">
+{% for i in layout.navigation %}
+	<li>
+		<a href="{{i.url | e}}">{{i.title|e}}</a>
+	</li>
+{% endfor %}
+</ul>

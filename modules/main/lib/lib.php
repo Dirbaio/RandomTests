@@ -1,6 +1,7 @@
 <?php
 
 require(__DIR__."/Browsers.php");
+require(__DIR__."/Config.php");
 require(__DIR__."/Csrf.php");
 require(__DIR__."/SchemaUpdater.php");
 require(__DIR__."/Session.php");

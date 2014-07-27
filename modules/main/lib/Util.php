@@ -3,7 +3,7 @@
 class Util
 {
 
-	public static function randomString($length = 32) 
+	public static function randomString($length = 32)
 	{
 		$cstrong = false;
 	    $bytes = openssl_random_pseudo_bytes($length, $cstrong);
@@ -37,6 +37,7 @@ function endsWith($haystack, $needle)
     return (substr($haystack, -$length) === $needle);
 }
 
-function __($what) {
+function __($what)
+{
 	return $what;
 }

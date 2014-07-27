@@ -3,9 +3,8 @@
 
 function request()
 {
-	Session::checkLoggedIn();
-
 	Session::end();
-	return true;
+
+	Url::redirect('/');
 }
 
