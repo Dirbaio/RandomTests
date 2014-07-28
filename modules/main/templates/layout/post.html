@@ -7,7 +7,7 @@
 			</td>
 			<td class="meta right">
 				<div style="float:left">
-					Posted on {{post.date | date}},
+					{{post.date | date}},
 					deleted by {{userlink(post.userdeleted) -}}
 					{%- if post.reason -%}
 						: {{ post.reason }}
@@ -26,7 +26,7 @@
 			</td>
 			<td class="meta right topbar9_2">
 				<div style="float: left;" id="meta_36788">
-					Posted on {{post.date | date}}
+					{{post.date | date}}
 					{% if post.currentrevision -%}
 						(rev. {{post.currentrevision}} by {{userlink(post.useredited)}} on {{post.revdate | date}})
 					{% endif %}
