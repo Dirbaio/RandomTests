@@ -81,8 +81,8 @@ function renderPage($template, $vars)
 		);
 	else
 		$userpanel = array(
-			array('url' => '/login', 'title' => __('Log in')),
 			array('url' => '/register', 'title' => __('Register')),
+			array('url' => '/login', 'title' => __('Log in')),
 		);
 
 	$layout = array(
