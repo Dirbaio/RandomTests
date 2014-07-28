@@ -8,6 +8,8 @@
 
 {% import _self as pl %}
 
+{% spaceless %}
+
 {% if paging %}
 	<div class="smallFonts pages">
 		Pages: 
@@ -30,3 +32,5 @@
 		{% endfor %}
 	</div>
 {% endif %}
+
+{% endspaceless %}
