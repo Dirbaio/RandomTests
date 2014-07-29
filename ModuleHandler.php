@@ -56,8 +56,8 @@ class ModuleHandler
 	public static function getFilesMatching($pattern)
 	{
 		$pattern = preg_quote($pattern);
-		$pattern = str_replace('\*\*', '[^/]*', $pattern);
-		$pattern = str_replace('\*', '.*', $pattern);
+		$pattern = str_replace('\*\*', '.*', $pattern);
+		$pattern = str_replace('\*', '[^/]*', $pattern);
 		$pattern = '#^'.$pattern.'$#';
 
 		$res = array();
