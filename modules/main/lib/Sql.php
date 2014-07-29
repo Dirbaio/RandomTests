@@ -142,4 +142,8 @@ class Sql
 		return $res;
 	}
 
+	public static function insertId()
+	{
+		return self::$db->lastInsertId();
+	}
 }

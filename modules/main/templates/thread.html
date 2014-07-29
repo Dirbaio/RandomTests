@@ -4,23 +4,20 @@
 
 {% include 'layout/pagelinks.html' %}
 
-<form name="postform" action="" method="post">
-	<table class="outline margin width100">
-		<tr class="header1">
-			<th>
-				New reply
-			</th>
-		</tr>
-		<tr class="cell0">
-			<td>
-				{% include 'layout/postbox.html' %}
-			</td>
-		</tr>
-		<tr class="cell2">
-			<td>
-				<input type="submit" name="actionpost" value="Post">
-				<input type="submit" name="actionpreview" value="Preview">
-			</td>
-		</tr>
-	</table>
-</form>
+<table class="outline margin width100">
+	<tr class="header1">
+		<th>
+			New reply
+		</th>
+	</tr>
+	<tr class="cell0">
+		<td>
+			{% include 'layout/postbox.html' %}
+		</td>
+	</tr>
+	<tr class="cell2">
+		<td>
+			<button onclick="doPost({{ thread.id }})">Post</button>
+		</td>
+	</tr>
+</table>

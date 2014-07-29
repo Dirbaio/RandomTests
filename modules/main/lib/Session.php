@@ -42,8 +42,11 @@ class Session
 		self::$user = null;
 	}
 
-	public static function get()
+	public static function get($what = NULL)
 	{
+		if($what)
+			return self::$user['what'];
+		
 		return self::$user;
 	}
 

@@ -18,12 +18,12 @@ function request($id, $from=0)
 {
 	$tid = $id;
 
-	$thread = Sql::querySingle("SELECT * FROM threads WHERE id=?", $tid);
+	$thread = Sql::querySingle("SELECT * FROM {threads} WHERE id=?", $tid);
 	if(!$thread)
 		fail(__("Unknown thread ID."));
 
 	$fid = $thread['forum'];
-	$forum = Sql::querySingle("SELECT * FROM forums WHERE id=?", $fid);
+	$forum = Sql::querySingle("SELECT * FROM {forums} WHERE id=?", $fid);
 	if(!$forum)
 		fail(__("Unknown forum ID."));
 
