@@ -21,19 +21,26 @@ class ModuleHandler
 		if(is_file($path.'/lib/lib.php'))
 			require($path.'/lib/lib.php');
 
+		$moduleFiles = array();
+
 		foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path)) as $file) 
 		{
 			if(endsWith($file, '.')) continue;
 
-			$file = $file->getPathname();
+			$moduleFiles[] = $file->getPathname();
+		}
 
+		sort($moduleFiles);
+		
+		foreach($moduleFiles as $file)
+		{
 			$logicalFile = substr($file, strlen($path));
+
 			if(!isset(self::$files[$logicalFile]))
 				self::$files[$logicalFile] = array();
 
 			self::$files[$logicalFile][] = $file;
 		}
-
 	}
 
 	public static function getFiles($file)
