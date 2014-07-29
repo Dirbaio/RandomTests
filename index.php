@@ -42,6 +42,12 @@ Session::load();
 // Run the page
 //============================
 
+function json($data)
+{
+	header('Content-Type: application/json');
+	echo json_encode($data);
+}
+
 function getPages()
 {
 	$prefix = '//page ';
@@ -126,11 +132,16 @@ function runPage()
 	if($path != $origpath)
 		Url::redirect($path);
 
-	$input = array();
-	foreach($_GET as $key => $value)
-		$input[$key] = $value;
-	foreach($_POST as $key => $value)
-		$input[$key] = $value;
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+		$input = json_decode(file_get_contents('php://input'), true);
+		if(!is_array($input) || json_last_error() !== JSON_ERROR_NONE)
+			$input = $_POST;
+
+		foreach($_GET as $key => $value)
+			$input[$key] = $value;
+	}
+	else
+		$input = $_GET;
 
 	$foundPagefile = null;
 	foreach($pages as $page=>$pagefile)
