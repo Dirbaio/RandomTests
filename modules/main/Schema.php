@@ -610,6 +610,7 @@ class Schema
 					),
 				),
 			),
+			/*
 			'users' => array
 			(
 				'fields' => array
@@ -687,6 +688,7 @@ class Schema
 					),
 				),
 			),
+			*/
 			'uservotes' => array
 			(
 				'fields' => array
