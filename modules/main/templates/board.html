@@ -10,7 +10,10 @@
 		{% for forum in category.forums %}
 			<tr class="cell1">
 				<td class="cell2 threadIcon newMarker">
-
+					{% if(forum.numnew) %}
+						<img src="{{ modulefile('/img/status/new.png') }}" alt="New"><br>
+						{{ forum.numnew }}
+					{% endif %}
 				</td>
 				<td>
 					<a href="{{urlformat('/#-#', forum.id, forum.title) }}">{{forum.title | e}}</a>

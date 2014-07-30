@@ -13,14 +13,14 @@ function request($id, $from=0)
 {
 	$fid = $id;
 
-	$forum = Sql::querySingle("SELECT * FROM forums WHERE id=?", $fid);
+	$forum = Sql::querySingle('SELECT * FROM forums WHERE id=?', $fid);
 	if(!$forum)
-		fail(__("Unknown forum ID."));
+		fail(__('Unknown forum ID.'));
 
 	$pl = Session::powerlevel();
 
 	if($forum['minpower'] > $pl)
-		fail(__("You are not allowed to browse this forum."));
+		fail(__('You are not allowed to browse this forum.'));
 
 	if($from == 0)
 		Url::setCanonicalUrl('/#-#', $forum['id'], $forum['title']);
@@ -31,8 +31,8 @@ function request($id, $from=0)
 	$tpp = 50;
 
 	if($loguserid)
-		$threads = Sql::queryAll("
-			SELECT
+		$threads = Sql::queryAll(
+			'SELECT
 				t.*,
 				tr.date readdate,
 				su.(_userfields),
@@ -44,11 +44,11 @@ function request($id, $from=0)
 				LEFT JOIN {users} lu ON lu.id=t.lastposter
 			WHERE forum=?
 			ORDER BY sticky DESC, lastpostdate DESC 
-			LIMIT ?, ?", 
+			LIMIT ?, ?', 
 			$loguserid, $fid, $from, $tpp);
 	else
-		$threads = Sql::queryAll("
-			SELECT
+		$threads = Sql::queryAll(
+			'SELECT
 				t.*,
 				? readdate,
 				su.(_userfields),
@@ -59,7 +59,7 @@ function request($id, $from=0)
 				LEFT JOIN {users} lu ON lu.id=t.lastposter
 			WHERE forum=?
 			ORDER BY sticky DESC, lastpostdate DESC 
-			LIMIT ?, ?", 
+			LIMIT ?, ?', 
 			time()-600, $fid, $from, $tpp);
 
 	$breadcrumbs = array(

@@ -10,17 +10,40 @@ function request()
 	Url::setCanonicalUrl('/');
 
 	$pl = Session::powerlevel();
-	$forums = Sql::queryAll(
-		"SELECT 
-			f.*,
-			lu.(_userfields)
-		FROM {forums} f
-		LEFT JOIN {users} lu ON lu.id = f.lastpostuser
-		WHERE minpower <= ?
-		ORDER BY forder",
-		$pl);
 
-	$rCats = Sql::query("SELECT * FROM {categories} ORDER BY corder");
+	if(Session::isLoggedIn())
+		$forums = Sql::queryAll(
+			'SELECT 
+				f.*,
+				lu.(_userfields),
+				(
+					SELECT COUNT(*)
+					FROM {threads} t
+					LEFT JOIN {threadsread} tr ON tr.thread=t.id AND tr.id=?
+					WHERE t.forum=f.id AND t.lastpostdate > IFNULL(tr.date,0)
+				) numnew
+			FROM {forums} f
+			LEFT JOIN {users} lu ON lu.id = f.lastpostuser
+			WHERE minpower <= ?
+			ORDER BY forder',
+			Session::id(), $pl);
+	else
+		$forums = Sql::queryAll(
+			'SELECT 
+				f.*,
+				lu.(_userfields),
+				(
+					SELECT COUNT(*)
+					FROM {threads} t
+					WHERE t.forum=f.id AND t.lastpostdate > ?
+				) numnew
+			FROM {forums} f
+			LEFT JOIN {users} lu ON lu.id = f.lastpostuser
+			WHERE minpower <= 0
+			ORDER BY forder',
+			time() - 900);
+
+	$rCats = Sql::query('SELECT * FROM {categories} ORDER BY corder');
 	$categories = array();
 
 	while($cat = Sql::fetch($rCats))

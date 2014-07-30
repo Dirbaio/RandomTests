@@ -50,7 +50,7 @@ function getPages()
 	$pages = array();
 	foreach(ModuleHandler::getFilesMatching('/pages/**.php') as $file) 
 	{
-		$handle = @fopen($file, "r");
+		$handle = @fopen($file, 'r');
 		if (!$handle)  continue;
 
 	    while (($line = fgets($handle, 4096)) !== false)
@@ -63,6 +63,7 @@ function getPages()
 		
 		fclose($handle);
 	}
+
 	return $pages;
 }
 
@@ -121,13 +122,15 @@ function runPage()
 
 	//Kill trailing and extra slashes.
 	$origpath = $path;
-	$path = preg_replace("#/+$#", "", $path);
-	$path = preg_replace("#//+#", "/", $path);
+	$path = preg_replace('#/+$#', '', $path);
+	$path = preg_replace('#//+#', '/', $path);
 	if($path == '') $path = '/';
 	if($path != $origpath)
 		Url::redirect($path);
 
-	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') 
+	{
 		$input = json_decode(file_get_contents('php://input'), true);
 		if(!is_array($input) || json_last_error() !== JSON_ERROR_NONE)
 			$input = $_POST;
@@ -143,21 +146,24 @@ function runPage()
 	{
 		//match $path against $page
 		$names = array();
-		$pattern = preg_replace_callback('/(:|#)([a-zA-Z][a-zA-Z0-9]*|)/', function($matches) use (&$names) {
-			if($matches[1] == '#')
-				$regex = '[0-9]+';
-			else
-				$regex = '[a-zA-Z0-9-_]+';
-			if($matches[2])
+		$pattern = preg_replace_callback('/(:|#)([a-zA-Z][a-zA-Z0-9]*|)/', 
+			function($matches) use (&$names) 
 			{
-				$names[] = $matches[2];
-				return "($regex)";
-			}
-			else
-				return $regex;
-		}, $page);
+				if($matches[1] == '#')
+					$regex = '[0-9]+';
+				else
+					$regex = '[a-zA-Z0-9-_]+';
+				if($matches[2])
+				{
+					$names[] = $matches[2];
+					return '('.$regex.')';
+				}
+				else
+					return $regex;
+			}, $page);
 
-        if (preg_match('#^' . $pattern . '$#', $path, $matches)) {
+        if (preg_match('#^' . $pattern . '$#', $path, $matches)) 
+        {
         	foreach($names as $idx => $name)
         		$input[$name] = $matches[$idx+1];
 
@@ -167,26 +173,27 @@ function runPage()
 	}
 
 	if(!$foundPagefile)
-		fail("404 Not Found");
+		fail('404 Not Found');
 
-	$input["input"] = $input;
+	$input['input'] = $input;
 
 	require($foundPagefile);
 
 	//Calculate parameters
 	$params = array();
-	$refFunc = new ReflectionFunction("request");
-	foreach( $refFunc->getParameters() as $param ) {
+	$refFunc = new ReflectionFunction('request');
+	foreach($refFunc->getParameters() as $param) 
+	{
 		if(isset($input[$param->name]))
 			$params[] = $input[$param->name];
 		else if($param->isDefaultValueAvailable())
 			$params[] = $param->getDefaultValue();
 		else
-			fail("Missing parameter: ".$param->name);
+			fail('Missing parameter: '.$param->name);
 	}
 
 	//Call the thing
-	call_user_func_array("request", $params);
+	call_user_func_array('request', $params);
 }
 
 
