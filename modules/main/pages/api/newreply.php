@@ -1,5 +1,5 @@
 <?php
-//page /api/post
+//page /api/newreply
 
 function request($text, $tid)
 {
