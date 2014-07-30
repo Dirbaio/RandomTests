@@ -3,9 +3,9 @@
 error_reporting(E_ALL ^ E_NOTICE | E_STRICT);
 
 require(__DIR__."/config.php");
-require(__DIR__."/Schema.php");
-require(__DIR__."/platform/Sql.php");
-require(__DIR__."/platform/SchemaUpdater.php");
+require(__DIR__."/modules/main/Schema.php");
+require(__DIR__."/modules/main/lib/Sql.php");
+require(__DIR__."/modules/main/lib/SchemaUpdater.php");
 
 function fail($why) {
 	die($why);
