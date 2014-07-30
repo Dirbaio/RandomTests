@@ -74,6 +74,6 @@ class Session
 	public static function checkLoggedIn()
 	{
 		if(!self::isLoggedIn())
-			fail("No has iniciado sesión");
+			fail("You are not logged in.");
 	}
 }
