@@ -18,19 +18,19 @@ function request($id, $from=0)
 {
 	$tid = $id;
 
-	$thread = Sql::querySingle("SELECT * FROM {threads} WHERE id=?", $tid);
+	$thread = Sql::querySingle('SELECT * FROM {threads} WHERE id=?', $tid);
 	if(!$thread)
-		fail(__("Unknown thread ID."));
+		fail(__('Unknown thread ID.'));
 
 	$fid = $thread['forum'];
-	$forum = Sql::querySingle("SELECT * FROM {forums} WHERE id=?", $fid);
+	$forum = Sql::querySingle('SELECT * FROM {forums} WHERE id=?', $fid);
 	if(!$forum)
-		fail(__("Unknown forum ID."));
+		fail(__('Unknown forum ID.'));
 
 	$pl = Session::powerlevel();
 
 	if($forum['minpower'] > $pl)
-		fail(__("You are not allowed to browse this forum."));
+		fail(__('You are not allowed to browse this forum.'));
 
 	if($from == 0)
 		Url::setCanonicalUrl('/#-#/#-#', $forum['id'], $forum['title'], $thread['id'], $thread['title']);
@@ -39,8 +39,8 @@ function request($id, $from=0)
 
 	$ppp = 20;
 
-	$posts = Sql::queryAll("
-		SELECT
+	$posts = Sql::queryAll(
+		'SELECT
 			p.*,
 			pt.text, pt.revision, pt.user AS revuser, pt.date AS revdate,
 			user.(_userfields,rankset,title,picture,posts,postheader,signature,signsep,lastposttime,lastactivity,regdate,globalblock),
@@ -53,7 +53,23 @@ function request($id, $from=0)
 			LEFT JOIN {users} useredited ON useredited.id = pt.user
 			LEFT JOIN {users} userdeleted ON userdeleted.id = p.deletedby
 		WHERE thread=?
-		ORDER BY date ASC LIMIT ?, ?", $tid, $from, $ppp);
+		ORDER BY date ASC LIMIT ?, ?', $tid, $from, $ppp);
+
+
+	// Update thread views
+	Sql::query('UPDATE {threads} SET views=views+1 WHERE id=?', $tid);
+
+	// Set read date to the max date of the posts displayed in this page.
+	// If the user is not viewing the last page, he will still see the unread marker.
+	$readdate = 0;
+	foreach($posts as $post)
+		if($post['date'] > $readdate)
+			$readdate = $post['date'];
+
+	Sql::query(
+		'INSERT INTO {threadsread} (id,thread,date) VALUES (?,?,?)
+		ON DUPLICATE KEY UPDATE date = GREATEST(date, ?)',
+		Session::id(), $tid, $readdate, $readdate);
 
 
 	$breadcrumbs = array(
