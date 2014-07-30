@@ -3,6 +3,8 @@
 
 function request($text, $tid)
 {
+	Session::checkLoggedIn();
+	
 	$thread = Sql::querySingle("SELECT * FROM {threads} WHERE id=?", $tid);
 	if(!$thread)
 		fail(__("Unknown thread ID."));
@@ -57,5 +59,5 @@ function request($text, $tid)
 
 //	logAction('newreply', array('forum' => $fid, 'thread' => $tid, 'post' => $pid));
 
-	json(Url::format('/post/#', $pid));
+	json($pid);
 }

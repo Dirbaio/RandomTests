@@ -21,6 +21,13 @@ class Util
 }
 
 
+function json($data)
+{
+	header('Content-Type: application/json');
+	echo json_encode($data);
+	die();
+}
+
 function startsWith($haystack, $needle)
 {
      $length = strlen($needle);

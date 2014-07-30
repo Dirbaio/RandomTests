@@ -2,11 +2,6 @@
 
 function ajax(path, params, success, error) {
 
-	if(success == undefined)
-		success = function(data) {
-			window.location = data;
-		};
-
 	if(error == undefined)
 		error = function(data) {
 			alert(data.responseText);
