@@ -57,6 +57,10 @@ function request($text, $tid)
 	Sql::query("UPDATE {threads} set lastposter=?, lastpostdate=?, replies=replies+1, lastpostid=? where id=?",
 		Session::id(), $now, $pid, $tid);
 
+	//Erase the draft
+	Sql::query('DELETE FROM {drafts} WHERE user=? AND type=? AND target=?', Session::id(), 0, $tid);
+
+
 //	logAction('newreply', array('forum' => $fid, 'thread' => $tid, 'post' => $pid));
 
 	json($pid);

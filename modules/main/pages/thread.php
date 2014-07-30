@@ -71,6 +71,12 @@ function request($id, $from=0)
 		ON DUPLICATE KEY UPDATE date = GREATEST(date, ?)',
 		Session::id(), $tid, $readdate, $readdate);
 
+	// Retrieve the draft.
+
+	$posttext = '';
+	$draft = Sql::querySingle('SELECT * FROM {drafts} WHERE user=? AND type=? AND target=?', Session::id(), 0, $tid);
+	if($draft)
+		$posttext = $draft['text'];
 
 	$breadcrumbs = array(
 		array('url' => Url::format('/#-#', $forum['id'], $forum['title']), 'title' => $forum['title']),
@@ -85,6 +91,7 @@ function request($id, $from=0)
 		'forum' => $forum, 
 		'thread' => $thread, 
 		'posts' => $posts, 
+		'posttext' => $posttext,
 		'paging' => array(
 			'perpage' => $ppp,
 			'from' => $from,

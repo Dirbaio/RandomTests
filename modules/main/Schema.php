@@ -430,6 +430,7 @@ class Schema
 					'type' => $int, //Type: 0 = thread, 1 = forum
 					'target' => $int, //Target: Thread ID or Forum ID
 					'date' => $int,
+					'text' => $textLong,
 				),
 				'keys' => array
 				(

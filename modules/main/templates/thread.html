@@ -17,7 +17,13 @@
 	</tr>
 	<tr class="cell2">
 		<td>
-			<button onclick="doPost({{ thread.id }})">Post</button>
+			<button onclick="doNewReply({{ thread.id }})">Post</button>
+			<button id="savedraft" style="display:none;" onclick="doSaveDraft(0, {{ thread.id }})">Save</button>
+			<span id="saveddraft" style="display:none;">Saved!</span>
 		</td>
 	</tr>
 </table>
+
+<script type="text/javascript">
+	startDraftAutosave(0, {{ thread.id }});
+</script>
