@@ -27,10 +27,13 @@
 			{% set newicon='' %}
 			{% set newicon=newicon ~ (thread.closed ? 'off' : '') %}
 			{% set newicon=newicon ~ (thread.replies > hotcount ? 'hot' : '') %}
-			{% set newicon=newicon ~ (thread.lastpostdate > thread.readdate ? 'new' : '') %}
+			{% set newicon=newicon ~ (thread.numnew ? 'new' : '') %}
 
 			{% if newicon %}
 				<img src="{{modulefile('/img/status/'~newicon~'.png')|e}}"/>
+				{% if thread.numnew %}
+					{{ thread.numnew }}
+				{% endif %}
 			{% endif %}
 		</td>
 		<td class="threadIcon" style="border-right: 0px none;">

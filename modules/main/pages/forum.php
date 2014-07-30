@@ -27,14 +27,17 @@ function request($id, $from=0)
 	else
 		Url::setCanonicalUrl('/#-#/p#', $forum['id'], $forum['title'], $from);
 
-	$loguserid = Session::id();
 	$tpp = 50;
 
-	if($loguserid)
+	if(Session::id())
 		$threads = Sql::queryAll(
 			'SELECT
 				t.*,
-				tr.date readdate,
+				(
+					SELECT COUNT(*)
+					FROM {posts} p
+					WHERE p.thread=t.id AND p.date > IFNULL(tr.date, 0)
+				) numnew,
 				su.(_userfields),
 				lu.(_userfields)
 			FROM
@@ -45,12 +48,16 @@ function request($id, $from=0)
 			WHERE forum=?
 			ORDER BY sticky DESC, lastpostdate DESC 
 			LIMIT ?, ?', 
-			$loguserid, $fid, $from, $tpp);
+			Session::id(), $fid, $from, $tpp);
 	else
 		$threads = Sql::queryAll(
 			'SELECT
 				t.*,
-				? readdate,
+				(
+					SELECT COUNT(*)
+					FROM {posts} p
+					WHERE p.thread=t.id AND p.date > ?
+				) numnew,
 				su.(_userfields),
 				lu.(_userfields)
 			FROM
