@@ -18,10 +18,10 @@
 		</tr>
 	</table>
 {% else %}
+	<a name="{{post.id}}"></a>
 	<table class="post margin table{{post.user.id}}" id="post{{post.id}}">
 		<tr class="row{{post.user.id}}_1">
-			<td class="side userlink topbar{{post.user.id}}_1">
-				<a name="{{post.id}}"></a>
+			<td class="side userlink topbar{{post.user.id}}_1 fulllink">
 				{{userlink(post.user)}}
 			</td>
 			<td class="meta right topbar9_2">
