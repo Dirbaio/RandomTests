@@ -38,6 +38,12 @@ function request($id, $from=0)
 					FROM {posts} p
 					WHERE p.thread=t.id AND p.date > IFNULL(tr.date, 0)
 				) numnew,
+				(
+					SELECT p.id
+					FROM {posts} p
+					WHERE p.thread=t.id AND p.date > IFNULL(tr.date, 0)
+					LIMIT 1
+				) idnew,
 				su.(_userfields),
 				lu.(_userfields)
 			FROM
@@ -53,11 +59,7 @@ function request($id, $from=0)
 		$threads = Sql::queryAll(
 			'SELECT
 				t.*,
-				(
-					SELECT COUNT(*)
-					FROM {posts} p
-					WHERE p.thread=t.id AND p.date > ?
-				) numnew,
+				0 as numnew,
 				su.(_userfields),
 				lu.(_userfields)
 			FROM
@@ -67,7 +69,7 @@ function request($id, $from=0)
 			WHERE forum=?
 			ORDER BY sticky DESC, lastpostdate DESC 
 			LIMIT ?, ?', 
-			time()-600, $fid, $from, $tpp);
+			$fid, $from, $tpp);
 
 	$breadcrumbs = array(
 		array('url' => Url::format('/#-#', $forum['id'], $forum['title']), 'title' => $forum['title'])
