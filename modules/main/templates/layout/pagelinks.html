@@ -11,7 +11,7 @@
 {% spaceless %}
 
 {% if paging %}
-	<div class="smallFonts pages">
+	<div class="pagelinks">
 		Pages: 
 		{% set pages = (paging.total + paging.perpage-1) // paging.perpage %}
 		{% for i in 1..pages %}

@@ -17,70 +17,70 @@
 
 
 <body style="width:100%;">
-	<div id="body">
-		<div id="body-wrapper">
-			<div id="main" style="padding:8px;">
-				<div class="outline margin" id="header">
-					<table class="outline margin">
-						<tr>
-							<td colspan="3" class="cell0">
-								<!-- Board header goes here -->
-								<table>
-									<tr>
-										<td style="border: 0px none; text-align: left;">
-											<a href="./">
-												<img id="theme_banner" src="{{modulefile('/img/logo.png')|e}}" alt="" title="{{layout.logotitle}}" style="padding: 8px;" />
-											</a>
-										</td>
-										{% if layout.pora %}
-										<td style="border: 0px none;">
-											<table class="message outline poratable">
-												<tr class="header0"><th>{{layout.poratitle}}</th></tr>
-												<tr class="cell0"><td>{{layout.poratext}}</td></tr>
-											</table>
-										</td>
-										{% endif %}
-									</tr>
-								</table>
-							</td>
-						</tr>
-						<tr class="cell1">
-							<td class="smallFonts" style="text-align: center; width: 10%;">
-								{{ layout.views }} views
-							</td>
-							<td class="smallFonts" style="text-align: center; width: 80%;">
-								{% include 'layout/navigation.html' %}
-							</td>
-							<td class="smallFonts" style="text-align: center; width: 10%;">
-								{{ 'now' | date }}
-							</td>
-						</tr>
-						<tr class="cell2">
-							<td colspan="3" class="smallFonts" style="text-align: center">
-								{% include 'layout/userpanel.html' %}
-							</td>
-						</tr>
-						<tr class="cell2">
-							<td colspan="3" class="smallFonts" style="text-align: center">
-								ONLINE USERS: 598390
-							</td>
-						</tr>
-					</table>
-				</div>
-
-
-				{% include 'layout/breadcrumbbar.html' %}
-				{% include 'layout/pagelinks.html' %}
-				{% include layout.template %}
-				{% include 'layout/pagelinks.html' %}
-				{% include 'layout/breadcrumbbar.html' %}
-
-
+	<div id="body-wrapper">
+		<div id="main" style="padding:8px;">
+			<div class="outline margin" id="header">
+				<table class="outline margin">
+					<tr>
+						<td colspan="3" class="cell0">
+							<!-- Board header goes here -->
+							<table>
+								<tr>
+									<td style="border: 0px none; text-align: left;">
+										<a href="./">
+											<img id="theme_banner" src="{{modulefile('/img/logo.png')|e}}" alt="" title="{{layout.logotitle}}" style="padding: 8px;" />
+										</a>
+									</td>
+									{% if layout.pora %}
+									<td style="border: 0px none;">
+										<table class="message outline poratable">
+											<tr class="header0"><th>{{layout.poratitle}}</th></tr>
+											<tr class="cell0"><td>{{layout.poratext}}</td></tr>
+										</table>
+									</td>
+									{% endif %}
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr class="cell1">
+						<td class="smallFonts" style="text-align: center; width: 10%;">
+							{{ layout.views }} views
+						</td>
+						<td class="smallFonts" style="text-align: center; width: 80%;">
+							{% include 'layout/navigation.html' %}
+						</td>
+						<td class="smallFonts" style="text-align: center; width: 10%;">
+							{{ 'now' | date }}
+						</td>
+					</tr>
+					<tr class="cell2">
+						<td colspan="3" class="smallFonts" style="text-align: center">
+							{% include 'layout/userpanel.html' %}
+						</td>
+					</tr>
+					<tr class="cell2">
+						<td colspan="3" class="smallFonts" style="text-align: center">
+							ONLINE USERS: 598390
+						</td>
+					</tr>
+				</table>
 			</div>
-			<div class="footer" style='clear:both;'>
-				{{layout.footer}}
-			</div>
+
+
+			{% include 'layout/breadcrumbbar.html' %}
+			{% include 'layout/pagelinks.html' %}
+			{% include layout.template %}
+			{% include 'layout/pagelinks.html' %}
+			{% include 'layout/breadcrumbbar.html' %}
+
+
 		</div>
+		<footer>
+			{{layout.footer}}
+			Powered by <a href="http://dirbaio.net/">[insert name here]</a> - early dev version<br />
+			&copy; 2014 Dario Nieuwenhuis (Dirbaio)
+		</footer>
 	</div>
 </body>
 </html>

@@ -1,0 +1,156 @@
+html {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	background-color: #000;
+	color: #FFF;
+	font-family: "Verdana", "Lucida Grande", sans-serif;
+	font-size: 10pt;
+	margin: 0;
+	height:100%;
+	width:100%;
+}
+
+#body-wrapper {
+	max-width: 1366px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+footer {
+	text-align: center;
+	clear: both;
+	font-size: 8pt;
+	padding-top: 12px;
+	padding-bottom:12px;
+}
+
+/* MISC
+   =================== */
+
+/* Fix white-on-white on Chrome */
+select option, select optgroup
+{
+	background-color:inherit;
+}
+
+
+/* Name color table */
+.nc0x { color: #888888; } .nc1x { color: #888888; } .nc2x { color: #888888; }
+.nc00 { color: #97ACEF; } .nc10 { color: #F185C9; } .nc20 { color: #7C60B0; }
+.nc01 { color: #D8E8FE; } .nc11 { color: #FFB3F3; } .nc21 { color: #EEB9BA; }
+.nc02 { color: #AFFABE; } .nc12 { color: #C762F2; } .nc22 { color: #47B53C; }
+.nc03 { color: #FFEA95; } .nc13 { color: #C53A9E; } .nc23 { color: #F0C413; }
+.nc04 { color: #5555FF; } .nc14 { color: #FF5588; } .nc24 { color: #FF55FF; }
+.nc05 { color: #FF0000; } .nc15 { color: #FF0000; } .nc25 { color: #FF0000; }
+
+/* Widths */
+.width100 {
+	width: 100%;
+}
+.width75 {
+	width: 75%;
+}
+.width50 {
+	width: 50%;
+}
+.width25 {
+	width: 25%;
+}
+
+.margin {
+	margin-bottom: .5em;
+}
+
+
+/* Positioning */
+
+.left {
+	text-align: left;
+}
+.right {
+	text-align: right;
+}
+
+/* Some styles */
+
+.block {
+	display: block;
+}
+
+.center {
+	text-align: center;
+}
+
+.underline {
+	text-decoration: underline;
+}
+
+
+/* TITLES 
+   =================== */
+
+h3 {
+	font-family: "Verdana", "Lucida Grande", sans-serif;
+	font-size: 1.2em; /* 12pt; */
+	font-weight: bold;
+	margin: 0;
+}
+
+h4 {
+	font-family: "Verdana", "Lucida Grande", sans-serif;
+	font-size: 1em; /* 10pt; */
+	margin: 0;
+}
+
+
+/* LINKS
+   =================== */
+
+a {
+	text-decoration: none;
+	font-weight: bold;
+}
+
+/* Default link colors */
+a:link {
+	color: #FFC040;
+}
+a:visited {
+	color: #FFC040;
+}
+a:active {
+	color: #FFEA60;
+}
+a:hover {
+	color:#FFF;
+}
+a:hover span {
+	color: #FFF;
+}
+
+
+/* TABLES
+   ============== */
+
+table {
+	color: #FFF;
+
+	border-collapse: separate;
+	border-spacing:0;
+	width: 100%;
+	font-weight: normal;
+}
+
+tr.header0>th, tr.header1>th {
+	text-align: center;
+	font-size: .85em; /* 8pt; */
+}
+
+td {
+	padding:2px 4px 2px 4px;
+}
+
