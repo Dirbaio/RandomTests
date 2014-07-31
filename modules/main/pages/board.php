@@ -31,17 +31,11 @@ function request()
 		$forums = Sql::queryAll(
 			'SELECT 
 				f.*,
-				lu.(_userfields),
-				(
-					SELECT COUNT(*)
-					FROM {threads} t
-					WHERE t.forum=f.id AND t.lastpostdate > ?
-				) numnew
+				0 as numnew
 			FROM {forums} f
 			LEFT JOIN {users} lu ON lu.id = f.lastpostuser
 			WHERE minpower <= 0
-			ORDER BY forder',
-			time() - 900);
+			ORDER BY forder');
 
 	$rCats = Sql::query('SELECT * FROM {categories} ORDER BY corder');
 	$categories = array();
@@ -52,11 +46,10 @@ function request()
 		foreach($forums as $forum)
 			if($forum['catid'] == $cat['id'])
 			{
-				$forum['subforums'] = array();
+				$cat['forums'][] = $forum;
 				foreach($forums as $subforum)
 					if($subforum['catid'] == -$forum['id'])
-						$forum['subforums'][] = $subforum;
-				$cat['forums'][] = $forum;
+						$cat['forums'][] = $subforum;
 			}
 
 		if($cat['forums'])

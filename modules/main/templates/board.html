@@ -15,17 +15,13 @@
 						{{ forum.numnew }}
 					{% endif %}
 				</td>
-				<td>
-					<a href="{{urlformat('/#-#', forum.id, forum.title) }}">{{forum.title | e}}</a>
-					<span class='description'>{{ forum.description | e }}</span>
-					{% for subforum in forum.subforums %}
-						<div class="subforum">
-							<a href="{{urlformat('/#-#', subforum.id, subforum.title) }}">
-								{{subforum.title | e}}
-							</a> 
-							<span class='description'>{{subforum.description | e }}</span>
+				<td class="fulllink">
+					<a href="{{urlformat('/#-#', forum.id, forum.title) }}">
+						{{forum.title | e}}
+						<div class='description nolink'>
+							{{ forum.description | e }}
 						</div>
-					{% endfor %}
+					</a>
 				</td>
 				<td class="center cell2">
 					{{ forum.numthreads }}
@@ -33,10 +29,11 @@
 				<td class="center cell2">
 					{{ forum.numposts }}
 				</td>
-				<td class="smallFonts center">
-					{{forum.lastpostdate | date}} <br>
-					by {{userlink(forum.lu)}}
-					 <a href="/post/{{forum.lastpostid}}">&raquo;</a>
+				<td class="smallFonts center fulllink">
+					<a class="nolink" href='/post/{{forum.lastpostid}}'>
+						{{forum.lastpostdate | date}}<br />
+						by {{usertext(forum.lu)}}
+					</a>
 				</td>
 			</tr>
 		{% endfor %}
