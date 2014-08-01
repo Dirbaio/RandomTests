@@ -1,6 +1,18 @@
 <a name="{{post.id}}"></a>
 
-{% if post.deleted %}
+{% if post.restricted %}
+	<table class="post margin deletedpost" id="post{{post.id}}">
+		<tr>
+			<td class="side userlink">
+				
+				{{userlink(post.user)}}
+			</td>
+			<td class="meta right">
+				(in a restricted forum)
+			</td>
+		</tr>
+	</table>
+{% elseif post.deleted %}
 	<table class="post margin deletedpost" id="post{{post.id}}">
 		<tr>
 			<td class="side userlink">
@@ -15,7 +27,11 @@
 						: {{ post.reason }}
 					{% endif %}
 				</div>
-				POSTLINKS
+				<ul class="pipemenu">
+					{% for i in post.links %}
+						{% include 'components/listItem.html' %}
+					{% endfor %}
+				</ul>
 			</td>
 		</tr>
 	</table>
@@ -42,7 +58,11 @@
 				<div style="float: left; text-align:left; display: none;" id="dyna_{{post.id}}">
 					Hi.
 				</div>
-				POSTLINKS
+				<ul class="pipemenu">
+					{% for i in post.links %}
+						{% include 'components/listItem.html' %}
+					{% endfor %}
+				</ul>
 			</td>
 		</tr>
 		<tr class="row{{post.user.id}}_2">

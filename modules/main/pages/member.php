@@ -24,7 +24,7 @@ function request($id)
 	$actionlinks[] = array('url' => Url::format('/members/#-#/threads', $user['id'], $user['name']), 'title' => __('Threads'));
 	$actionlinks[] = array('url' => Url::format('/members/#-#/posts', $user['id'], $user['name']), 'title' => __('Posts'));
 
-	renderPage('profile.html', array(
+	renderPage('member.html', array(
 		'user' => $user,
 		'breadcrumbs' => $breadcrumbs, 
 		'actionlinks' => $actionlinks,

@@ -1,15 +1,20 @@
 <?php 
 //page /members/#id/threads
 //page /members/#id-:/threads
+//page /members/#id/threads/p#from
+//page /members/#id-:/threads/p#from
 
 //ABXD LEGACY
 //page /listthreads.php
 
-function request($id)
+function request($id, $from)
 {
 	$user = Fetch::user($id);
 
-	Url::setCanonicalUrl('/members/#-#/threads', $user['id'], $user['name']);
+	if($from)
+		Url::setCanonicalUrl('/members/#-#/threads/p#', $user['id'], $user['name'], $from);
+	else
+		Url::setCanonicalUrl('/members/#-#/threads', $user['id'], $user['name']);
 
 
 	$breadcrumbs = array(

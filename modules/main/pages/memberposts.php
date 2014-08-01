@@ -1,16 +1,46 @@
 <?php 
 //page /members/#id/posts
 //page /members/#id-:/posts
+//page /members/#id/posts/p#from
+//page /members/#id-:/posts/p#from
 
 //ABXD LEGACY
 //page /listposts.php
 
-function request($id)
+function request($id, $from=0)
 {
 	$user = Fetch::user($id);
 
-	Url::setCanonicalUrl('/members/#-#/posts', $user['id'], $user['name']);
+	if($from)
+		Url::setCanonicalUrl('/members/#-#/posts/p#', $user['id'], $user['name'], $from);
+	else
+		Url::setCanonicalUrl('/members/#-#/posts', $user['id'], $user['name']);
 
+	$ppp = 20;
+
+	$posts = Sql::queryAll(
+		'SELECT
+			p.*,
+			pt.text, pt.revision, pt.user AS revuser, pt.date AS revdate,
+			user.(_userfields,rankset,title,picture,posts,postheader,signature,signsep,lastposttime,lastactivity,regdate,globalblock),
+			t.(id, title),
+			f.(id, title, minpower),
+			useredited.(_userfields),
+			userdeleted.(_userfields)
+		FROM
+			{posts} p
+			LEFT JOIN {posts_text} pt ON pt.pid = p.id AND pt.revision = p.currentrevision
+			LEFT JOIN {users} user ON user.id = p.user
+			LEFT JOIN {users} useredited ON useredited.id = pt.user
+			LEFT JOIN {users} userdeleted ON userdeleted.id = p.deletedby
+			LEFT JOIN {threads} t ON t.id = p.thread
+			LEFT JOIN {forums} f ON f.id = t.forum
+		WHERE p.user=?
+		ORDER BY date ASC LIMIT ?, ?', $user['id'], $from, $ppp);
+
+	foreach($posts as &$post)
+		if(!Permissions::canViewForum($post['f']))
+			$post['restricted'] = true;
 
 	$breadcrumbs = array(
 		array('url' => Url::format('/members'), 'title' => __("Members")),
@@ -20,8 +50,16 @@ function request($id)
 
 	$actionlinks = array();
 
-	renderPage('profile.html', array(
+	renderPage('memberposts.html', array(
 		'user' => $user,
+		'posts' => $posts,
+		'showThread' => true,
+		'paging' => array(
+			'perpage' => $ppp,
+			'from' => $from,
+			'total' => $user['posts'],
+			'base' => Url::format('/members/#-#/posts', $user['id'], $user['name']),
+		),
 		'breadcrumbs' => $breadcrumbs, 
 		'actionlinks' => $actionlinks,
 		'title' => $forum['title'],
