@@ -34,17 +34,47 @@ function request($id, $from=0)
 		'SELECT
 			p.*,
 			pt.text, pt.revision, pt.user AS revuser, pt.date AS revdate,
-			user.(_userfields,rankset,title,picture,posts,postheader,signature,signsep,lastposttime,lastactivity,regdate,globalblock),
+			userposted.(_userfields,rankset,title,picture,posts,postheader,signature,signsep,lastposttime,lastactivity,regdate,globalblock),
 			useredited.(_userfields),
 			userdeleted.(_userfields)
 		FROM
 			{posts} p
 			LEFT JOIN {posts_text} pt ON pt.pid = p.id AND pt.revision = p.currentrevision
-			LEFT JOIN {users} user ON user.id = p.user
+			LEFT JOIN {users} userposted ON userposted.id = p.user
 			LEFT JOIN {users} useredited ON useredited.id = pt.user
 			LEFT JOIN {users} userdeleted ON userdeleted.id = p.deletedby
 		WHERE thread=?
 		ORDER BY date ASC LIMIT ?, ?', $tid, $from, $ppp);
+
+	// Set postlinks
+
+	foreach($posts as &$post)
+	{
+		$links = array();
+		if($post['deleted'])
+		{
+			if(Permissions::canDeletePost($post, $thread, $forum)){
+				$links[] = array('title' => __('View'));
+				$links[] = array('title' => __('Undelete'));
+			}
+		}
+		else
+		{
+			$links[] = array('url' => Url::format('/post/#', $post['id']), 'title' => __('Link'));
+
+			if(Permissions::canReply($thread, $forum))
+				$links[] = array('title' => __('Quote'));
+			if(Permissions::canEditPost($post, $thread, $forum))
+				$links[] = array('title' => __('Edit'));
+			if(Permissions::canDeletePost($post, $thread, $forum))
+				$links[] = array('title' => __('Delete'));
+		}
+
+		$post['links'] = $links;
+	}
+
+	//WTF PHP 
+	unset($post);
 
 
 	// Update thread views

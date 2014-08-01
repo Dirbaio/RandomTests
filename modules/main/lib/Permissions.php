@@ -39,7 +39,7 @@ class Permissions
 		if(!Session::isLoggedIn()) return false;
 		if($user === null) $user = Session::get();
 
-		return $user['powerlevel'] >= 3;
+		return $user['powerlevel'] >= 2;
 	}
 
 	public static function assertCanMod($forum, $user = null)
@@ -98,7 +98,7 @@ class Permissions
 			throw new Exception('You must pass a thread and its forum to canReply');
 
 		return self::canMod($forum, $user) || 
-			($post['user'] == $user['id'] && canReply($thread, $forum, $user));
+			($post['user'] == $user['id'] && self::canReply($thread, $forum, $user) && !$post['deleted']);
 	}
 
 	public static function assertCanEditPost($post, $thread, $forum, $user = null)
@@ -118,7 +118,7 @@ class Permissions
 		if($thread['forum'] != $forum['id'])
 			throw new Exception('You must pass a thread and its forum to canReply');
 
-		return canMod($forum, $user);
+		return self::canMod($forum, $user);
 	}
 
 	public static function assertCanDeletePost($post, $thread, $forum, $user = null)
