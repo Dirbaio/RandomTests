@@ -33,10 +33,9 @@ function request()
 			LEFT JOIN {users} lu ON lu.id = f.lastpostuser
 			ORDER BY forder');
 
-	$rCats = Sql::query('SELECT * FROM {categories} ORDER BY corder');
-	$categories = array();
+	$categories = Sql::queryAll('SELECT * FROM {categories} ORDER BY corder');
 
-	while($cat = Sql::fetch($rCats))
+	foreach($categories as &$cat)
 	{
 		$cat['forums'] = array();
 		foreach($forums as $forum)
@@ -51,9 +50,6 @@ function request()
 						$cat['forums'][] = $subforum;
 				}
 			}
-
-		if($cat['forums'])
-			$categories[] = $cat;
 	}
 
 	$breadcrumbs = array(

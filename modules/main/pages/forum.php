@@ -65,6 +65,49 @@ function request($id, $from=0)
 			LIMIT ?, ?', 
 			$fid, $from, $tpp);
 
+
+	// SUBFORUMS
+
+
+	if(Session::isLoggedIn())
+		$forums = Sql::queryAll(
+			'SELECT 
+				f.*,
+				lu.(_userfields),
+				(
+					SELECT COUNT(*)
+					FROM {threads} t
+					LEFT JOIN {threadsread} tr ON tr.thread=t.id AND tr.id=?
+					WHERE t.forum=f.id AND t.lastpostdate > IFNULL(tr.date, 0)
+				) numnew
+			FROM {forums} f
+			LEFT JOIN {users} lu ON lu.id = f.lastpostuser
+			ORDER BY forder',
+			Session::id());
+	else
+		$forums = Sql::queryAll(
+			'SELECT 
+				f.*,
+				0 as numnew
+			FROM {forums} f
+			LEFT JOIN {users} lu ON lu.id = f.lastpostuser
+			ORDER BY forder');
+
+	$subforums = array();
+	foreach($forums as $subforum)
+	{
+		if(!Permissions::canViewForum($subforum)) continue;
+		if($subforum['catid'] == -$forum['id'])
+			$subforums[] = $subforum;
+	}
+
+	$categories = array(
+		array(
+			'name' => __('Subforums'),
+			'forums' => $subforums
+		)
+	);
+
 	$breadcrumbs = array(
 		array('url' => Url::format('/#-#', $forum['id'], $forum['title']), 'title' => $forum['title'])
 	);
@@ -78,6 +121,7 @@ function request($id, $from=0)
 	renderPage('forum.html', array(
 		'forum' => $forum, 
 		'threads' => $threads, 
+		'categories' => $categories, 
 		'hotcount' => 30, 
 		'paging' => array(
 			'perpage' => $tpp,
