@@ -14,22 +14,34 @@
 	<div class="pagelinks">
 		Pages: 
 		{% set pages = (paging.total + paging.perpage-1) // paging.perpage %}
-		{% for i in 1..pages %}
+		{% set currpage = 1 + paging.from // paging.perpage %}
+
+		{% if paging.from != 0 %}
+			{{ pl.pagelink(paging.base, 0, '&laquo;') }}
+			{{ pl.pagelink(paging.base, paging.from-paging.perpage, '&lsaquo;') }}
+		{% endif %}
+
+		{% set len = 9 %}
+		{% set start = currpage-(len//2) %}
+		{% set start = min(start, pages-len+1) %}
+		{% set start = max(start, 1) %}
+
+
+		{% for i in start..min(start+len-1, pages) %}
 			{% set from = (i-1)*paging.perpage %}
 			{% if from == paging.from %}
 				<span>{{i}}</span>
 			{% else %}
-				{% if loop.first %}
-					{{ pl.pagelink(paging.base, from, '&laquo;') }}
-					{{ pl.pagelink(paging.base, paging.from-paging.perpage, '&lsaquo;') }}
-				{% endif %}
 				{{ pl.pagelink(paging.base, from, i) }}
-				{% if loop.last %}
-					{{ pl.pagelink(paging.base, paging.from+paging.perpage, '&rsaquo;') }}
-					{{ pl.pagelink(paging.base, from, '&raquo;') }}
-				{% endif %}
 			{% endif %}
 		{% endfor %}
+
+
+		{% if paging.from != (pages-1)*paging.perpage %}
+			{{ pl.pagelink(paging.base, paging.from+paging.perpage, '&rsaquo;') }}
+			{{ pl.pagelink(paging.base, (pages-1)*paging.perpage, '&raquo;') }}
+		{% endif %}
+
 	</div>
 {% endif %}
 
