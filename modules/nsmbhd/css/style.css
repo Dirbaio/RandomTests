@@ -47,6 +47,7 @@
 #stickybar-maxwidth .breadcrumbs_bar {
 	padding-left: 8px;
 	padding-right: 148px;
+	margin: 0;
 }
 
 #stickybar li a {
