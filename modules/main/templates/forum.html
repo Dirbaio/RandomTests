@@ -1,15 +1,5 @@
-
 <table class="outline margin width100">
-	<tr class="header1">
-		<th style="width: 20px;">&nbsp;</th>
-		<th style="width: 16px;">&nbsp;</th>
-		<th style="width: 35%;">Title</th>
-		
-		<th>Started by</th>
-		<th>Replies</th>
-		<th>Views</th>
-		<th style="min-width:150px">Last post</th>
-	</tr>
+{% include 'components/threadHeader.html' %}
 
 {% set sticky=0 %}
 {% for thread in threads %}
@@ -22,49 +12,8 @@
 		</tr>
 		{% set sticky=2 %}
 	{% endif %}
-	<tr class="cell{{loop.index%2}}">
-		<td class="cell2 threadIcon fulllink">
-			{% set newicon='' %}
-			{% set newicon=newicon ~ (thread.closed ? 'off' : '') %}
-			{% set newicon=newicon ~ (thread.replies > hotcount ? 'hot' : '') %}
-			{% set newicon=newicon ~ (thread.numnew ? 'new' : '') %}
 
-			{% if thread.numnew %}
-				<a href='/post/{{thread.idnew}}'>
-					<img src="{{modulefile('/img/status/'~newicon~'.png')|e}}"/>
-					{{ thread.numnew }}&raquo;
-				</a>
-			{% elseif newicon %}
-				<img src="{{modulefile('/img/status/'~newicon~'.png')|e}}"/>
-			{% endif %}
-		</td>
-		<td class="threadIcon" style="border-right: 0px none;">
-			{% if thread.icon %}
-				{% if thread.icon starts with 'img/' %}
-					<img class="smiley" src="{{modulefile('/' ~ thread.icon)|e}}"/>
-				{% else %}
-					<img class="smiley" src="{{thread.icon|e}}"/>
-				{% endif %}
-			{% endif %}
-		</td>
-		<td style="border-left: 0px none;" class="fulllink">
-			 <a href="{{urlformat('/#-#/#-#', forum.id, forum.title, thread.id, thread.title)}}">{{thread.title | e}}</a>
-		</td>
-		<td class="center fulllink">
-			{{userlink(thread.su)}}
-		</td>
-		<td class="center">
-			{{thread.replies}}
-		</td>
-		<td class="center">
-			{{thread.views}}
-		</td>
-		<td class="smallFonts center fulllink">
-			<a class="nolink" href='/post/{{thread.lastpostid}}'>
-				{{thread.lastpostdate | date}}<br />
-				by {{usertext(thread.lu)}}
-			</a>
-		</td>
-	</tr>
+	{% include 'components/threadItem.html' %}
+
 {% endfor %}
 </table>

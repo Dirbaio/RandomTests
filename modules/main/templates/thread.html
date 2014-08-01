@@ -1,6 +1,4 @@
-{% for post in posts %}
-	{% include 'layout/post.html' %}
-{% endfor %}
+{% include 'components/postList.html' %}
 
 {% include 'layout/pagelinks.html' %}
 
@@ -12,7 +10,7 @@
 	</tr>
 	<tr class="cell0">
 		<td>
-			{% include 'layout/postbox.html' %}
+			{% include 'components/postbox.html' %}
 		</td>
 	</tr>
 	<tr class="cell2">

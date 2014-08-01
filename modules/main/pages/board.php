@@ -63,7 +63,7 @@ function request()
 	$actionlinks = array(
 	);
 
-	renderPage('board.html', array(
+	renderPage('components/forumList.html', array(
 		'categories' => $categories,
 		'breadcrumbs' => $breadcrumbs, 
 		'actionlinks' => $actionlinks,
