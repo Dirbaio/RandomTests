@@ -88,6 +88,7 @@ function request($id, $from=0)
 		$forums = Sql::queryAll(
 			'SELECT 
 				f.*,
+				lu.(_userfields),
 				0 as numnew
 			FROM {forums} f
 			LEFT JOIN {users} lu ON lu.id = f.lastpostuser
