@@ -13,7 +13,7 @@ function request($id)
 
 	$breadcrumbs = array(
 		array('url' => Url::format('/members'), 'title' => __("Members")),
-		array('url' => Url::format('/members/#-#', $user['id'], $user['name']), 'title' => $user['name']),
+		array('user' => $user),
 	);
 
 	$actionlinks = array();

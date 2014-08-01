@@ -3,17 +3,13 @@
 	<div style="float: right;">
 		<ul id="actionlinks" class="pipemenu">
 		{% for i in actionlinks %}
-			<li>
-				<a href="{{i.url | e}}">{{i.title|e}}</a>
-			</li>
+			{% include 'components/listItem.html' %}
 		{% endfor %}
 		</ul>
 	</div>
 	<ul id="breadcrumbs" class="breadcrumbs">
 	{% for i in breadcrumbs %}
-		<li>
-			<a href="{{i.url | e}}">{{i.title|e}}</a>
-		</li>
+		{% include 'components/listItem.html' %}
 	{% endfor %}
 	</ul>
 </div>

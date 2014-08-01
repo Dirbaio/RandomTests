@@ -1,15 +1,8 @@
 {% spaceless %}
 
 <ul id="userpanel" class="pipemenu">
-{% if layout.user %}
-	<li>
-		{{ userlink(layout.user) }}
-	</li>
-{% endif %}
 {% for i in layout.userpanel %}
-	<li>
-		<a href="{{i.url | e}}">{{i.title|e}}</a>
-	</li>
+	{% include 'components/listItem.html' %}
 {% endfor %}
 </ul>
 

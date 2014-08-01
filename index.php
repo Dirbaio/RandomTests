@@ -83,6 +83,7 @@ function renderPage($template, $vars)
 
 	if($user)
 		$userpanel = array(
+			array('user' => $user),
 			array('url' => Url::format('/members/#-#/edit', $user['id'], $user['name']), 'title' => __('Edit profile')),
 			array('url' => '/private', 'title' => __('Private messages')),
 			array('url' => '/logout', 'title' => __('Log out')),

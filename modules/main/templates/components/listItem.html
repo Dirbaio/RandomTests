@@ -1,0 +1,13 @@
+{% spaceless %}
+<li>
+	{% if i.user %}
+		{{ userlink(i.user) }}
+	{% elseif i.url %}
+		<a href="{{i.url | e}}">
+			{{- i.title -}}
+		</a>
+	{% else %}
+		{{- i.title -}}
+	{% endif %}
+</li>
+{% endspaceless %}
