@@ -1,8 +1,10 @@
+<a name="{{post.id}}"></a>
+
 {% if post.deleted %}
 	<table class="post margin deletedpost" id="post{{post.id}}">
 		<tr>
 			<td class="side userlink">
-				<a name="{{post.id}}"></a>
+				
 				{{userlink(post.user)}}
 			</td>
 			<td class="meta right">
@@ -18,7 +20,6 @@
 		</tr>
 	</table>
 {% else %}
-	<a name="{{post.id}}"></a>
 	<table class="post margin table{{post.user.id}}" id="post{{post.id}}">
 		<tr class="row{{post.user.id}}_1">
 			<td class="side userlink topbar{{post.user.id}}_1 fulllink">
