@@ -50,14 +50,6 @@ class Session
 		return self::$user;
 	}
 
-	public static function powerlevel()
-	{
-		if(self::$user !== null)
-			return self::$user['powerlevel'];
-
-		return 0;
-	}
-
 	public static function id()
 	{
 		if(self::$user !== null)

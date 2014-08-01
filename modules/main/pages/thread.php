@@ -17,20 +17,11 @@
 function request($id, $from=0)
 {
 	$tid = $id;
-
-	$thread = Sql::querySingle('SELECT * FROM {threads} WHERE id=?', $tid);
-	if(!$thread)
-		fail(__('Unknown thread ID.'));
-
+	$thread = Fetch::thread($tid);
 	$fid = $thread['forum'];
-	$forum = Sql::querySingle('SELECT * FROM {forums} WHERE id=?', $fid);
-	if(!$forum)
-		fail(__('Unknown forum ID.'));
+	$forum = Fetch::forum($fid);
 
-	$pl = Session::powerlevel();
-
-	if($forum['minpower'] > $pl)
-		fail(__('You are not allowed to browse this forum.'));
+	Permissions::assertCanViewForum($forum);
 
 	if($from == 0)
 		Url::setCanonicalUrl('/#-#/#-#', $forum['id'], $forum['title'], $thread['id'], $thread['title']);
@@ -92,6 +83,7 @@ function request($id, $from=0)
 		'thread' => $thread, 
 		'posts' => $posts, 
 		'posttext' => $posttext,
+		'canreply' => Permissions::canReply($thread, $forum),
 		'paging' => array(
 			'perpage' => $ppp,
 			'from' => $from,

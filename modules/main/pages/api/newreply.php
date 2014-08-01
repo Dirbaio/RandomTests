@@ -3,26 +3,17 @@
 
 function request($text, $tid)
 {
-	Session::checkLoggedIn();
-	
-	$thread = Sql::querySingle("SELECT * FROM {threads} WHERE id=?", $tid);
-	if(!$thread)
-		fail(__("Unknown thread ID."));
-
+	$thread = Fetch::thread($tid);
 	$fid = $thread['forum'];
-	$forum = Sql::querySingle("SELECT * FROM {forums} WHERE id=?", $fid);
-	if(!$forum)
-		fail(__("Unknown forum ID."));
+	$forum = Fetch::forum($fid);
 
-	$pl = Session::powerlevel();
-
-	if($forum['minpowerreply'] > $pl)
-		fail(__("You are not allowed to reply in this forum."));
+	Permissions::assertCanViewForum($forum);
+	Permissions::assertCanReply($thread, $forum);
 
 	if(!$text)
 		fail(__("Your post is empty. Enter a message and try again."));
 
-	if($thread['lastposter'] == Session::id() && $thread['lastpostdate'] >= time()-86400 && Session::powerlevel()<3)
+	if($thread['lastposter'] == Session::id() && $thread['lastpostdate'] >= time()-86400 && !Permissions::canMod($forum))
 		fail(__("You can't double post until it's been at least one day."));
 
 	$lastPost = time() - Session::get('lastposttime');

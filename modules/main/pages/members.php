@@ -6,6 +6,7 @@
 
 function request()
 {
+	Url::setCanonicalUrl('/members');
 
 	$breadcrumbs = array(
 		array('url' => Url::format('/members'), 'title' => __("Members")),

@@ -11,26 +11,23 @@ function request($type, $target, $text)
 	if($type == 0)
 	{
 		$tid = $target;
-		$thread = Sql::querySingle("SELECT * FROM {threads} WHERE id=?", $tid);
-		if(!$thread)
-			fail(__("Unknown thread ID."));
+		$thread = Fetch::thread($tid);
 		$fid = $thread['forum'];
 	}
 	else
 		$fid = $target;
 
-	$forum = Sql::querySingle("SELECT * FROM {forums} WHERE id=?", $fid);
-	if(!$forum)
-		fail(__("Unknown forum ID."));
+	$forum = Fetch::forum($fid);
+	Permissions::assertCanViewForum($forum);
 
-	$pl = Session::powerlevel();
-
-	if($forum['minpower'] > $pl)
-		fail(__("You are not allowed to browse this forum."));
-
-	Sql::query("INSERT into {drafts} (user, type, target, date, text) values (?,?,?,?,?)
-				ON DUPLICATE KEY UPDATE date=?, text=?",
-		Session::id(), $type, $target, time(), $text, time(), $text);
+	if($text)
+		Sql::query('INSERT INTO {drafts} (user, type, target, date, text) VALUES (?,?,?,?,?)
+					ON DUPLICATE KEY UPDATE date=?, text=?',
+			Session::id(), $type, $target, time(), $text, time(), $text);
+	else
+		Sql::query('DELETE FROM {drafts} WHERE user=? AND type=? AND target=?',
+			Session::id(), $type, $target);
+	
 
 	json('ok');
 }

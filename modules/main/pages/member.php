@@ -1,4 +1,5 @@
 <?php 
+//page /members/#id
 //page /members/#id-:
 
 //ABXD LEGACY
@@ -6,21 +7,22 @@
 
 function request($id)
 {
-	$user = Sql::querySingle('SELECT * FROM {users} WHERE id=?', $id);
+	$user = Fetch::user($id);
 
-	if(!$user)
-		fail(__('Unknown user ID.'));
+	Url::setCanonicalUrl('/members/#-#', $user['id'], $user['name']);
 
 	$breadcrumbs = array(
 		array('url' => Url::format('/members'), 'title' => __("Members")),
 		array('url' => Url::format('/members/#-#', $user['id'], $user['name']), 'title' => $user['name']),
 	);
 
-	$actionlinks = array(
-		array('url' => Url::format('/members/#-#/edit', $user['id'], $user['name']), 'title' => __('Edit profile')),
-		array('url' => Url::format('/members/#-#/posts', $user['id'], $user['name']), 'title' => __('Posts')),
-		array('url' => Url::format('/members/#-#/threads', $user['id'], $user['name']), 'title' => __('threads')),
-	);
+	$actionlinks = array();
+
+	if(Permissions::canEditUser($user))
+		$actionlinks[] = array('url' => Url::format('/members/#-#/edit', $user['id'], $user['name']), 'title' => __('Edit profile'));
+
+	$actionlinks[] = array('url' => Url::format('/members/#-#/threads', $user['id'], $user['name']), 'title' => __('Threads'));
+	$actionlinks[] = array('url' => Url::format('/members/#-#/posts', $user['id'], $user['name']), 'title' => __('Posts'));
 
 	renderPage('profile.html', array(
 		'user' => $user,

@@ -3,19 +3,13 @@
 
 function request($pid)
 {
-	$post = Sql::querySingle("SELECT * FROM {posts} WHERE id=?", $pid);
-	if(!$post)
-		fail(__("Unknown post ID."));
-
+	$post = Fetch::post($pid);
 	$tid = $post['thread'];
-	$thread = Sql::querySingle("SELECT * FROM {threads} WHERE id=?", $tid);
-	if(!$thread)
-		fail(__("Unknown thread ID."));
-
+	$thread = Fetch::thread($tid);
 	$fid = $thread['forum'];
-	$forum = Sql::querySingle("SELECT * FROM {forums} WHERE id=?", $fid);
-	if(!$forum)
-		fail(__("Unknown forum ID."));
+	$forum = Fetch::forum($fid);
+
+	Permissions::assertCanViewForum($forum);
 
 	$ppp = 20;
 

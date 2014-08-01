@@ -9,8 +9,6 @@ function request()
 {
 	Url::setCanonicalUrl('/');
 
-	$pl = Session::powerlevel();
-
 	if(Session::isLoggedIn())
 		$forums = Sql::queryAll(
 			'SELECT 
@@ -24,9 +22,8 @@ function request()
 				) numnew
 			FROM {forums} f
 			LEFT JOIN {users} lu ON lu.id = f.lastpostuser
-			WHERE minpower <= ?
 			ORDER BY forder',
-			Session::id(), $pl);
+			Session::id());
 	else
 		$forums = Sql::queryAll(
 			'SELECT 
@@ -34,7 +31,6 @@ function request()
 				0 as numnew
 			FROM {forums} f
 			LEFT JOIN {users} lu ON lu.id = f.lastpostuser
-			WHERE minpower <= 0
 			ORDER BY forder');
 
 	$rCats = Sql::query('SELECT * FROM {categories} ORDER BY corder');
@@ -46,10 +42,14 @@ function request()
 		foreach($forums as $forum)
 			if($forum['catid'] == $cat['id'])
 			{
+				if(!Permissions::canViewForum($forum)) continue;
 				$cat['forums'][] = $forum;
 				foreach($forums as $subforum)
+				{
+					if(!Permissions::canViewForum($subforum)) continue;
 					if($subforum['catid'] == -$forum['id'])
 						$cat['forums'][] = $subforum;
+				}
 			}
 
 		if($cat['forums'])
@@ -58,7 +58,6 @@ function request()
 
 	$breadcrumbs = array(
 	);
-
 
 	$actionlinks = array(
 	);

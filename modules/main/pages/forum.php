@@ -12,15 +12,9 @@
 function request($id, $from=0)
 {
 	$fid = $id;
+	$forum = Fetch::forum($fid);
 
-	$forum = Sql::querySingle('SELECT * FROM forums WHERE id=?', $fid);
-	if(!$forum)
-		fail(__('Unknown forum ID.'));
-
-	$pl = Session::powerlevel();
-
-	if($forum['minpower'] > $pl)
-		fail(__('You are not allowed to browse this forum.'));
+	Permissions::assertCanViewForum($forum);
 
 	if($from == 0)
 		Url::setCanonicalUrl('/#-#', $forum['id'], $forum['title']);
@@ -76,8 +70,10 @@ function request($id, $from=0)
 	);
 
 	$actionlinks = array(
-		array('url' => Url::format('/#-#/newthread', $forum['id'], $forum['title']), 'title' => __('Post thread'))
 	);
+
+	if(Permissions::canCreateThread($forum))
+		$actionlinks[] = array('url' => Url::format('/#-#/newthread', $forum['id'], $forum['title']), 'title' => __('Post thread'));
 
 	renderPage('forum.html', array(
 		'forum' => $forum, 

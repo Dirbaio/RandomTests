@@ -1,27 +1,29 @@
 {% include 'components/postList.html' %}
 
-{% include 'layout/pagelinks.html' %}
+{% if canreply %}
+	{% include 'layout/pagelinks.html' %}
 
-<table class="outline margin width100">
-	<tr class="header1">
-		<th>
-			New reply
-		</th>
-	</tr>
-	<tr class="cell0">
-		<td>
-			{% include 'components/postbox.html' %}
-		</td>
-	</tr>
-	<tr class="cell2">
-		<td>
-			<button onclick="doNewReply({{ thread.id }})">Post</button>
-			<button id="savedraft" style="display:none;" onclick="doSaveDraft(0, {{ thread.id }})">Save</button>
-			<span id="saveddraft" style="display:none;">Saved!</span>
-		</td>
-	</tr>
-</table>
+	<table class="outline margin width100">
+		<tr class="header1">
+			<th>
+				New reply
+			</th>
+		</tr>
+		<tr class="cell0">
+			<td>
+				{% include 'components/postbox.html' %}
+			</td>
+		</tr>
+		<tr class="cell2">
+			<td>
+				<button onclick="doNewReply({{ thread.id }})">Post</button>
+				<button id="savedraft" style="display:none;" onclick="doSaveDraft(0, {{ thread.id }})">Save</button>
+				<span id="saveddraft" style="display:none;">Saved!</span>
+			</td>
+		</tr>
+	</table>
 
-<script type="text/javascript">
-	startDraftAutosave(0, {{ thread.id }});
-</script>
+	<script type="text/javascript">
+		startDraftAutosave(0, {{ thread.id }});
+	</script>
+{% endif %}

@@ -262,20 +262,17 @@ function bbcodeUser($dom, $nothing, $arg)
 function bbcodeThread($dom, $nothing, $arg)
 {
 	$id = (int)$arg;
-	$pl = Session::powerlevel();
+	$thread = Fetch::thread($id, false);
+	if(!$thread)
+		return markupToMarkup($dom, "[invalid thread ID]");
+	$forum = Fetch::forum($thread['forum'], false);
+	if(!$forum)
+		return markupToMarkup($dom, "[invalid forum ID]");
+	if(!Permissions::canViewForum($forum))
+		return markupToMarkup($dom, "[No permissions for this forum]");
 
-	$thread = Sql::querySingle(
-			'SELECT
-				t.id, t.title,
-				f.id AS fid, f.title AS ftitle
-			FROM {threads} t
-			LEFT JOIN {forums} f ON t.forum = f.id
-			WHERE t.id=? AND f.minpower <= ?', $id, $pl);
-
-	if($thread)
-		$stuff = '<a href="'.Url::format('/#-#/#-#', $thread['fid'], $thread['ftitle'], $thread['id'], $thread['title']).'">'.htmlspecialchars($thread['title']).'</a>';
-	else
-		$stuff = "&lt;invalid thread ID&gt;";
+	$url = Url::format('/#-#/#-#', $thread['fid'], $thread['ftitle'], $thread['id'], $thread['title']);
+	$stuff = '<a href="'.$url.'">'.htmlspecialchars($thread['title']).'</a>';
 
 	return markupToMarkup($dom, $stuff);
 }
@@ -283,18 +280,13 @@ function bbcodeThread($dom, $nothing, $arg)
 function bbcodeForum($dom, $nothing, $arg)
 {
 	$id = (int)$arg;
+	$forum = Fetch::forum($id, false);
+	if(!$forum)
+		return markupToMarkup($dom, "[invalid forum ID]");
+	if(!Permissions::canViewForum($forum))
+		return markupToMarkup($dom, "[No permissions for this forum]");
 
-	$pl = Session::powerlevel();
-
-	$forum = Sql::querySingle(
-			'SELECT id, title
-			FROM {forums}
-			WHERE id=? and minpower <= ?', $id, $pl);
-
-	if($forum)
-		$stuff = '<a href="'.Url::format('/#-#', $forum['id'], $forum['title']).'">'.htmlspecialchars($forum['title']).'</a>';
-	else
-		$stuff = "&lt;invalid forum ID&gt;";
+	$stuff = '<a href="'.Url::format('/#-#', $forum['id'], $forum['title']).'">'.htmlspecialchars($forum['title']).'</a>';
 
 	return markupToMarkup($dom, $stuff);
 }
