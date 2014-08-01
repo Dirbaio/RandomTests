@@ -358,6 +358,7 @@ function bbcodeSpoiler($dom, $nodes, $arg)
 		$button->setAttribute('class', 'spoilerbutton named');
 		$button->appendChild($dom->createTextNode($arg));
 	}
+	$button->setAttribute('onclick', '$(this).next(\'div\').slideToggle(\'fast\');');
 	$spoiler->appendChild($button);
 	$contents = $dom->createElement('div');
 	$contents->setAttribute('class', 'spoiled hidden');
