@@ -22,7 +22,7 @@ function request($id, $from=0)
 		'SELECT
 			p.*,
 			pt.text, pt.revision, pt.user AS revuser, pt.date AS revdate,
-			user.(_userfields,rankset,title,picture,posts,postheader,signature,signsep,lastposttime,lastactivity,regdate,globalblock),
+			userposted.(_userfields,rankset,title,picture,posts,postheader,signature,signsep,lastposttime,lastactivity,regdate,globalblock),
 			t.(id, title),
 			f.(id, title, minpower),
 			useredited.(_userfields),
@@ -30,7 +30,7 @@ function request($id, $from=0)
 		FROM
 			{posts} p
 			LEFT JOIN {posts_text} pt ON pt.pid = p.id AND pt.revision = p.currentrevision
-			LEFT JOIN {users} user ON user.id = p.user
+			LEFT JOIN {users} userposted ON userposted.id = p.user
 			LEFT JOIN {users} useredited ON useredited.id = pt.user
 			LEFT JOIN {users} userdeleted ON userdeleted.id = p.deletedby
 			LEFT JOIN {threads} t ON t.id = p.thread
