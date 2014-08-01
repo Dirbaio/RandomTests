@@ -243,58 +243,60 @@ function bbcodeImageScale($dom, $nodes, $title)
 	return $a;
 }
 
-function bbcodeUser($dom, $nothing, $id)
+function bbcodeUser($dom, $nothing, $arg)
 {
-	return markupToMarkup($dom, 'TODO [user]');
+	$id = (int)$arg;
+	$user = Sql::querySingle('SELECT u.(_userfields) FROM {users} u WHERE id=?', $id);
+
+	if(!$user)
+		return markupToMarkup($dom, '[Invalid user ID]'.$arg);
+
+	ob_start();
+	Template::render('util/userlink.html', array('user' => $user['u']));
+	$stuff = ob_get_contents();
+	ob_end_clean();
+
+	return markupToMarkup($dom, $stuff);
 }
 
 function bbcodeThread($dom, $nothing, $arg)
 {
-	return markupToMarkup($dom, 'TODO [thread]');
-
-	global $threadLinkCache, $loguser;
 	$id = (int)$arg;
-	if(!isset($threadLinkCache[$id]))
-	{
-		$rThread = Query("SELECT
-							t.id, t.title
-						FROM {threads} t
-						LEFT JOIN {forums} f ON t.forum = f.id
-						WHERE t.id={0} AND f.minpower <= {1} ", $id, $loguser["powerlevel"]);
-		if(NumRows($rThread))
-		{
-			$thread = Fetch($rThread);
-			$threadLinkCache[$id] = makeThreadLink($thread);
-		}
-		else
-			$threadLinkCache[$id] = "&lt;invalid thread ID&gt;";
-	}
-	return markupToMarkup($dom, $threadLinkCache[$id]);
+	$pl = Session::powerlevel();
+
+	$thread = Sql::querySingle(
+			'SELECT
+				t.id, t.title,
+				f.id AS fid, f.title AS ftitle
+			FROM {threads} t
+			LEFT JOIN {forums} f ON t.forum = f.id
+			WHERE t.id=? AND f.minpower <= ?', $id, $pl);
+
+	if($thread)
+		$stuff = '<a href="'.Url::format('/#-#/#-#', $thread['fid'], $thread['ftitle'], $thread['id'], $thread['title']).'">'.htmlspecialchars($thread['title']).'</a>';
+	else
+		$stuff = "&lt;invalid thread ID&gt;";
+
+	return markupToMarkup($dom, $stuff);
 }
 
 function bbcodeForum($dom, $nothing, $arg)
 {
-	global $forumLinkCache;
 	$id = (int)$arg;
-	if(!isset($forumLinkCache[$id]))
-	{
-		$user = Session::get();
-		if($user)
-			$pl = $user['powerlevel'];
-		else
-			$pl = 0;
 
-		$forum = Sql::querySingle("
-				SELECT id, title
-				FROM {forums}
-				WHERE id=? and minpower <= ?", $id, $pl);
+	$pl = Session::powerlevel();
 
-		if($forum)
-			$forumLinkCache[$id] = '<a href="'.Url::format('/#-#', $forum['id'], $forum['title']).'">'.htmlspecialchars($forum['title']).'</a>';
-		else
-			$forumLinkCache[$id] = "&lt;invalid forum ID&gt;";
-	}
-	return markupToMarkup($dom, $forumLinkCache[$id]);
+	$forum = Sql::querySingle(
+			'SELECT id, title
+			FROM {forums}
+			WHERE id=? and minpower <= ?', $id, $pl);
+
+	if($forum)
+		$stuff = '<a href="'.Url::format('/#-#', $forum['id'], $forum['title']).'">'.htmlspecialchars($forum['title']).'</a>';
+	else
+		$stuff = "&lt;invalid forum ID&gt;";
+
+	return markupToMarkup($dom, $stuff);
 }
 
 function bbcodeQuote($dom, $nodes, $arg, $attrs)
