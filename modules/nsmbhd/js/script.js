@@ -22,11 +22,6 @@ function doScroll() {
 	else {
 		if(stickybar.is(".stickybar-fixed")) stickybar.removeClass("stickybar-fixed");
 	}
-
-	if ((viewTop > mainTop) && !navigation.is(".navigation-fixed"))
-		navigation.addClass("navigation-fixed");
-	else if ((viewTop <= sidebarTop - margin) && navigation.is(".navigation-fixed"))
-		navigation.removeClass("navigation-fixed");
 }
 
 $(function() {
