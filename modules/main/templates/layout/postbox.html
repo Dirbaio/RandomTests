@@ -12,5 +12,10 @@
 	<button type="button" title="Spoiler"><i class="icon-ellipsis-horizontal"></i></button>
 </div>
 
-<textarea id="text" name="text" rows="16" style="width: 98%;">{{ posttext }}</textarea>
+<textarea id="text" name="text" rows="5" style="width: 98%;">{{ posttext }}</textarea>
 
+<script type="text/javascript">
+	$(document).ready(function(){
+	    $('#text').autosize();   
+	});
+</script>
