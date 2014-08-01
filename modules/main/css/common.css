@@ -7,35 +7,11 @@ table, td, tr, th, div
 }
 
 
-/* Other stuff */
-
-.PoRT
-{
-	float: right;
-	clear: right;
-	margin-right: 1em;
-}
-
-.PoRT td, .PoRT th, .smallFonts td, .smallFonts
-{
-	font-size: .85em; /* 8pt; */
-}
-
-
-form
-{
-	margin: 0;
-}
-
-.minipic
-{
+.minipic {
 	vertical-align: top;
 }
 
-textarea
-{
-	font-family: "Consolas", "Lucida Console", "Courier New", monospace;
-}
+/* Other stuff */
 
 
 .threadTag {
@@ -47,15 +23,6 @@ textarea
 	box-shadow: 1px 1px 2px hsla(0, 0%, 0%, .5);
 	margin-right: 2px;
 	white-space: nowrap;
-}
-
-td.threadIcon
-{
-	width: 20px;
-	text-align: center;
-	font-size: .8em;
-	font-weight: bold;
-	text-shadow: 1px 1px 0px #000;
 }
 
 .pollbarContainer
@@ -77,10 +44,14 @@ td.threadIcon
 	border-radius: 8px;
 }
 
-.eptable {
-	margin: 0px 0px ;
+td.threadIcon
+{
+	width: 20px;
+	text-align: center;
+	font-size: .8em;
+	font-weight: bold;
+	text-shadow: 1px 1px 0px #000;
 }
-
 
 td.threadIcons label > input
 {

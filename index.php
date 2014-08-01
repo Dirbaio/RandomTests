@@ -26,6 +26,7 @@ require(__DIR__.'/vendor/autoload.php');
 ModuleHandler::init();
 ModuleHandler::loadModule('/modules/main');
 ModuleHandler::loadModule('/themes/cheese');
+ModuleHandler::loadModule('/modules/nsmbhd');
 
 
 // Set up stuff
@@ -72,6 +73,10 @@ function renderPage($template, $vars)
 	$navigation = array(
 		array('url' => '/', 'title' => __('Main')),
 		array('url' => '/members', 'title' => __('Members')),
+		array('url' => '/online', 'title' => __('Online users')),
+		array('url' => '/search', 'title' => __('Search')),
+		array('url' => '/lastposts', 'title' => __('Last posts')),
+		array('url' => '/faq', 'title' => __('FAQ/Rules')),
 	);
 
 	$user = Session::get();
@@ -79,6 +84,7 @@ function renderPage($template, $vars)
 	if($user)
 		$userpanel = array(
 			array('url' => Url::format('/members/#-#/edit', $user['id'], $user['name']), 'title' => __('Edit profile')),
+			array('url' => '/private', 'title' => __('Private messages')),
 			array('url' => '/logout', 'title' => __('Log out')),
 		);
 	else
@@ -86,7 +92,7 @@ function renderPage($template, $vars)
 			array('url' => '/register', 'title' => __('Register')),
 			array('url' => '/login', 'title' => __('Log in')),
 		);
-
+ 
 	$layout = array(
 		'template' => $template,
 		'css' => ModuleHandler::toWebPath(ModuleHandler::getFilesMatching('/css/**.css')),

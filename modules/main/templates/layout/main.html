@@ -1,18 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<base href="/">
-	<title>{{layout.title}}</title>
-	<meta http-equiv="Content-Type" content="text/html; CHARSET=utf-8" />
-	<meta name="description" content="{{layout.description}}" />
-	<meta name="keywords" content="{{layout.keyworkds}}" />
-	<link rel="shortcut icon" type="image/x-icon" href="{{layout.favicon}}" />
-{% for file in layout.css %}
-	<link rel="stylesheet" type="text/css" href="{{file}}" />
-{% endfor %}
-{% for file in layout.js %}
-	<script type="text/javascript" src="{{file}}"></script>
-{% endfor %}
+	{% include 'layout/head.html' %}
 </head>
 
 
@@ -27,16 +16,11 @@
 							<table>
 								<tr>
 									<td style="border: 0px none; text-align: left;">
-										<a href="./">
-											<img id="theme_banner" src="{{modulefile('/img/logo.png')|e}}" alt="" title="{{layout.logotitle}}" style="padding: 8px;" />
-										</a>
+										{% include 'layout/logo.html' %}
 									</td>
 									{% if layout.pora %}
 									<td style="border: 0px none;">
-										<table class="message outline poratable">
-											<tr class="header0"><th>{{layout.poratitle}}</th></tr>
-											<tr class="cell0"><td>{{layout.poratext}}</td></tr>
-										</table>
+										{% include 'layout/pora.html' %}
 									</td>
 									{% endif %}
 								</tr>
@@ -45,7 +29,7 @@
 					</tr>
 					<tr class="cell1">
 						<td class="smallFonts" style="text-align: center; width: 10%;">
-							{{ layout.views }} views
+							{% include 'layout/views.html' %}
 						</td>
 						<td class="smallFonts" style="text-align: center; width: 80%;">
 							{% include 'layout/navigation.html' %}
@@ -61,7 +45,7 @@
 					</tr>
 					<tr class="cell2">
 						<td colspan="3" class="smallFonts" style="text-align: center">
-							ONLINE USERS: 598390
+							{% include 'layout/onlineusers.html' %}
 						</td>
 					</tr>
 				</table>
@@ -77,9 +61,7 @@
 
 		</div>
 		<footer>
-			{{layout.footer}}
-			Powered by <a href="http://dirbaio.net/">[insert name here]</a> - early dev version<br />
-			&copy; 2014 Dario Nieuwenhuis (Dirbaio)
+			{% include 'layout/footer.html' %}
 		</footer>
 	</div>
 </body>

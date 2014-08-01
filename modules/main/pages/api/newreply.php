@@ -16,8 +16,8 @@ function request($text, $tid)
 
 	$pl = Session::powerlevel();
 
-	if($forum['minpower'] > $pl)
-		fail(__("You are not allowed to browse this forum."));
+	if($forum['minpowerreply'] > $pl)
+		fail(__("You are not allowed to reply in this forum."));
 
 	if(!$text)
 		fail(__("Your post is empty. Enter a message and try again."));

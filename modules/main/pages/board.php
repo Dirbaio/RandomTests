@@ -20,7 +20,7 @@ function request()
 					SELECT COUNT(*)
 					FROM {threads} t
 					LEFT JOIN {threadsread} tr ON tr.thread=t.id AND tr.id=?
-					WHERE t.forum=f.id AND t.lastpostdate > IFNULL(tr.date,0)
+					WHERE t.forum=f.id AND t.lastpostdate > IFNULL(tr.date, 0)
 				) numnew
 			FROM {forums} f
 			LEFT JOIN {users} lu ON lu.id = f.lastpostuser
