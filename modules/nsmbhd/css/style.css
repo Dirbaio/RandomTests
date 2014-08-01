@@ -36,10 +36,17 @@
 	top: 0px;
 	left: 0px;
 	right: 0px;
-	padding-left: 8px;
-	padding-right: 148px;
 	z-index: 50;
 	display: none;
+}
+#stickybar-maxwidth {
+	max-width: 1366px;
+	margin-left: auto;
+	margin-right: auto;
+}
+#stickybar-maxwidth .breadcrumbs_bar {
+	padding-left: 8px;
+	padding-right: 148px;
 }
 
 #stickybar li a {
