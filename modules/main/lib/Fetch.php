@@ -28,7 +28,13 @@ class Fetch
 	
 	public static function post($id, $fail = true)
 	{
-		$res = Sql::querySingle('SELECT * FROM {posts} WHERE id=?', $id);
+		$res = Sql::querySingle(
+			'SELECT p.*, pt.text
+			FROM {posts} p
+			LEFT JOIN {posts_text} pt on pt.pid = p.id and pt.revision = p.currentrevision
+			WHERE p.id=?', 
+			$id);
+
 		if($res)
 			return $res;
 

@@ -6,6 +6,10 @@
 		<a href="{{i.url | e}}">
 			{{- i.title -}}
 		</a>
+	{% elseif i.js %}
+		<a href="#" onclick="{{ i.js }}; return false;">
+			{{- i.title -}}
+		</a>
 	{% else %}
 		{{- i.title -}}
 	{% endif %}

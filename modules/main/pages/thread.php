@@ -63,7 +63,7 @@ function request($id, $from=0)
 			$links[] = array('url' => Url::format('/post/#', $post['id']), 'title' => __('Link'));
 
 			if(Permissions::canReply($thread, $forum))
-				$links[] = array('title' => __('Quote'));
+				$links[] = array('title' => __('Quote'), 'js' => 'postQuote('.$post['id'].');');
 			if(Permissions::canEditPost($post, $thread, $forum))
 				$links[] = array('title' => __('Edit'));
 			if(Permissions::canDeletePost($post, $thread, $forum))

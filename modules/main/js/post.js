@@ -8,15 +8,26 @@ function doNewReply(tid) {
 	});
 }
 
+//==================
+// QUOTES
+
+function postQuote(pid) {
+	ajax('/api/getquote', {pid: pid}, postAddText);
+}
 
 //==================
 // POST TOOLBAR
+
+var editorFocused = false;
 
 function postAddTag(before, after) {
 	var textEditor = document.getElementById('text');
 
 	var oldSelS = textEditor.selectionStart;
 	var oldSelE = textEditor.selectionEnd;
+	if(!editorFocused)
+		oldSelS = oldSelE = textEditor.value.length;
+
 	var scroll = textEditor.scrollTop;
 	var selectedText = textEditor.value.substr(oldSelS, oldSelE - oldSelS);
 
@@ -34,6 +45,9 @@ function postAddText(added) {
 	var textEditor = document.getElementById('text');
 
 	var oldSelE = textEditor.selectionEnd;
+	if(!editorFocused)
+		oldSelE = textEditor.value.length;
+
 	var scroll = textEditor.scrollTop;
 
 	textEditor.value = textEditor.value.substr(0, oldSelE) + added + textEditor.value.substr(oldSelE);
@@ -45,6 +59,21 @@ function postAddText(added) {
 
 	$(textEditor).trigger('autosize.resize');
 }
+
+function postBoxStart () {
+	$(document).ready(function(){
+		$('#text').autosize(); 
+	});
+	
+	$('#text').focus(function() {
+		editorFocused = true;
+	}); 
+
+	var textEditor = document.getElementById('text');
+	textEditor.selectionStart = textEditor.value.length;
+	textEditor.selectionEnd = textEditor.value.length;
+}
+
 
 //==================
 // DRAFTS 
