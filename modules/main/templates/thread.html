@@ -17,12 +17,18 @@
 		<tr class="cell2">
 			<td>
 				<button onclick="doNewReply({{ thread.id }})">Post</button>
+				<button onclick="doPreview()">Preview</button>
+				<span id="postpreviewing" style="display: none;">
+					Previewing...
+				</span>
 				<button id="savedraft" style="display:none;" onclick="doSaveDraft(0, {{ thread.id }})">Save</button>
 				<span id="saveddraft" style="display:none;">Saved!</span>
 			</td>
 		</tr>
 	</table>
 
+	<div id="postpreview">
+	</div>
 	<script type="text/javascript">
 		startDraftAutosave(0, {{ thread.id }});
 	</script>

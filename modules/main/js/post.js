@@ -15,6 +15,17 @@ function postQuote(pid) {
 	ajax('/api/getquote', {pid: pid}, postAddText);
 }
 
+function doPreview() {
+
+	$('#postpreviewing').show();
+
+	var text = $('#text').val();
+	ajax('/api/preview', {text: text}, function(data) {
+		$('#postpreview').html(data);
+		$('#postpreviewing').hide();
+	});
+}
+
 //==================
 // POST TOOLBAR
 
