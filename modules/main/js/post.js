@@ -7,6 +7,15 @@ function doNewReply(tid) {
 		window.location = '/post/'+pid;
 	});
 }
+function doNewThread(fid) {
+	ajax('/api/newthread', {
+		fid: fid, 
+		title: $('#title').val(),
+		text: $('#text').val()
+	}, function(tid) {
+		window.location = '/thread/'+tid;
+	});
+}
 
 //==================
 // QUOTES
