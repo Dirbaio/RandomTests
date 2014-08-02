@@ -5,6 +5,7 @@
 //page /members/#id-:/posts/p#from
 
 //ABXD LEGACY
+//page /listposts/#id
 //page /listposts.php
 
 function request($id, $from=0)

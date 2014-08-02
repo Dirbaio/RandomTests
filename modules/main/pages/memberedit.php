@@ -3,7 +3,8 @@
 //page /members/#id-:/edit
 
 //ABXD LEGACY
-//page /listposts.php
+//page /editprofile/#id
+//page /editprofile.php
 
 function request($id)
 {

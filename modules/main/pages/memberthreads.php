@@ -5,6 +5,7 @@
 //page /members/#id-:/threads/p#from
 
 //ABXD LEGACY
+//page /listthreads/#id
 //page /listthreads.php
 
 function request($id, $from)
