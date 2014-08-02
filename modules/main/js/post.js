@@ -26,6 +26,8 @@ function postAddTag(before, after) {
 	textEditor.selectionEnd = oldSelS + before.length + selectedText.length;
 	textEditor.scrollTop = scroll;
 	textEditor.focus();
+
+	$(textEditor).trigger('autosize.resize');
 }
 
 function postAddText(added) {
@@ -40,6 +42,8 @@ function postAddText(added) {
 	textEditor.selectionEnd = oldSelE + added.length;
 	textEditor.scrollTop = scroll;
 	textEditor.focus();
+
+	$(textEditor).trigger('autosize.resize');
 }
 
 //==================
