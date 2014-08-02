@@ -6,6 +6,7 @@
 
 //ABXD LEGACY
 //page /listthreads/#id
+//page /listthreads/#id-:
 //page /listthreads.php
 
 function request($id, $from)

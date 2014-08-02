@@ -4,6 +4,7 @@
 
 //ABXD LEGACY
 //page /editprofile/#id
+//page /editprofile/#id-:
 //page /editprofile.php
 
 function request($id)

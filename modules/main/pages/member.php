@@ -4,6 +4,7 @@
 
 //ABXD LEGACY
 //page /profile/#id
+//page /profile/#id-:
 //page /profile.php
 
 function request($id)
