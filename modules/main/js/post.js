@@ -8,6 +8,40 @@ function doNewReply(tid) {
 	});
 }
 
+
+//==================
+// POST TOOLBAR
+
+function postAddTag(before, after) {
+	var textEditor = document.getElementById('text');
+
+	var oldSelS = textEditor.selectionStart;
+	var oldSelE = textEditor.selectionEnd;
+	var scroll = textEditor.scrollTop;
+	var selectedText = textEditor.value.substr(oldSelS, oldSelE - oldSelS);
+
+	textEditor.value = textEditor.value.substr(0, oldSelS) + before + selectedText + after + textEditor.value.substr(oldSelE);
+
+	textEditor.selectionStart = oldSelS + before.length;
+	textEditor.selectionEnd = oldSelS + before.length + selectedText.length;
+	textEditor.scrollTop = scroll;
+	textEditor.focus();
+}
+
+function postAddText(added) {
+	var textEditor = document.getElementById('text');
+
+	var oldSelE = textEditor.selectionEnd;
+	var scroll = textEditor.scrollTop;
+
+	textEditor.value = textEditor.value.substr(0, oldSelE) + added + textEditor.value.substr(oldSelE);
+
+	textEditor.selectionStart = oldSelE + added.length;
+	textEditor.selectionEnd = oldSelE + added.length;
+	textEditor.scrollTop = scroll;
+	textEditor.focus();
+}
+
 //==================
 // DRAFTS 
 
