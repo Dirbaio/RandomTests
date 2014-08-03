@@ -98,9 +98,6 @@ angular.module('app')
 .controller('NewReplyCtrl', function($scope, $sce, $timeout, ajax) {
 	PostBoxCtrlFactory($scope, $sce, $timeout, ajax);
 
-	if(typeof($scope.data.title) != 'string')
-		$scope.data.title = '';
-
 	$scope.postbox = {
 		submitApi: '/api/newreply',
 		draftType: 0,
@@ -114,6 +111,9 @@ angular.module('app')
 
 .controller('NewThreadCtrl', function($scope, $sce, $timeout, ajax) {
 	PostBoxCtrlFactory($scope, $sce, $timeout, ajax);
+
+	if(typeof($scope.data.title) != 'string')
+		$scope.data.title = '';
 
 	$scope.postbox = {
 		submitApi: '/api/newthread',
