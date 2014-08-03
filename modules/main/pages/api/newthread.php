@@ -1,7 +1,7 @@
 <?php
 //page /api/newthread
 
-function request($title, $text, $fid)
+function request($fid, $title='', $text='')
 {
 	$forum = Fetch::forum($fid);
 
@@ -54,5 +54,5 @@ function request($title, $text, $fid)
 	//Erase the draft
 	Sql::query('DELETE FROM {drafts} WHERE user=? AND type=? AND target=?', Session::id(), 1, $fid);
 
-	json($tid);
+	json(Url::format('/#-#/#-#', $forum['id'], $forum['title'], $tid, $title));
 }

@@ -1,7 +1,7 @@
 <?php
 //page /api/newreply
 
-function request($text, $tid)
+function request($text='', $tid=0)
 {
 	$thread = Fetch::thread($tid);
 	$fid = $thread['forum'];
@@ -54,5 +54,5 @@ function request($text, $tid)
 
 //	logAction('newreply', array('forum' => $fid, 'thread' => $tid, 'post' => $pid));
 
-	json($pid);
+	json(Url::format('/post/#', $pid));
 }

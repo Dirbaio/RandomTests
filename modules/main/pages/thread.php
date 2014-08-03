@@ -63,7 +63,7 @@ function request($id, $from=0)
 			$links[] = array('url' => Url::format('/post/#', $post['id']), 'title' => __('Link'));
 
 			if(Permissions::canReply($thread, $forum))
-				$links[] = array('title' => __('Quote'), 'js' => 'postQuote('.$post['id'].');');
+				$links[] = array('title' => __('Quote'), 'ng' => 'quote('.$post['id'].')');
 			if(Permissions::canEditPost($post, $thread, $forum))
 				$links[] = array('title' => __('Edit'));
 			if(Permissions::canDeletePost($post, $thread, $forum))
@@ -93,11 +93,17 @@ function request($id, $from=0)
 		Session::id(), $tid, $readdate, $readdate);
 
 	// Retrieve the draft.
+	$draft = Sql::querySingle('SELECT * FROM {drafts} WHERE user=? AND type=? AND target=?', 
+		Session::id(), 0, $tid);
+	$scope = array();
 
-	$posttext = '';
-	$draft = Sql::querySingle('SELECT * FROM {drafts} WHERE user=? AND type=? AND target=?', Session::id(), 0, $tid);
 	if($draft)
-		$posttext = $draft['text'];
+		$scope = json_decode($draft['data'], true);
+
+	if(!is_array($scope))
+		$scope = array();
+
+	$scope['tid'] = $tid;
 
 	$breadcrumbs = array(
 		array('url' => Url::format('/#-#', $forum['id'], $forum['title']), 'title' => $forum['title']),
@@ -108,11 +114,12 @@ function request($id, $from=0)
 //		array('url' => Url::format('/#-#/newthread', $forum['id'], $forum['title']), 'title' => __('Post thread'))
 	);
 
+
 	renderPage('thread.html', array(
 		'forum' => $forum, 
 		'thread' => $thread, 
 		'posts' => $posts, 
-		'posttext' => $posttext,
+		'scope' => $scope,
 		'canreply' => Permissions::canReply($thread, $forum),
 		'paging' => array(
 			'perpage' => $ppp,

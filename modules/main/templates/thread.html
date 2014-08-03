@@ -1,35 +1,17 @@
-{% include 'components/postList.html' %}
+<div ng-app="app" ng-controller="NewReplyCtrl">
+	{% include 'components/postList.html' %}
 
-{% if canreply %}
-	{% include 'layout/pagelinks.html' %}
-
-	<table class="outline margin width100">
-		<tr class="header1">
-			<th>
-				New reply
-			</th>
-		</tr>
-		<tr class="cell0">
-			<td>
-				{% include 'components/postbox.html' %}
-			</td>
-		</tr>
-		<tr class="cell2">
-			<td>
-				<button onclick="doNewReply({{ thread.id }})">Post</button>
-				<button onclick="doPreview()">Preview</button>
-				<span id="postpreviewing" style="display: none;">
-					Previewing...
-				</span>
-				<button id="savedraft" style="display:none;" onclick="doSaveDraft()">Save</button>
-				<span id="saveddraft" style="display:none;">Saved!</span>
-			</td>
-		</tr>
-	</table>
-
-	<div id="postpreview">
-	</div>
-	<script type="text/javascript">
-		startDraftAutosave(0, {{ thread.id }});
-	</script>
-{% endif %}
+	{% if canreply %}
+		{% include 'components/initialScope.html' %}
+		
+		{% include 'layout/pagelinks.html' %}
+		<table class="outline margin width100">
+			<tr class="header1">
+				<th>
+					New reply
+				</th>
+			</tr>
+			{% include 'components/postbox.html' %}
+		{# </table> is in postbox.html #}
+	{% endif %}
+</div>

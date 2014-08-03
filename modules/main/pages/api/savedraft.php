@@ -1,12 +1,13 @@
 <?php
 //page /api/savedraft
 
-function request($type, $target, $text)
+function request($type, $target, $data)
 {
 	Session::checkLoggedIn();
 
 	$type = (int)$type;
 	$target = (int)$target;
+	$data = json_encode($data);
 
 	if($type == 0)
 	{
@@ -20,13 +21,9 @@ function request($type, $target, $text)
 	$forum = Fetch::forum($fid);
 	Permissions::assertCanViewForum($forum);
 
-	if($text)
-		Sql::query('INSERT INTO {drafts} (user, type, target, date, text) VALUES (?,?,?,?,?)
-					ON DUPLICATE KEY UPDATE date=?, text=?',
-			Session::id(), $type, $target, time(), $text, time(), $text);
-	else
-		Sql::query('DELETE FROM {drafts} WHERE user=? AND type=? AND target=?',
-			Session::id(), $type, $target);
+	Sql::query('INSERT INTO {drafts} (user, type, target, date, data) VALUES (?,?,?,?,?)
+				ON DUPLICATE KEY UPDATE date=?, data=?',
+		Session::id(), $type, $target, time(), $data, time(), $data);
 	
 
 	json('ok');

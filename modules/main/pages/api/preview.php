@@ -1,7 +1,7 @@
 <?php
 //page /api/preview
 
-function request($text)
+function request($text='')
 {
 	$post = array(
 		'userposted' => Session::get(),

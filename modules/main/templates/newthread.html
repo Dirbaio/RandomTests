@@ -1,40 +1,21 @@
-
-<table class="outline margin width100">
-	<tr class="header1">
-		<th colspan="2">
-			New reply
-		</th>
-	</tr>
-	<tr class="cell1">
-		<td>
-			Title
-		</td>
-		<td>
-			<input type="text" id="title" value="{{blarg}}">
-		</td>
-	</tr>
-	<tr class="cell0">
-		<td colspan="2">
-			{% include 'components/postbox.html' %}
-		</td>
-	</tr>
-	<tr class="cell2">
-		<td></td>
-		<td>
-			<button onclick="doNewThread({{ forum.id }})">New thread</button>
-			<button onclick="doPreview()">Preview</button>
-			<span id="postpreviewing" style="display: none;">
-				Previewing...
-			</span>
-			<button id="savedraft" style="display:none;" onclick="doSaveDraft()">Save</button>
-			<span id="saveddraft" style="display:none;">Saved!</span>
-		</td>
-	</tr>
-</table>
-
-<div id="postpreview">
+<div ng-app="app" ng-controller="NewThreadCtrl">
+	{% include 'components/initialScope.html' %}
+	
+	{% include 'layout/pagelinks.html' %}
+	<table class="outline margin width100">
+		<tr class="header1">
+			<th colspan="2">
+				New thread
+			</th>
+		</tr>
+		<tr class="cell1">
+			<td>
+				Title
+			</td>
+			<td>
+				<input type="text" ng-change="changed()" ng-model="data.title">
+			</td>
+		</tr>
+		{% include 'components/postbox.html' %}
+	{# </table> is in postbox.html #}
 </div>
-
-<script type="text/javascript">
-	startDraftAutosave(1, {{ forum.id }});
-</script>
