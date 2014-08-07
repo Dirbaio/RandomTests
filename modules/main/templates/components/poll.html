@@ -15,7 +15,7 @@
 		</td>
 		<td class="width75">
 			<div class="pollbarContainer">
-				<div class="pollbar" style="background-color: {[ choice.color ]}; width: {[ choice.votes * 100 / poll.votes ]}%;">
+				<div class="pollbar" style="background-color: {[ choice.color ]}; width: {[ poll.votes != 0 ? (choice.votes * 100 / poll.votes) : 0 ]}%;">
 					{[ choice.votes ]}
 				</div>
 			</div>
