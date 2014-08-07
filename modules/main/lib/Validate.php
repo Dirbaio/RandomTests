@@ -18,7 +18,7 @@ class Validate
 	public static function notEmpty($string, $message)
 	{
 		if(trim($string) == false)
-			fail(message);
+			fail($message);
 	}
 
 }
