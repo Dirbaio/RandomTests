@@ -4,8 +4,7 @@
 	<table class="post margin deletedpost" id="post{{post.id}}">
 		<tr>
 			<td class="side userlink">
-				
-				{{userlink(post.userpostedposted)}}
+				{{userlink(post.userposted)}}
 			</td>
 			<td class="meta right">
 				(in a restricted forum)
@@ -16,14 +15,14 @@
 	<table class="post margin deletedpost" id="post{{post.id}}">
 		<tr>
 			<td class="side userlink">
-				{{userlink(post.userpostedposted)}}
+				{{userlink(post.userposted)}}
 			</td>
 			<td class="meta right">
 				<div style="float:left">
 					{{post.date | date}},
 					deleted
-					{%- if post.userposteddeleted.name %}
-						by {{userlink(post.userposteddeleted) -}}
+					{%- if post.userdeleted.name %}
+						by {{userlink(post.userdeleted) -}}
 					{% endif %}
 					{%- if post.reason -%}
 						: {{ post.reason }}
@@ -50,8 +49,8 @@
 					{% endif %}
 					{% if post.currentrevision -%}
 						(rev. {{post.currentrevision -}}
-						{% if post.userpostededited.id %}
-							by {{userlink(post.userpostededited) -}}
+						{% if post.useredited.id %}
+							by {{userlink(post.useredited) -}}
 						{%- endif -%}
 						{%- if post.revdate %}
 							on {{post.revdate | date -}}

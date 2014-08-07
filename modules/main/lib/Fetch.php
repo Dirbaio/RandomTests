@@ -55,4 +55,65 @@ class Fetch
 		else
 			return null;
 	}
+
+
+	public static function poll($id, $fail = true)
+	{
+		$res = Sql::querySingle('SELECT * FROM {poll} WHERE id=?', $id);
+		if($res)
+			return $res;
+
+		if($fail)
+			fail(__('Unknown poll ID.'));
+		else
+			return null;
+	}
+	public static function pollChoice($id, $fail = true)
+	{
+		$res = Sql::querySingle('SELECT * FROM {poll_choices} WHERE id=?', $id);
+		if($res)
+			return $res;
+
+		if($fail)
+			fail(__('Unknown poll choice ID.'));
+		else
+			return null;
+	}
+
+	public static function pollComplete($id, $fail = true)
+	{
+		$poll = Sql::querySingle(
+			"SELECT p.*,
+				(SELECT COUNT(DISTINCT user) 
+					FROM {pollvotes} pv 
+					WHERE pv.poll = p.id) as users,
+				(SELECT COUNT(*) 
+					FROM {pollvotes} pv 
+					WHERE pv.poll = p.id) as votes
+			FROM {poll} p
+			WHERE p.id=?", 
+			$id);
+							 
+		if(!$poll)
+		{
+			if($fail)
+				fail(__('Unknown poll ID.'));
+			else
+				return null;
+		}
+
+		$poll['choices'] = Sql::queryAll(
+			"SELECT pc.*,
+				(SELECT COUNT(*) 
+					FROM {pollvotes} pv 
+					WHERE pv.poll = pc.poll AND pv.choiceid = pc.id) as votes,
+				(SELECT COUNT(*) 
+					FROM {pollvotes} pv 
+					WHERE pv.poll = pc.poll AND pv.choiceid = pc.id AND pv.user = ?) as myvote
+			FROM {poll_choices} pc
+			WHERE poll=?", 
+			Session::id(), $id);
+
+		return $poll;
+	}
 }

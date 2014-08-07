@@ -8,32 +8,20 @@ angular.module('app', ['monospaced.elastic'])
 
 .factory('ajax', function($http) {
 	return function (path, param, callback, error) {
-		var onSuccess = function(data) {
-			if(data.data === "true")
-				callback(true);
-			else if(data.data === "false")
-				callback(false);
-			else if(data.data === "null")
-				callback(null);
-			else
-				callback(JSON.parse(data.data));
-		};
-
-		var onError = function(data) {
-			var status = data.status; //http
-			var txt = data.data;
-			alert(txt);
+		$http({
+			method: 'POST',
+			url: path,
+			data: angular.toJson(param),
+			transformResponse: []
+		})
+		.success(function(data, status, headers, config) {
+			callback(angular.fromJson(data));
+		})
+		.error(function(data, status, headers, config) {
 			if(error)
-				error();
-		};
-
-		if (callback == undefined) {
-			callback = param;
-			param = "";
-		}
-
-		param = JSON.stringify(param);
-
-		$http.post(path, param).then(onSuccess, onError);
+				error(data);
+			else
+				alert(data);
+		});
 	};
 })

@@ -339,15 +339,14 @@ class Schema
 				(
 					'id' => $AI,
 					'question' => self::varchar(256),
-					'briefing' => $text,
-					'closed' => $bool,
+//					'briefing' => $text, //unused
+//					'closed' => $bool, //unused
 					'doublevote' => $bool,
 				),
 				'keys' => array
 				(
 					$keyID,
 				),
-
 			),
 			'pollvotes' => array
 			(
@@ -362,6 +361,10 @@ class Schema
 					array(
 						'fields' => array('poll', 'choiceid', 'user'),
 						'type' => 'primary',
+					),
+					array(
+						'fields' => array('choiceid', 'user'),
+						'type' => 'unique',
 					),
 				),
 			),

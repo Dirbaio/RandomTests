@@ -1,9 +1,12 @@
-<div ng-app="app" ng-controller="NewReplyCtrl">
+{% if poll %}
+	{% include 'components/poll.html' %}
+{% endif %}
+
+<div ng-controller="NewReplyCtrl" 
+ng-init="data={{ scope | json_encode(constant('JSON_FORCE_OBJECT')) }}; validate()">
 	{% include 'components/postList.html' %}
 
 	{% if canreply %}
-		{% include 'components/initialScope.html' %}
-		
 		{% include 'layout/pagelinks.html' %}
 		<table class="outline margin width100">
 			<tr class="header1">

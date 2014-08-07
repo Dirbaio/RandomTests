@@ -1,5 +1,4 @@
-<div ng-app="app" ng-controller="NewThreadCtrl">
-	{% include 'components/initialScope.html' %}
+<div ng-controller="NewThreadCtrl" ng-init="data={{ scope | json_encode(constant('JSON_FORCE_OBJECT')) }}">
 	
 	{% include 'layout/pagelinks.html' %}
 	<table class="outline margin width100">

@@ -38,7 +38,17 @@
 			</div>
 			{% endspaceless %}
 
-			<textarea msd-elastic ng-focus="editorFocused = true;" ng-change="changed()" id="text" ng-model="data.text" rows="5" style="width: 100%; box-sizing: border-box; resize: none;"></textarea>
+			<textarea 
+					id="text" 
+					rows="5" 
+					style="width: 100%; box-sizing: border-box; resize: none;"
+
+					msd-elastic 
+					ng-focus="editorFocused = true;" 
+					ng-change="changed()" 
+					ng-model="data.text" 
+					ng-trim="false" 
+			></textarea>
 		</td>
 	</tr>
 	<tr class="cell2">
@@ -48,7 +58,7 @@
 			<button ng-click="preview()">Preview</button>
 
 			<button ng-show="dirty" ng-click="save()">Save</button>
-			<span ng-show="saving">Saving...s</span>
+			<span ng-show="saving">Saving...</span>
 			<span ng-show="!dirty && saved">Saved!</span>
 		</td>
 	</tr>

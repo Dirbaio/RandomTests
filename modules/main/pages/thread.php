@@ -80,6 +80,7 @@ function request($id, $from=0)
 	// Update thread views
 	Sql::query('UPDATE {threads} SET views=views+1 WHERE id=?', $tid);
 
+
 	// Set read date to the max date of the posts displayed in this page.
 	// If the user is not viewing the last page, he will still see the unread marker.
 	$readdate = 0;
@@ -92,8 +93,17 @@ function request($id, $from=0)
 		ON DUPLICATE KEY UPDATE date = GREATEST(date, ?)',
 		Session::id(), $tid, $readdate, $readdate);
 
+
+	// Poll handling.
+	if($thread['poll'])
+		$poll = Fetch::pollComplete($thread['poll']);
+	else
+		$poll = NULL;
+
+
 	// Retrieve the draft.
-	$draft = Sql::querySingle('SELECT * FROM {drafts} WHERE user=? AND type=? AND target=?', 
+	$draft = Sql::querySingle(
+		'SELECT * FROM {drafts} WHERE user=? AND type=? AND target=?', 
 		Session::id(), 0, $tid);
 	$scope = array();
 
@@ -105,6 +115,8 @@ function request($id, $from=0)
 
 	$scope['tid'] = $tid;
 
+
+	//Layout stuff
 	$breadcrumbs = array(
 		array('url' => Url::format('/#-#', $forum['id'], $forum['title']), 'title' => $forum['title']),
 		array('url' => Url::format('/#-#/#-#', $forum['id'], $forum['title'], $thread['id'], $thread['title']), 'title' => $thread['title']),
@@ -115,10 +127,12 @@ function request($id, $from=0)
 	);
 
 
+	//Render page
 	renderPage('thread.html', array(
 		'forum' => $forum, 
 		'thread' => $thread, 
 		'posts' => $posts, 
+		'poll' => $poll, 
 		'scope' => $scope,
 		'canreply' => Permissions::canReply($thread, $forum),
 		'paging' => array(

@@ -2,7 +2,7 @@
 
 
 function PostBoxCtrlFactory($scope, $sce, $timeout, ajax) {
-	$scope.data = window._initial_scope_data;
+	$scope.data = {};
 
 	if(typeof($scope.data.text) != 'string')
 		$scope.data.text = '';
@@ -30,7 +30,7 @@ function PostBoxCtrlFactory($scope, $sce, $timeout, ajax) {
 		if(!$scope.dirty) return;
 
 		$scope.saving = true;
-		ajax('/api/savedraft', {type: $scope.postbox.draftType, target: $scope.postbox.draftTarget, data: $scope.data}, function() {
+		ajax('/api/savedraft', {type: $scope.postbox.draftType, target: $scope.postbox.draftTarget(), data: $scope.data}, function() {
 			$scope.saving = false;
 			$scope.saved = true;
 			$scope.dirty = false;
@@ -78,6 +78,9 @@ function PostBoxCtrlFactory($scope, $sce, $timeout, ajax) {
 	// Just by instantiating one controller of these
 	// we will get draft autosaving in the entire page. Nice, hm?
 	$(document).on("click", "a", function(e) {
+		if(e.currentTarget.onclick)
+			return true;
+
 		if($scope.dirty) {
 			$scope.$apply(function() {
 				$scope.save(function() {
@@ -90,6 +93,13 @@ function PostBoxCtrlFactory($scope, $sce, $timeout, ajax) {
 		else
 			return true;
 	});
+
+	$scope.validate = function() {
+		if(typeof($scope.data) !== 'object')
+			$scope.data = {};
+		if(typeof($scope.data.text) !== 'string')
+			$scope.data.text = '';
+	}
 }
 
 
@@ -101,11 +111,15 @@ angular.module('app')
 	$scope.postbox = {
 		submitApi: '/api/newreply',
 		draftType: 0,
-		draftTarget: $scope.data.tid
+		draftTarget: function() { return $scope.data.tid }
 	};
 
 	$scope.quote = function(pid) {
 		ajax('/api/getquote', {pid: pid}, $scope.add);
+
+		$('html, body').animate({
+			scrollTop: $("#text").offset().top-60
+		}, 600);
 	};
 })
 
@@ -118,6 +132,6 @@ angular.module('app')
 	$scope.postbox = {
 		submitApi: '/api/newthread',
 		draftType: 1,
-		draftTarget: $scope.data.fid
+		draftTarget: function() { return $scope.data.fid }
 	};
 })

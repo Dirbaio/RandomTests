@@ -7,11 +7,11 @@
 			{{- i.title -}}
 		</a>
 	{% elseif i.ng %}
-		<a href="#" ng-click="{{ i.ng }}" onclick="return false;">
+		<a href ng-click="{{ i.ng }}" onclick="return false;">
 			{{- i.title -}}
 		</a>
 	{% elseif i.js %}
-		<a href="#" onclick="{{ i.js }}; return false;">
+		<a href onclick="{{ i.js }}; return false;">
 			{{- i.title -}}
 		</a>
 	{% else %}
