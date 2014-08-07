@@ -19,7 +19,7 @@ function PostBoxCtrlFactory($scope, $sce, $timeout, ajax) {
 		});
 	};
 
-	$scope.$watch("data | json", function() {
+	$scope.$watch("data", function() {
 		// We have to ignore the first change, which is when
 		// ng-init executes and changes stuff: it shouldn't mark
 		// stuff as dirty.
