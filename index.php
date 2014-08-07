@@ -54,7 +54,7 @@ function getPages()
 		$handle = @fopen($file, 'r');
 		if (!$handle)  continue;
 
-	    while (($line = fgets($handle, 4096)) !== false)
+		while (($line = fgets($handle, 4096)) !== false)
 			if(startsWith($line, $prefix))
 			{
 				$page = substr($line, strlen($prefix));
@@ -169,14 +169,14 @@ function runPage()
 					return $regex;
 			}, $page);
 
-        if (preg_match('#^' . $pattern . '$#', $path, $matches)) 
-        {
-        	foreach($names as $idx => $name)
-        		$input[$name] = $matches[$idx+1];
+		if (preg_match('#^' . $pattern . '$#', $path, $matches)) 
+		{
+			foreach($names as $idx => $name)
+				$input[$name] = $matches[$idx+1];
 
-        	$foundPagefile = $pagefile;
-            break;
-        }
+			$foundPagefile = $pagefile;
+			break;
+		}
 	}
 
 	if(!$foundPagefile)
