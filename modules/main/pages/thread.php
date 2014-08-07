@@ -65,7 +65,7 @@ function request($id, $from=0)
 			if(Permissions::canReply($thread, $forum))
 				$links[] = array('title' => __('Quote'), 'ng' => 'quote('.$post['id'].')');
 			if(Permissions::canEditPost($post, $thread, $forum))
-				$links[] = array('title' => __('Edit'));
+				$links[] = array('title' => __('Edit'), 'url' => Url::format('/post/#/edit', $post['id']));
 			if(Permissions::canDeletePost($post, $thread, $forum))
 				$links[] = array('title' => __('Delete'));
 		}
@@ -102,18 +102,8 @@ function request($id, $from=0)
 
 
 	// Retrieve the draft.
-	$draft = Sql::querySingle(
-		'SELECT * FROM {drafts} WHERE user=? AND type=? AND target=?', 
-		Session::id(), 0, $tid);
-	$scope = array();
-
-	if($draft)
-		$scope = json_decode($draft['data'], true);
-
-	if(!is_array($scope))
-		$scope = array();
-
-	$scope['tid'] = $tid;
+	$draft = Fetch::draft(0, $tid);
+	$draft['tid'] = $tid;
 
 
 	//Layout stuff
@@ -133,7 +123,7 @@ function request($id, $from=0)
 		'thread' => $thread, 
 		'posts' => $posts, 
 		'poll' => $poll, 
-		'scope' => $scope,
+		'draft' => $draft,
 		'canreply' => Permissions::canReply($thread, $forum),
 		'paging' => array(
 			'perpage' => $ppp,

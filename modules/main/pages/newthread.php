@@ -18,17 +18,8 @@ function request($id, $from=0)
 	Url::setCanonicalUrl('/#-#/newthread', $forum['id'], $forum['title']);
 
 	// Retrieve the draft.
-	$draft = Sql::querySingle('SELECT * FROM {drafts} WHERE user=? AND type=? AND target=?', 
-		Session::id(), 1, $fid);
-	$scope = array();
-
-	if($draft)
-		$scope = json_decode($draft['data'], true);
-
-	if(!is_array($scope))
-		$scope = array();
-
-	$scope['fid'] = $fid;
+	$draft = Fetch::draft(1, $fid);
+	$draft['fid'] = $fid;
 
 
 	$breadcrumbs = array(
@@ -41,7 +32,7 @@ function request($id, $from=0)
 
 	renderPage('newthread.html', array(
 		'forum' => $forum, 
-		'scope' => $scope,
+		'draft' => $draft,
 
 		'breadcrumbs' => $breadcrumbs, 
 		'actionlinks' => $actionlinks,

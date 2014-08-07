@@ -9,13 +9,21 @@ function request($type, $target, $data)
 	$target = (int)$target;
 	$data = json_encode($data);
 
-	if($type == 0)
+	if($type == 2) // Post edit draft
+	{
+		$pid = $target;
+		$post = Fetch::post($pid);
+		$tid = $post['thread'];
+		$thread = Fetch::thread($tid);
+		$fid = $thread['forum'];
+	}
+	else if($type == 0) // New post draft
 	{
 		$tid = $target;
 		$thread = Fetch::thread($tid);
 		$fid = $thread['forum'];
 	}
-	else
+	else // New thread draft
 		$fid = $target;
 
 	$forum = Fetch::forum($fid);

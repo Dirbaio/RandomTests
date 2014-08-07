@@ -1,6 +1,8 @@
 <?php 
 //page /post/#pid
 
+//page /post.php
+
 function request($pid)
 {
 	$post = Fetch::post($pid);

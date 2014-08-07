@@ -31,21 +31,21 @@ function request($text='', $tid=0)
 
 	$now = time();
 
-	Sql::query('UPDATE {users} set posts=posts+1, lastposttime=? where id=?',
+	Sql::query('UPDATE {users} set posts=posts+1, lastposttime=? WHERE id=?',
 		time(), Session::id());
 
-	Sql::query("INSERT into {posts} (thread, user, date, ip, num) values (?,?,?,?,?)",
+	Sql::query("INSERT INTO {posts} (thread, user, date, ip, num) VALUES (?,?,?,?,?)",
 		$tid, Session::id(), $now, $_SERVER['REMOTE_ADDR'], Session::get('posts')+1);
 
 	$pid = Sql::insertId();
 
-	Sql::Query("INSERT into {posts_text} (pid,text,revision,user,date) values (?,?,?,?,?)", 
+	Sql::Query("INSERT INTO {posts_text} (pid,text,revision,user,date) VALUES (?,?,?,?,?)", 
 		$pid, $text, 0, Session::id(), $now);
 
-	Sql::query("UPDATE {forums} set numposts=numposts+1, lastpostdate=?, lastpostuser=?, lastpostid=? where id=?",
+	Sql::query("UPDATE {forums} SET numposts=numposts+1, lastpostdate=?, lastpostuser=?, lastpostid=? WHERE id=?",
 		$now, Session::id(), $pid, $fid);
 
-	Sql::query("UPDATE {threads} set lastposter=?, lastpostdate=?, replies=replies+1, lastpostid=? where id=?",
+	Sql::query("UPDATE {threads} SET lastposter=?, lastpostdate=?, replies=replies+1, lastpostid=? WHERE id=?",
 		Session::id(), $now, $pid, $tid);
 
 	//Erase the draft

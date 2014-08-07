@@ -7,6 +7,8 @@ function PostBoxCtrlFactory($scope, $sce, $timeout, ajax) {
 	if(typeof($scope.data.text) != 'string')
 		$scope.data.text = '';
 
+	$scope.postButtonText = 'Post';
+
 	$scope.dirty = false;
 	$scope.saving = false;
 	$scope.saved = false;
@@ -138,19 +140,29 @@ angular.module('app')
 .controller('NewThreadCtrl', function($scope, $sce, $timeout, ajax) {
 	PostBoxCtrlFactory($scope, $sce, $timeout, ajax);
 
-	if(typeof($scope.data.title) != 'string')
-		$scope.data.title = '';
-
 	$scope.postbox = {
 		submitApi: '/api/newthread',
 		draftType: 1,
 		draftTarget: function() { return $scope.data.fid }
 	};
-
+	$scope.postButtonText = 'Post thread';
+	
 	var oldValidate = $scope.validate;
 	$scope.validate = function() {
 		oldValidate();
 		if(typeof($scope.data.pollchoices) !== 'object' || $scope.data.pollchoices.length < 2)
 			$scope.data.pollchoices = [{text: ''}, {text: ''}];
 	};
+})
+
+.controller('EditPostCtrl', function($scope, $sce, $timeout, ajax) {
+	PostBoxCtrlFactory($scope, $sce, $timeout, ajax);
+
+	$scope.postbox = {
+		submitApi: '/api/editpost',
+		draftType: 2,
+		draftTarget: function() { return $scope.data.pid }
+	};
+
+	$scope.postButtonText = 'Edit post';
 })

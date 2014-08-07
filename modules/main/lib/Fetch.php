@@ -116,4 +116,20 @@ class Fetch
 
 		return $poll;
 	}
+
+	public static function draft($type, $target)
+	{
+		$draft = Sql::querySingle(
+			'SELECT * FROM {drafts} WHERE user=? AND type=? AND target=?', 
+			Session::id(), $type, $target);
+
+		if($draft)
+			$draft = json_decode($draft['data'], true);
+
+		if(!is_array($draft))
+			$draft = array();
+
+		return $draft;
+	}
+
 }
