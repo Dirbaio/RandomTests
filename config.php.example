@@ -8,4 +8,5 @@ $config = array(
 		'name' => 'abxd4',
 		'prefix' => '',
 	),
+	'salt' => 'blablablub',
 );
