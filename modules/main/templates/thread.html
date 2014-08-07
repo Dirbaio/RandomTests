@@ -3,7 +3,7 @@
 {% endif %}
 
 <div ng-controller="NewReplyCtrl" 
-ng-init="data={{ scope | json_encode(constant('JSON_FORCE_OBJECT')) }}; validate()">
+ng-init="data={{ scope | json_encode() }}; validate()">
 	{% include 'components/postList.html' %}
 
 	{% if canreply %}

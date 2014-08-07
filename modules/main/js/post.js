@@ -11,20 +11,30 @@ function PostBoxCtrlFactory($scope, $sce, $timeout, ajax) {
 	$scope.saving = false;
 	$scope.saved = false;
 
+	$scope.started = false;
+
 	$scope.submit = function() {
 		ajax($scope.postbox.submitApi, $scope.data, function(redirect) {
 			window.location = redirect;
 		});
 	};
 
-	$scope.changed = function() {
+	$scope.$watch("data | json", function() {
+		// We have to ignore the first change, which is when
+		// ng-init executes and changes stuff: it shouldn't mark
+		// stuff as dirty.
+		if(!$scope.started) {
+			$scope.started = true;
+			return;
+		}
+
 		if($scope.dirty) return;
 
 		$scope.dirty=true;
 		$timeout(function() {
 			$scope.save();
 		}, 5000);
-	};
+	}, true);
 
 	$scope.save = function(callback) {
 		if(!$scope.dirty) return;
@@ -99,6 +109,8 @@ function PostBoxCtrlFactory($scope, $sce, $timeout, ajax) {
 			$scope.data = {};
 		if(typeof($scope.data.text) !== 'string')
 			$scope.data.text = '';
+
+		$scope.started = false;
 	}
 }
 
@@ -133,5 +145,12 @@ angular.module('app')
 		submitApi: '/api/newthread',
 		draftType: 1,
 		draftTarget: function() { return $scope.data.fid }
+	};
+
+	var oldValidate = $scope.validate;
+	$scope.validate = function() {
+		oldValidate();
+		if(typeof($scope.data.pollchoices) !== 'object' || $scope.data.pollchoices.length < 2)
+			$scope.data.pollchoices = [{text: ''}, {text: ''}];
 	};
 })

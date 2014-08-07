@@ -2,6 +2,11 @@
 
 class Validate
 {
+	public static function color(&$string)
+	{
+		if(!preg_match('/^#[a-f0-9]{3-6}$/i', $string))
+			$string = '';
+	}
 
 	public static function email($string)
 	{
@@ -10,10 +15,10 @@ class Validate
 			fail("Invalid email!");
 	}
 
-	public static function notEmpty($string, $what)
+	public static function notEmpty($string, $message)
 	{
 		if(trim($string) == false)
-			fail("$what can't be empty!");
+			fail(message);
 	}
 
 }
