@@ -3,9 +3,6 @@
 //page /lastposts
 
 function request() {
-	$breadcrumbs = array(array("url" => "/lastposts", "title" => "Last posts"));
-	$actionlinks = array();
-
 	$hours = 72;
 	$limit = 100;
 
@@ -39,6 +36,12 @@ function request() {
 
 		array_push($posts, $post);
 	}
+
+	$breadcrumbs = array(
+		array("url" => "/lastposts", "title" => "Last posts")
+	);
+
+	$actionlinks = array();
 
 	renderPage("lastposts.html", array(
 		'breadcrumbs' => $breadcrumbs,
