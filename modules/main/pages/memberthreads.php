@@ -9,7 +9,7 @@
 //page /listthreads/#id-:
 //page /listthreads.php
 
-function request($id, $from)
+function request($id, $from=0)
 {
 	$user = Fetch::user($id);
 
@@ -22,12 +22,12 @@ function request($id, $from)
 	$breadcrumbs = array(
 		array('url' => Url::format('/members'), 'title' => __("Members")),
 		array('user' => $user),
-		array('url' => Url::format('/members/#-#/threads', $user['id'], $user['name']), 'title' => __('Threads')),
+		array('url' => Url::format('/members/#-#/threads', $user['id'], $user['name']), 'title' => __('Threads'), 'weak' => true),
 	);
 
 	$actionlinks = array();
 
-	renderPage('profile.html', array(
+	renderPage('member.html', array(
 		'user' => $user,
 		'breadcrumbs' => $breadcrumbs, 
 		'actionlinks' => $actionlinks,

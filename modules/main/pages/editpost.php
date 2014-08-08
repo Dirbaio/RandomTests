@@ -27,7 +27,7 @@ function request($pid)
 	$breadcrumbs = array(
 		array('url' => Url::format('/#-#', $forum['id'], $forum['title']), 'title' => $forum['title']),
 		array('url' => Url::format('/#-#/#-#', $forum['id'], $forum['title'], $thread['id'], $thread['title']), 'title' => $thread['title']),
-		array('url' => Url::format('/post/#/edit', $pid), 'title' => __('Edit post')),
+		array('url' => Url::format('/post/#/edit', $pid), 'title' => __('Edit post'), 'weak' => true),
 	);
 
 	$actionlinks = array(

@@ -17,12 +17,12 @@ function request($id)
 	$breadcrumbs = array(
 		array('url' => Url::format('/members'), 'title' => __("Members")),
 		array('user' => $user),
-		array('url' => Url::format('/members/#-#/edit', $user['id'], $user['name']), 'title' => __('Edit profile')),
+		array('url' => Url::format('/members/#-#/edit', $user['id'], $user['name']), 'title' => __('Edit profile'), 'weak' => true),
 	);
 
 	$actionlinks = array();
 
-	renderPage('profile.html', array(
+	renderPage('member.html', array(
 		'user' => $user,
 		'breadcrumbs' => $breadcrumbs, 
 		'actionlinks' => $actionlinks,

@@ -1,6 +1,10 @@
 {% spaceless %}
 <li>
-	{% if i.user %}
+	{% if i.user and i.url %}
+		<a href="{{i.url | e}}">
+			{{- usertext(i.user) -}}
+		</a>
+	{% elseif i.user %}
 		{{ userlink(i.user) }}
 	{% elseif i.url %}
 		<a href="{{i.url | e}}">

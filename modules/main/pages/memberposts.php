@@ -47,7 +47,7 @@ function request($id, $from=0)
 	$breadcrumbs = array(
 		array('url' => Url::format('/members'), 'title' => __("Members")),
 		array('user' => $user),
-		array('url' => Url::format('/members/#-#/posts', $user['id'], $user['name']), 'title' => __('Posts')),
+		array('url' => Url::format('/members/#-#/posts', $user['id'], $user['name']), 'title' => __('Posts'), 'weak' => true),
 	);
 
 	$actionlinks = array();

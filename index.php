@@ -26,8 +26,8 @@ require(__DIR__.'/vendor/autoload.php');
 ModuleHandler::init();
 ModuleHandler::loadModule('/modules/main');
 ModuleHandler::loadModule('/themes/cheese');
-//ModuleHandler::loadModule('/modules/mobile');
-ModuleHandler::loadModule('/modules/nsmbhd');
+ModuleHandler::loadModule('/modules/mobile');
+//ModuleHandler::loadModule('/modules/nsmbhd');
 
 
 // Set up stuff

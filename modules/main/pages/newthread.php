@@ -24,7 +24,7 @@ function request($id, $from=0)
 
 	$breadcrumbs = array(
 		array('url' => Url::format('/#-#', $forum['id'], $forum['title']), 'title' => $forum['title']),
-		array('url' => Url::format('/#-#/newthread', $forum['id'], $forum['title']), 'title' => __('New thread'))
+		array('url' => Url::format('/#-#/newthread', $forum['id'], $forum['title']), 'title' => __('New thread'), 'weak' => true)
 	);
 
 	$actionlinks = array(

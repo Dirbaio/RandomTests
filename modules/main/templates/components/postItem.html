@@ -1,3 +1,5 @@
+{% import 'layout/macros.html' as macros %}
+
 <a name="{{post.id}}"></a>
 
 {% if post.restricted %}
@@ -28,11 +30,7 @@
 						: {{ post.reason }}
 					{% endif %}
 				</div>
-				<ul class="pipemenu">
-					{% for i in post.links %}
-						{% include 'components/listItem.html' %}
-					{% endfor %}
-				</ul>
+				{{ macros.list(post.links, '', 'pipemenu') }}
 			</td>
 		</tr>
 	</table>
@@ -61,11 +59,7 @@
 				<div style="float: left; text-align:left; display: none;" id="dyna_{{post.id}}">
 					Hi.
 				</div>
-				<ul class="pipemenu">
-					{% for i in post.links %}
-						{% include 'components/listItem.html' %}
-					{% endfor %}
-				</ul>
+				{{ macros.list(post.links, '', 'pipemenu') }}
 			</td>
 		</tr>
 		<tr class="row{{post.userposted.id}}_2">
