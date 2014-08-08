@@ -1,16 +1,11 @@
 {% spaceless %}
+
+{% import 'layout/macros.html' as macros %}
+
 <div class="margin breadcrumbs_bar">
 	<div style="float: right;">
-		<ul id="actionlinks" class="pipemenu">
-		{% for i in actionlinks %}
-			{% include 'components/listItem.html' %}
-		{% endfor %}
-		</ul>
+		{{ macros.list(actionlinks, 'actionlinks', 'pipemenu') }}
 	</div>
-	<ul id="breadcrumbs" class="breadcrumbs">
-	{% for i in breadcrumbs %}
-		{% include 'components/listItem.html' %}
-	{% endfor %}
-	</ul>
+	{{ macros.list(breadcrumbs, 'breadcrumbs', 'breadcrumbs') }}
 </div>
 {% endspaceless %}

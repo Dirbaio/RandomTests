@@ -1,3 +1,5 @@
+{% import 'layout/macros.html' as macros %}
+
 <div id="body-wrapper">
 
 	<div id="header">
@@ -24,7 +26,7 @@
 						{% include 'layout/views.html' %}
 					</td>
 					<td>
-						{% include 'layout/onlineusers.html' %}
+						{{ macros.list(layout.onlineusers, 'onlineusers', 'pipemenu') }}
 					</td>
 					<td style="text-align:right; padding-right:6px;">
 						{{ 'now' | date }}
@@ -42,8 +44,8 @@
 				</th>
 			</tr>
 			<tr class="cell0">
-				<td class="sidemenu">
-					{% include 'layout/userpanel.html' %}
+				<td>
+					{{ macros.list(layout.userpanel, 'userpanel', 'stackedmenu') }}
 				</td>
 			</tr>
 			<tr class="header1">
@@ -52,8 +54,8 @@
 				</th>
 			</tr>
 			<tr class="cell0">
-				<td class="sidemenu">
-					{% include 'layout/navigation.html' %}
+				<td>
+					{{ macros.list(layout.navigation, 'navigation', 'stackedmenu') }}
 				</td>
 			</tr>
 		</table>

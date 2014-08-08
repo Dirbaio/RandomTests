@@ -1,3 +1,5 @@
+{% import 'layout/macros.html' as macros %}
+
 <div id="body-wrapper">
 	<div id="main" style="padding:8px;">
 		<div class="outline margin" id="header">
@@ -24,7 +26,7 @@
 						{% include 'layout/views.html' %}
 					</td>
 					<td class="smallFonts" style="text-align: center; width: 80%;">
-						{% include 'layout/navigation.html' %}
+						{{ macros.list(layout.navigation, 'navigation', 'pipemenu') }}
 					</td>
 					<td class="smallFonts" style="text-align: center; width: 10%;">
 						{{ 'now' | date }}
@@ -32,12 +34,12 @@
 				</tr>
 				<tr class="cell2">
 					<td colspan="3" class="smallFonts" style="text-align: center">
-						{% include 'layout/userpanel.html' %}
+						{{ macros.list(layout.userpanel, 'navigation', 'pipemenu') }}
 					</td>
 				</tr>
 				<tr class="cell2">
 					<td colspan="3" class="smallFonts" style="text-align: center">
-						{% include 'layout/onlineusers.html' %}
+						{{ macros.list(layout.onlineusers, 'onlineusers', 'pipemenu') }}
 					</td>
 				</tr>
 			</table>
