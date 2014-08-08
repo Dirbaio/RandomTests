@@ -181,7 +181,7 @@ function runPage()
 	}
 
 	if(!$foundPagefile)
-		fail('404 Not Found');
+		$foundPagefile = __DIR__.'/modules/main/pages/404.php';
 
 	$input['input'] = $input;
 
