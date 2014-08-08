@@ -78,6 +78,7 @@ body {
 	overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 	background-color: black;
 	color: white;
+	-webkit-transform: translate3d(0, 0, 0);
 
 	-webkit-transition: 0.3s -webkit-transform ease-out;
 	-o-transition: 0.3s -o-transform ease-out;
@@ -108,6 +109,8 @@ body {
 	width:100%;
 	height:100%;
 	z-index: 900;
+
+	-webkit-transform: translate3d(0, 0, 0);
 
 	-webkit-transition: 0.3s opacity ease-out;
 	-o-transition: 0.3s opacity ease-out;
@@ -150,11 +153,10 @@ body {
 		-ms-transform: translateX(-300px);
 		-moz-transform: translateX(-300px);
 		transform: translateX(-300px);
-		visibility: hidden;
 	}
 	#body-wrapper {
 		margin-left: 0px;
-	}	
+	}
 	#drawer-toggle {
 		display: inline-block!important;
 	}

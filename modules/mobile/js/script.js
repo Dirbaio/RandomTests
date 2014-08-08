@@ -1,80 +1,78 @@
-"use strict";
-
-var userAgent = window.navigator.userAgent;
-var isSafari = userAgent.match(/iPad/i) || userAgent.match(/iPhone/i);
-
-var hideTimeout = false;
-function showDrawer(percent)
-{
-	$('#drawer-overlay').css('opacity', percent*0.75);
-
-	if(hideTimeout)
-	{
-		clearTimeout(hideTimeout);
-		hideTimeout = false;
-	}
-		
-	if(percent == 0)
-		hideTimeout = setTimeout(function() {
-			$('#drawer-overlay').css('visibility', 'hidden');
-			$('#drawer').css('visibility', 'hidden');
-		}, 500);
-	else
-	{
-		$('#drawer-overlay').css('visibility', 'visible');
-		$('#drawer').css('visibility', 'visible');
-	}
-	
-	var t = 300 * (percent-1);
-	$("#drawer").css("-webkit-transform", "translateX("+t+"px)");
-	$("#drawer").css("transform", "translateX("+t+"px)");
-}
-
-var drawerShown = false;
-
-function resetDrawer()
-{
-	$('#drawer-overlay').css('opacity', "");
-	$('#drawer-overlay').css('visibility', "");
-	$("#drawer").css("-webkit-transform", "");
-	$("#drawer").css("transform", "");
-	$("#drawer").css("visibility", "");
-		
-	drawerShown = false;
-}
-
-var touchDown = false;
-var touchDragging = false;
-var touchDownX = 0;
-var touchDownY = 0;
-var touchDiffX = 0;
-var touchTime = 0;
-
-//Returns true if drawer should be always visible (not in mobile mode)
-function drawerAlwaysVisible() {
-	return window.innerWidth >= 768;
-}
-
-function startTouchDragging()
-{
-	touchDragging = true;
-	$("#drawer").addClass("dragging");
-	$("#drawer-overlay").addClass("dragging");
-}
-
-function stopTouchDragging()
-{
-	touchDragging = false;
-	$("#drawer").removeClass("dragging");
-	$("#drawer-overlay").removeClass("dragging");
-}
+'use strict';
 
 $(document).ready(function() {
-	$('#drawer-overlay').bind('click', function() {
+	var userAgent = window.navigator.userAgent;
+	var isSafari = userAgent.match(/iPad/i) || userAgent.match(/iPhone/i);
+
+	var hideTimeout = false;
+	var stuffShown = false;
+
+	var drawer = document.getElementById('drawer');
+	var overlay = document.getElementById('drawer-overlay');
+	var toggle = document.getElementById('drawer-toggle');
+
+	function showDrawer(percent)
+	{
+		if(hideTimeout)
+		{
+			clearTimeout(hideTimeout);
+			hideTimeout = false;
+		}
+			
+		if(percent == 0) {
+			hideTimeout = setTimeout(function() {
+				overlay.style.cssText = 'visibility: hidden';
+			}, 500);
+		}
+
+		overlay.style.cssText = 'visibility: visible; opacity: '+percent*0.75;
+		
+		var t = 300 * (percent-1);
+		drawer.style.cssText = '-webkit-transform: translateX('+t+'px); transform: translateX('+t+'px)';
+	}
+
+	var drawerShown = false;
+
+	function resetDrawer()
+	{
+		overlay.style.cssText = '';
+		drawer.style.cssText = '';
+
+		drawerShown = false;
+		stuffShown = false;
+	}
+
+	var touchDown = false;
+	var touchDragging = false;
+	var touchDownX = 0;
+	var touchDownY = 0;
+	var touchDiffX = 0;
+	var touchTime = 0;
+
+	//Returns true if drawer should be always visible (not in mobile mode)
+	function drawerAlwaysVisible() {
+		return window.innerWidth >= 768;
+	}
+
+	function startTouchDragging()
+	{
+		touchDragging = true;
+		drawer.className = 'dragging';
+		overlay.className = 'dragging';
+	}
+
+	function stopTouchDragging()
+	{
+		touchDragging = false;
+		drawer.className = '';
+		overlay.className = '';
+	}
+
+	overlay.addEventListener('click', function() {
 		drawerShown = false;
 		showDrawer(0.0);
 	});
-	$('#drawer-toggle').bind('click', function() {
+	toggle.addEventListener('click', function() {
 		drawerShown = !drawerShown;
 		if (drawerShown)
 			showDrawer(1.0);
@@ -83,7 +81,7 @@ $(document).ready(function() {
 		return false;
 	});
 
-	$(window).on('resize', function(){
+	window.addEventListener('resize', function(){
 		if(drawerAlwaysVisible())
 			resetDrawer();
 	});
