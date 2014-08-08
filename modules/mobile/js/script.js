@@ -46,6 +46,7 @@ $(document).ready(function() {
 	var touchDragging = false;
 	var touchDownX = 0;
 	var touchDownY = 0;
+	var touchDownScroll = 0;
 	var touchDiffX = 0;
 	var touchTime = 0;
 
@@ -91,9 +92,10 @@ $(document).ready(function() {
 		// On Safari edge-swipe is used for back navigation. 
 		// So, in case of Safari I don't require edge-swiping, any swiping will do. 
 		// If you have a better alternative, please let me know!
-		if(event.touches[0].pageX < 30 || isSafari || drawerShown)
+		if(event.touches[0].pageX < (isSafari?80:30) || drawerShown)
 		{
 			touchDown = true;
+			touchDownScroll = window.pageYOffset;
 			touchDownX = event.touches[0].pageX;
 			touchDownY = event.touches[0].pageY;
 			touchTime = +new Date();
@@ -108,11 +110,20 @@ $(document).ready(function() {
 	}, false);
 	document.addEventListener('touchmove', function(event) {
 		if(drawerAlwaysVisible()) return;
-		if(touchDown) //TODO IMPROVE
+		if(touchDown)
 		{
+			//Gesture recognition.
+			//If it made the page scroll, abort
+			if(touchDownScroll != window.pageYOffset)
+				touchDown = false;
+
 			var dx = event.changedTouches[0].pageX-touchDownX;
 			var dy = event.changedTouches[0].pageY-touchDownY;
-			if( Math.abs(dx) > Math.abs(dy))
+
+			if(Math.abs(dy) > 20)
+				touchDown = false;
+
+			if(Math.abs(dx) > Math.abs(dy) && touchDown)
 			{
 				startTouchDragging();
 				touchDragging = true;
