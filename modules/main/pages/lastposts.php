@@ -7,7 +7,7 @@ function request() {
 	$limit = 100;
 
 	$lposts = Sql::query(
-		"SELECT
+		'SELECT
 			p.id, p.date,
 			u.(_userfields),
 			t.title AS t__title, t.id AS t__id,
@@ -17,33 +17,30 @@ function request() {
 			LEFT JOIN {threads} t on t.id = p.thread
 			LEFT JOIN {forums} f on t.forum = f.id
 		WHERE p.date >= ?
-		ORDER BY date DESC",
+		ORDER BY date DESC',
 		(time() - ($hours * 60*60)));
 
 	$posts = array();
 
-	while (count($posts) < 100)  {
+	while (count($posts) < 100)
+	{
 		$post = Sql::fetch($lposts);
 
-		if ($post == null) {
-			// No omre posts.
+		// No more posts.
+		if ($post == null)
 			break;
-		}
 
-		if (!Permissions::canViewForum($post['f'])) {
-			continue;
-		}
-
-		array_push($posts, $post);
+		if (Permissions::canViewForum($post['f']))
+			array_push($posts, $post);
 	}
 
 	$breadcrumbs = array(
-		array("url" => "/lastposts", "title" => "Last posts")
+		array('url' => '/lastposts', 'title' => 'Last posts')
 	);
 
 	$actionlinks = array();
 
-	renderPage("lastposts.html", array(
+	renderPage('lastposts.html', array(
 		'breadcrumbs' => $breadcrumbs,
 		'actionlinks' => $actionlinks,
 		'posts' => $posts
