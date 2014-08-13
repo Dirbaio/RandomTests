@@ -1,6 +1,9 @@
 "use strict";
 
-angular.module('app', ['monospaced.elastic'])
+angular.module('app', [
+	'monospaced.elastic',
+	'ngCookies'
+])
 
 .config(function($interpolateProvider) {
 	$interpolateProvider.startSymbol('{[').endSymbol(']}');

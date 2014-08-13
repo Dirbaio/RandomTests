@@ -26,8 +26,11 @@ require(__DIR__.'/vendor/autoload.php');
 ModuleHandler::init();
 ModuleHandler::loadModule('/modules/main');
 ModuleHandler::loadModule('/themes/cheese');
-ModuleHandler::loadModule('/modules/mobile');
-//ModuleHandler::loadModule('/modules/nsmbhd');
+
+if(isset($_COOKIE['mobileversion']) && $_COOKIE['mobileversion'] && $_COOKIE['mobileversion'] != 'false')
+	ModuleHandler::loadModule('/modules/mobile');
+else
+	ModuleHandler::loadModule('/modules/nsmbhd');
 
 
 // Set up stuff
