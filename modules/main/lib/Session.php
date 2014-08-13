@@ -45,7 +45,7 @@ class Session
 	public static function get($what = NULL)
 	{
 		if($what)
-			return self::$user['what'];
+			return self::$user[$what];
 		
 		return self::$user;
 	}
