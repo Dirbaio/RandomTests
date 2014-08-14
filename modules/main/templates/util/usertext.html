@@ -1,6 +1,6 @@
 <span class="nc{{user.sex}}{{user.powerlevel < 0 ? 'x' : user.powerlevel}}" 
 		title="#{{user.id}}: {{user.name|e}} ({{user.karma}}, {{user.powerlevel}})">
-	{%- if user.minipic and false -%}
+	{%- if user.minipic -%}
 		<img src="/minipic/{{user.id}}" alt="" class="minipic" />&nbsp;
 	{%- endif -%}
 	{%- if user.displayname -%}
