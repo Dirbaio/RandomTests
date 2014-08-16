@@ -1,7 +1,7 @@
 "use strict";
 
 
-function PostBoxCtrlFactory($scope, $sce, $timeout, ajax) {
+function PostBoxCtrlFactory($scope, $sce, $timeout, ajax, $upload) {
 	$scope.data = {};
 
 	if(typeof($scope.data.text) != 'string')
@@ -113,14 +113,31 @@ function PostBoxCtrlFactory($scope, $sce, $timeout, ajax) {
 			$scope.data.text = '';
 
 		$scope.started = false;
-	}
+	};
+
+	$scope.onFileSelect = function($files) {
+		var file = $files[0];
+		$scope.upload = $upload.upload({
+			url: '/api/upload',
+			method: 'POST',
+			file: file,
+		}).progress(function(evt) {
+			console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+		}).success(function(data, status, headers, config) {
+			var fileurl = angular.fromJson(data);
+			if(file.type.indexOf('image') > -1)
+				$scope.add('[img]'+fileurl+'[/img]');
+			else
+				$scope.add('[url='+fileurl+']'+file.name+'[/url]');
+		});
+	};
 }
 
 
 angular.module('app')
 
-.controller('NewReplyCtrl', function($scope, $sce, $timeout, ajax) {
-	PostBoxCtrlFactory($scope, $sce, $timeout, ajax);
+.controller('NewReplyCtrl', function($scope, $sce, $timeout, ajax, $upload) {
+	PostBoxCtrlFactory($scope, $sce, $timeout, ajax, $upload);
 
 	$scope.postbox = {
 		submitApi: '/api/newreply',
@@ -137,8 +154,8 @@ angular.module('app')
 	};
 })
 
-.controller('NewThreadCtrl', function($scope, $sce, $timeout, ajax) {
-	PostBoxCtrlFactory($scope, $sce, $timeout, ajax);
+.controller('NewThreadCtrl', function($scope, $sce, $timeout, ajax, $upload) {
+	PostBoxCtrlFactory($scope, $sce, $timeout, ajax, $upload);
 
 	$scope.postbox = {
 		submitApi: '/api/newthread',
@@ -155,8 +172,8 @@ angular.module('app')
 	};
 })
 
-.controller('EditPostCtrl', function($scope, $sce, $timeout, ajax) {
-	PostBoxCtrlFactory($scope, $sce, $timeout, ajax);
+.controller('EditPostCtrl', function($scope, $sce, $timeout, ajax, $upload) {
+	PostBoxCtrlFactory($scope, $sce, $timeout, ajax, $upload);
 
 	$scope.postbox = {
 		submitApi: '/api/editpost',

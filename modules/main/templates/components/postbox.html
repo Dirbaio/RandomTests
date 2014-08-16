@@ -2,38 +2,41 @@
 		<td colspan="2">
 			{% spaceless %}
 			<div class="postToolbar">
-				<button type="button" title="Bold" ng-click="add('[b]', '[/b]');">
+				<button title="Bold" ng-click="add('[b]', '[/b]');">
 					<i class="fa fa-bold"></i>
 				</button>
-				<button type="button" title="Italic" ng-click="add('[i]', '[/i]');">
+				<button title="Italic" ng-click="add('[i]', '[/i]');">
 					<i class="fa fa-italic"></i>
 				</button>
-				<button type="button" title="Underlined" ng-click="add('[u]', '[/u]');">
+				<button title="Underlined" ng-click="add('[u]', '[/u]');">
 					<i class="fa fa-underline"></i>
 				</button>
-				<button type="button" title="Strikethrough" ng-click="add('[s]', '[/s]');">
+				<button title="Strikethrough" ng-click="add('[s]', '[/s]');">
 					<i class="fa fa-strikethrough"></i>
 				</button>
-				<button type="button" title="Superscript" ng-click="add('<sup>', '</sup>');">
+				<button title="Superscript" ng-click="add('<sup>', '</sup>');">
 					<i class="fa fa-superscript"></i>
 				</button>
-				<button type="button" title="Subscript" ng-click="add('<sub>', '</sub>');">
+				<button title="Subscript" ng-click="add('<sub>', '</sub>');">
 					<i class="fa fa-subscript"></i>
 				</button>
-				<button type="button" title="Link" ng-click="add('[url=http://whatever/]', '[/url]');">
+				<button title="Link" ng-click="add('[url=http://whatever/]', '[/url]');">
 					<i class="fa fa-link"></i>
 				</button>
-				<button type="button" title="Image" ng-click="add('[img]', '[/img]');">
+				<button title="Image" ng-click="add('[img]', '[/img]');">
 					<i class="fa fa-picture-o"></i>
 				</button>
-				<button type="button" title="Quote" ng-click="add('[quote=Someone]', '[/quote]');">
+				<button title="Quote" ng-click="add('[quote=Someone]', '[/quote]');">
 					<i class="fa fa-quote-left"></i>
 				</button>
-				<button type="button" title="Spoiler" ng-click="add('[spoiler]', '[/spoiler]');">
+				<button title="Spoiler" ng-click="add('[spoiler]', '[/spoiler]');">
 					<i class="fa fa-ellipsis-h"></i>
 				</button>
-				<button type="button" title="Spoiler" ng-click="add(':)');">
+				<button title="Spoiler" ng-click="add(':)');">
 					:)
+				</button>
+				<button title="Attach file" ng-file-select="onFileSelect($files)">
+					<i class="fa fa-paperclip"></i>
 				</button>
 			</div>
 			{% endspaceless %}

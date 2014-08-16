@@ -2,10 +2,26 @@
 
 class Permissions
 {
+	public static function canDoStuff($user = null)
+	{
+		if(!Session::isLoggedIn())
+			return false;
+
+		if($user === null) $user = Session::get();
+		return $user['powerlevel'] >= 0;
+	}
+
+	public static function assertCanDoStuff($user = null)
+	{
+		if(!self::canDoStuff($user))
+			fail(__('You are not allowed to do this.'));
+	}
+
+
 	public static function canViewForum($forum, $user = null)
 	{
 		if(!Session::isLoggedIn())
-				return $forum['minpower'] <= 0;
+			return $forum['minpower'] <= 0;
 
 		if($user === null) $user = Session::get();
 

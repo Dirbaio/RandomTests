@@ -40,8 +40,13 @@ class Url
 
 		$format = array_shift($args);
 
-		$format = preg_replace_callback('/#/', function() use (&$args) {
-			return self::slugify(array_shift($args));
+		$format = preg_replace_callback('/[#:$]/', function($match) use (&$args) {
+			$arg = array_shift($args);
+			$char = $match[0];
+			if($char == '$')
+				return rawurlencode($arg);
+			else
+				return self::slugify($arg);
 		}, $format);
 		return $format;
 	}
@@ -49,7 +54,9 @@ class Url
 	public static function setCanonicalUrl()
 	{
 		$url = self::format(func_get_args());
-		if(self::getPath() !== $url)
+		$currUrl = self::getPath();
+
+		if($currUrl !== $url)
 			self::redirect($url);
 	}
 

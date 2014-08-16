@@ -2,5 +2,6 @@ pma
 abxd/
 vendor/
 minipic/
+uploads/
 config.php
 *~

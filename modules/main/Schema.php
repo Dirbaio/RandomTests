@@ -425,6 +425,25 @@ class Schema
 					),
 				),
 			),
+			'files' => array
+			(
+				'fields' => array
+				(
+					'id' => self::varchar(256),
+					'hash' => self::varchar(256),
+					'name' => self::varchar(256),
+					'date' => $int,
+					'user' => $int,
+					'downloads' => $int,
+				),
+				'keys' => array
+				(
+					array(
+						'fields' => array('id'),
+						'type' => 'primary',
+					),
+				),
+			),
 			'drafts' => array
 			(
 				'fields' => array

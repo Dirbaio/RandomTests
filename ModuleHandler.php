@@ -11,6 +11,10 @@ class ModuleHandler
 		self::$files = array();
 	}
 
+	public static function getRoot() {
+		return __DIR__;
+	}
+	
 	public static function loadModule($path)
 	{
 		$path = __DIR__.$path;

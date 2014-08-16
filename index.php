@@ -157,11 +157,13 @@ function runPage()
 	{
 		//match $path against $page
 		$names = array();
-		$pattern = preg_replace_callback('/(:|#)([a-zA-Z][a-zA-Z0-9]*|)/', 
+		$pattern = preg_replace_callback('/(:|#|\$)([a-zA-Z][a-zA-Z0-9]*|)/', 
 			function($matches) use (&$names) 
 			{
 				if($matches[1] == '#')
 					$regex = '[0-9]+';
+				else if($matches[1] == '$')
+					$regex = '[^/]+';
 				else
 					$regex = '[a-zA-Z0-9-_]+';
 				if($matches[2])

@@ -2,7 +2,8 @@
 
 angular.module('app', [
 	'monospaced.elastic',
-	'ngCookies'
+	'ngCookies',
+	'angularFileUpload'
 ])
 
 .config(function($interpolateProvider) {
