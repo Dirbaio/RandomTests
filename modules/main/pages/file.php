@@ -1,4 +1,5 @@
 <?php 
+//page /file/:id
 //page /file/:id/$
 
 //ABXD LEGACY
@@ -24,6 +25,7 @@ function request($id)
 	$fsize = filesize($path);
 	$parts = explode(".", $file['name']);
 	$ext = end($parts);
+	$ext = strtolower($ext);
 	$download = true;
 	
 	switch ($ext)
