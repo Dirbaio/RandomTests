@@ -73,12 +73,13 @@ $(document).ready(function() {
 		drawerShown = false;
 		showDrawer(0.0);
 	});
-	toggle.addEventListener('click', function() {
+	toggle.addEventListener('click', function(e) {
 		drawerShown = !drawerShown;
 		if (drawerShown)
 			showDrawer(1.0);
 		else
 			showDrawer(0.0);
+		e.preventDefault();
 		return false;
 	});
 
