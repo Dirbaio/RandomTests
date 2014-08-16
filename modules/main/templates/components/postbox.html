@@ -35,9 +35,14 @@
 				<button title="Spoiler" ng-click="add(':)');">
 					:)
 				</button>
-				<button title="Attach file" ng-file-select="onFileSelect($files)">
+				<button title="Attach file" ng-file-select="onFileSelect($files)" ng-show="!uploading">
 					<i class="fa fa-paperclip"></i>
 				</button>
+				<div class="pollbarContainer" style="display: inline-block; width:200px;" ng-show="uploading">
+					<div class="pollbar" style="width: {[ uploadProgress ]}%;">
+						{[ uploadProgress ]}%
+					</div>
+				</div>
 			</div>
 			{% endspaceless %}
 

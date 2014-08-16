@@ -39,10 +39,12 @@ a[name] {
 	box-shadow: inset 0px 4px 8px #000;
 	border-radius: 8px;
 	width: 75%;
+	box-sizing: border-box;
 }
 
 .pollbar
 {
+	box-sizing: border-box;
 	border-width:1px; border-style:solid;
 	background: silver;
 	color: #FFF;

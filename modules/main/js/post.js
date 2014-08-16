@@ -117,18 +117,23 @@ function PostBoxCtrlFactory($scope, $sce, $timeout, ajax, $upload) {
 
 	$scope.onFileSelect = function($files) {
 		var file = $files[0];
+		$scope.uploading = true;
 		$scope.upload = $upload.upload({
 			url: '/api/upload',
 			method: 'POST',
 			file: file,
 		}).progress(function(evt) {
-			console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+			$scope.uploadProgress = parseInt(100.0 * evt.loaded / evt.total);
 		}).success(function(data, status, headers, config) {
+			$scope.uploading = false;
 			var fileurl = angular.fromJson(data);
 			if(file.type.indexOf('image') > -1)
 				$scope.add('[img]'+fileurl+'[/img]');
 			else
 				$scope.add('[url='+fileurl+']'+file.name+'[/url]');
+		}).error(function() {
+			$scope.uploading = false;
+			alert('Error uploading :(');
 		});
 	};
 }
