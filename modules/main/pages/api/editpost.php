@@ -23,13 +23,21 @@ function request($text='', $pid=0)
 	Sql::Query("INSERT INTO {posts_text} (pid,text,revision,user,date) VALUES (?,?,?,?,?)", 
 		$pid, $text, $rev, Session::id(), $now);
 
-	Sql::query("UPDATE {posts} SET currentrevision=? WHERE id=?",
-		$rev, $pid);
+	Sql::query("UPDATE {posts} SET currentrevision=?, editdate=? WHERE id=?",
+		$rev, $now, $pid);
 
-	// Update thread lastpostdate if we edited the last post
-	if($thread['lastpostid'] == $pid)
+	// Update thread/forum lastpostdate if we edited the last post
+	if($thread['lastpostid'] == $pid) {
+		//Update thread lastpostdate
 		Sql::query("UPDATE {threads} SET lastpostdate=? WHERE id=?",
-			Session::id(), $now, $pid, $tid);
+			$now, $tid);
+
+		//Update forum lastpostdate
+		if($now > $forum['lastpostdate']) {
+			Sql::query("UPDATE {forums} SET lastpostuser=?, lastpostid=?, lastpostdate=? WHERE id=?",
+				$post['user'], $pid, $now, $fid);
+		}
+	}
 
 	// Erase the draft
 	Sql::query('DELETE FROM {drafts} WHERE user=? AND type=? AND target=?', Session::id(), 2, $pid);

@@ -58,14 +58,14 @@ function request($fid, $title='', $text='', $poll=false, $pollquestion='', $poll
 		$pollid = 0;
 
 	// Create the thread
-	Sql::query('INSERT INTO {threads} (forum, user, title, lastpostdate, lastposter, poll) VALUES (?,?,?,?,?,?)',
+	Sql::query('INSERT INTO {threads} (forum, user, title, lastpostdate, lastpostuser, poll) VALUES (?,?,?,?,?,?)',
 		$fid, Session::id(), $title, $now, Session::id(), $pollid);
 
 	$tid = Sql::insertId();
 
 	// Create the first post
-	Sql::query('INSERT INTO {posts} (thread, user, date, ip, num) VALUES (?,?,?,?,?)',
-		$tid, Session::id(), $now, $_SERVER['REMOTE_ADDR'], Session::get('posts')+1);
+	Sql::query('INSERT INTO {posts} (thread, user, date, editdate, ip, num) VALUES (?,?,?,?,?,?)',
+		$tid, Session::id(), $now, $now, $_SERVER['REMOTE_ADDR'], Session::get('posts')+1);
 
 	$pid = Sql::insertId();
 
@@ -73,6 +73,9 @@ function request($fid, $title='', $text='', $poll=false, $pollquestion='', $poll
 		$pid, $text, 0, Session::id(), $now);
 
 	//Update counters
+	Sql::query('UPDATE {threads} SET firstpostid=?, lastpostid=? where id=?',
+		$pid, $pid, $tid);
+
 	Sql::query('UPDATE {forums} SET numposts=numposts+1, numthreads=numthreads+1, lastpostdate=?, lastpostuser=?, lastpostid=? where id=?',
 		$now, Session::id(), $pid, $fid);
 

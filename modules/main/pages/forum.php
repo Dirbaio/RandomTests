@@ -30,13 +30,12 @@ function request($id, $from=0)
 				(
 					SELECT COUNT(*)
 					FROM {posts} p
-					WHERE p.thread=t.id AND p.date > IFNULL(tr.date, 0)
+					WHERE p.thread=t.id AND IF(p.id = t.lastpostid, p.editdate, p.date) > IFNULL(tr.date, 0)
 				) numnew,
 				(
-					SELECT p.id
+					SELECT MAX(p.id)
 					FROM {posts} p
-					WHERE p.thread=t.id AND p.date > IFNULL(tr.date, 0)
-					LIMIT 1
+					WHERE p.thread=t.id AND IF(p.id = t.lastpostid, p.editdate, p.date) > IFNULL(tr.date, 0)
 				) idnew,
 				su.(_userfields),
 				lu.(_userfields)
@@ -44,7 +43,7 @@ function request($id, $from=0)
 				{threads} t
 				LEFT JOIN {threadsread} tr ON tr.thread=t.id AND tr.id=?
 				LEFT JOIN {users} su ON su.id=t.user
-				LEFT JOIN {users} lu ON lu.id=t.lastposter
+				LEFT JOIN {users} lu ON lu.id=t.lastpostuser
 			WHERE forum=?
 			ORDER BY sticky DESC, lastpostdate DESC 
 			LIMIT ?, ?', 
@@ -59,7 +58,7 @@ function request($id, $from=0)
 			FROM
 				{threads} t
 				LEFT JOIN {users} su ON su.id=t.user
-				LEFT JOIN {users} lu ON lu.id=t.lastposter
+				LEFT JOIN {users} lu ON lu.id=t.lastpostuser
 			WHERE forum=?
 			ORDER BY sticky DESC, lastpostdate DESC 
 			LIMIT ?, ?', 

@@ -163,12 +163,11 @@ class Schema
 					'minpower' => $int,
 					'minpowerthread' => $int,
 					'minpowerreply' => $int,
-					'numthreads' => $int,
-					'numposts' => $int,
-					'lastpostdate' => $int,
-					'lastpostuser' => $int,
-					'lastpostid' => $int,
-					'hidden' => $bool,
+					'numthreads' => $int,  // derived
+					'numposts' => $int,  // derived
+					'lastpostdate' => $int,  // derived
+					'lastpostuser' => $int,  // derived
+					'lastpostid' => $int,  // derived
 					'forder' => $int,
 				),
 				'keys' => array
@@ -271,23 +270,6 @@ class Schema
 				(
 				),
 			),
-			'moodavatars' => array
-			(
-				'fields' => array
-				(
-					'id' => $AI,
-					'uid' => $int,			
-					'mid' => $int,			
-					'name' => self::varchar(256),
-				),
-				'keys' => array
-				(
-					$keyID,
-					array(
-						'fields' => array('uid'),
-					),
-				),
-			),
 			'pmsgs' => array
 			(
 				'fields' => array
@@ -354,7 +336,7 @@ class Schema
 				(
 					'user' => $int,
 					'choiceid' => $int,
-					'poll' => $int,
+					'poll' => $int,  // derived
 				),
 				'keys' => array
 				(
@@ -392,15 +374,16 @@ class Schema
 					'id' => $AI,
 					'thread' => $int,
 					'user' => $int,
-					'date' => $int,
+					'date' => $int,  // derived: date of rev 0 (except old ABXD dbs don't fill it)
+					'editdate' => $int,  // derived: MAX(date, date of last revision)
 					'ip' => $ip,
-					'num' => $int,
+					'num' => $int,  // derived: number of post
 					'deleted' => $bool,
 					'deletedby' => $int,
 					'reason' => $text,
 					'options' => $int,
 					'mood' => $int,
-					'currentrevision' => $int,
+					'currentrevision' => $int,  // derived: MAX of revision ids
 				),
 				'keys' => array
 				(
@@ -469,14 +452,17 @@ class Schema
 					'pid' => $int,
 					'text' => $textLong,
 					'revision' => $int,
-					'user' => $int,
-					'date' => $int,
+					'user' => $int,  // Not filled in old ABXD versions
+					'date' => $int,  // Not filled in old ABXD versions
 				),
 				'keys' => array
 				(
 					array(
 						'fields' => array('pid', 'revision'),
 						'type' => 'primary',
+					),
+					array(
+						'fields' => array('pid'),
 					),
 				),
 			),
@@ -568,17 +554,17 @@ class Schema
 					'forum' => $int,
 					'user' => $int,
 					'date' => $int,
-					'firstpostid' => $int,
+					'firstpostid' => $int,  // derived
 					'views' => $int,
 					'title' => self::varchar(128),
 					'icon' => self::varchar(256),
-					'replies' => $int,
-					'lastpostdate' => $int,
-					'lastposter' => $int,
-					'lastpostid' => $int,
+					'replies' => $int,  // derived
+					'lastpostdate' => $int,  // derived
+					'lastpostuser' => $int,  // derived
+					'lastpostid' => $int,  // derived
 					'closed' => $bool,
 					'sticky' => $bool,
-					'poll' => $int,
+					'poll' => $int,  // 0 if no poll, poll ID otherwise 
 				),
 				'keys' => array
 				(

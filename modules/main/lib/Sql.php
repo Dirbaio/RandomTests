@@ -93,6 +93,12 @@ class Sql
 		return $res[0][0];
 	}
 
+	public static function queryAffected()
+	{
+		$res = self::query(func_get_args());
+		return $res->rowCount();
+	}
+
 	public static function querySingle()
 	{
 		$stmt = self::query(func_get_args());

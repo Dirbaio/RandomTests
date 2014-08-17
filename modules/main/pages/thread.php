@@ -84,9 +84,13 @@ function request($id, $from=0)
 	// Set read date to the max date of the posts displayed in this page.
 	// If the user is not viewing the last page, he will still see the unread marker.
 	$readdate = 0;
-	foreach($posts as $post)
-		if($post['date'] > $readdate)
-			$readdate = $post['date'];
+	foreach($posts as $post) {
+		$readdate = max($readdate, $post['date']);
+
+		//Last post's editdate also counts.
+		if($post['id'] == $thread['lastpostid'])
+			$readdate = max($readdate, $post['editdate']);
+	}
 
 	Sql::query(
 		'INSERT INTO {threadsread} (id,thread,date) VALUES (?,?,?)

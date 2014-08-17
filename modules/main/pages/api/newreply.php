@@ -24,7 +24,7 @@ function request($text='', $tid=0)
 
 		//If it looks similar to this one, assume the user has double-clicked the button.
 		if($lastPost["thread"] == $tid)
-			json($lastPost['id']);
+			json(Url::format('/post/#', $lastPost['id']));
 
 		fail(__("You're going too damn fast! Slow down a little."));
 	}
@@ -34,8 +34,8 @@ function request($text='', $tid=0)
 	Sql::query('UPDATE {users} set posts=posts+1, lastposttime=? WHERE id=?',
 		time(), Session::id());
 
-	Sql::query("INSERT INTO {posts} (thread, user, date, ip, num) VALUES (?,?,?,?,?)",
-		$tid, Session::id(), $now, $_SERVER['REMOTE_ADDR'], Session::get('posts')+1);
+	Sql::query("INSERT INTO {posts} (thread, user, date, editdate, ip, num) VALUES (?,?,?,?,?,?)",
+		$tid, Session::id(), $now, $now, $_SERVER['REMOTE_ADDR'], Session::get('posts')+1);
 
 	$pid = Sql::insertId();
 
