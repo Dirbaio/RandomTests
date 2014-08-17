@@ -42,17 +42,31 @@ function request($id)
 		default: $ctype='application/force-download'; break;
 	} 
 
-	header('Pragma: public');
-	header('Expires: 0');
-	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-	header('Cache-Control: private', false);
-	header('Content-Type: '.$ctype);
-	if($download)
-		header('Content-Disposition: attachment; filename=\''.$file['name'].'\';');
-	else
-		header('Content-Disposition: filename=\''.$file['name'].'\'');
-	header('Content-Transfer-Encoding: binary');
-	header('Content-Length: '.$fsize);
 
-	readfile($path);
+	$maxage = 60*60*24*30;  // 1 month
+	$etag = $file['hash'];
+
+	header('Pragma: public');
+	header('Expires: '.gmdate('D, d M Y H:i:s ',time()+$maxage) . 'GMT');
+	header('Cache-Control: public, max-age='.$maxage);
+
+	if (isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
+		trim($_SERVER['HTTP_IF_NONE_MATCH'], "'\" ") == $etag)
+	{
+	    header('HTTP/1.1 304 Not Modified');
+	}
+	else
+	{
+		header('Content-Type: '.$ctype);
+		if($download)
+			header('Content-Disposition: attachment; filename=\''.$file['name'].'\';');
+		else
+			header('Content-Disposition: filename=\''.$file['name'].'\'');
+		header('Content-Transfer-Encoding: binary');
+		header('Content-Length: '.$fsize);
+
+	    header("ETag: \"{$etag}\"");
+		readfile($path);
+	}
+
 }
