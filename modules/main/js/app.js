@@ -2,7 +2,6 @@
 
 angular.module('app', [
 	'monospaced.elastic',
-	'ngCookies',
 	'angularFileUpload'
 ])
 
