@@ -552,8 +552,8 @@ class Schema
 				(
 					'id' => $AI,
 					'forum' => $int,
-					'user' => $int,
-					'date' => $int,
+					'user' => $int,  // derived
+					'date' => $int,  // derived
 					'firstpostid' => $int,  // derived
 					'views' => $int,
 					'title' => self::varchar(128),

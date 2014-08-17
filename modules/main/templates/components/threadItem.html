@@ -1,3 +1,10 @@
+{% if thread.restricted %}
+<tr class="cell{{ loop.index%2 }}">
+	<td colspan="7">
+		(In a restricted forum)
+	</td>
+</tr>
+{% else %}
 <tr class="cell{{ loop.index%2 }}">
 	<td class="cell2 threadIcon fulllink">
 		{% set newicon='' %}
@@ -29,6 +36,9 @@
 				<img src="{{ modulefile('/img/poll.png') }}"/>
 			{% endif %}
 		 	{{ thread.title | e }}
+			{% if showForum %}
+				<br><span class="nolink">in {{thread.f.title}}</span>
+			{% endif %}
 		 </a>
 	</td>
 	<td class="center fulllink">
@@ -47,3 +57,4 @@
 		</a>
 	</td>
 </tr>
+{% endif %}

@@ -1,7 +1,10 @@
 <table class="outline margin width100">
-{% import 'components/threadHeader.html' %}
+{% include 'components/threadHeader.html' %}
 
 {% for thread in threads %}
-	{% import 'components/threadItem.html' %}
+	{% if thread.f %}
+		{% set forum = thread.f %}
+	{% endif %}
+	{% include 'components/threadItem.html' %}
 {% endfor %}
 </table>

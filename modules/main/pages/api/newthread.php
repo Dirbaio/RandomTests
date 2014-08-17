@@ -73,8 +73,8 @@ function request($fid, $title='', $text='', $poll=false, $pollquestion='', $poll
 		$pid, $text, 0, Session::id(), $now);
 
 	//Update counters
-	Sql::query('UPDATE {threads} SET firstpostid=?, lastpostid=? where id=?',
-		$pid, $pid, $tid);
+	Sql::query('UPDATE {threads} SET firstpostid=?, lastpostid=?, date=? where id=?',
+		$pid, $pid, $now, $tid);
 
 	Sql::query('UPDATE {forums} SET numposts=numposts+1, numthreads=numthreads+1, lastpostdate=?, lastpostuser=?, lastpostid=? where id=?',
 		$now, Session::id(), $pid, $fid);

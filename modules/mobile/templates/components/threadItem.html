@@ -20,7 +20,11 @@
 				<img src="{{ modulefile('/img/poll.png') }}"/>
 			{% endif %}
 			{{ thread.title | e }}<br>
-			<span class="nolink">by</span> {{ usertext(thread.su) }}
+			{% if showForum %}
+				<span class="nolink">in {{thread.f.title}}</span>
+			{% else %}
+				<span class="nolink">by</span> {{ usertext(thread.su) }}
+			{% endif %}
 		 </a>
 	</td>
 	<td class="smallFonts center fulllink">

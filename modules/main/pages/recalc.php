@@ -32,7 +32,6 @@ function request()
 	// post num (This is not working, no idea how to do it easily)
 	//UPDATE posts p SET num = (SELECT COUNT(*) FROM posts p2 WHERE p2.user = p.user AND p2.id <= p.id)
 
-	// post currentrevision
 	fix('Post currentrevision', 
 		'UPDATE posts p
 		SET currentrevision=(
@@ -40,7 +39,6 @@ function request()
 			FROM posts_text pt 
 			WHERE pt.pid = p.id)');
 
-	// post editdate
 	fix('Post editdate', 
 		'UPDATE posts p
 		SET editdate=GREATEST(p.date, (
@@ -53,13 +51,14 @@ function request()
 		'UPDATE {threads} t
 		SET replies = (SELECT COUNT(*) FROM {posts} p WHERE p.thread = t.id) - 1');
 
-	fix('Thread first post id', 
+	fix('Thread first post id, date, user', 
 		'UPDATE threads t 
 		LEFT JOIN (
 			SELECT thread, MIN(id) as minid
 			FROM posts
 			GROUP BY thread) AS tmp ON tmp.thread = t.id
-		SET firstpostid=tmp.minid');
+		LEFT JOIN {posts} p ON tmp.minid=p.id
+		SET t.firstpostid=p.id, t.date=p.date, t.user=p.user');
 
 	fix('Thread last post id,user,date', 
 		'UPDATE threads t 
