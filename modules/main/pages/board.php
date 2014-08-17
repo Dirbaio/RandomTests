@@ -59,6 +59,9 @@ function request()
 	$actionlinks = array(
 	);
 
+	if(Session::isLoggedIn())
+		$actionlinks[] = array('title' => __('Mark all as read'), 'ng' => 'doAction("/api/markasread", {fid: 0})');
+
 	renderPage('components/forumList.html', array(
 		'categories' => $categories,
 		'breadcrumbs' => $breadcrumbs, 

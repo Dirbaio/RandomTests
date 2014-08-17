@@ -117,6 +117,8 @@ function request($id, $from=0)
 
 	if(Permissions::canCreateThread($forum))
 		$actionlinks[] = array('url' => Url::format('/#-#/newthread', $forum['id'], $forum['title']), 'title' => __('Post thread'));
+	if(Session::isLoggedIn())
+		$actionlinks[] = array('title' => __('Mark as read'), 'ng' => 'doAction("/api/markasread", {fid: '.$fid.'})');
 
 	renderPage('forum.html', array(
 		'forum' => $forum, 
