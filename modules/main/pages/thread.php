@@ -53,9 +53,10 @@ function request($id, $from=0)
 		$links = array();
 		if($post['deleted'])
 		{
-			if(Permissions::canDeletePost($post, $thread, $forum)){
-				$links[] = array('title' => __('View'));
-				$links[] = array('title' => __('Undelete'));
+			if(Permissions::canDeletePost($post, $thread, $forum))
+			{
+				//$links[] = array('title' => __('View'));
+				$links[] = array('title' => __('Undelete'), 'ng' => 'deletePost('.$post['id'].', 0)');
 			}
 		}
 		else
@@ -67,7 +68,7 @@ function request($id, $from=0)
 			if(Permissions::canEditPost($post, $thread, $forum))
 				$links[] = array('title' => __('Edit'), 'url' => Url::format('/post/#/edit', $post['id']));
 			if(Permissions::canDeletePost($post, $thread, $forum))
-				$links[] = array('title' => __('Delete'));
+				$links[] = array('title' => __('Delete'), 'ng' => 'deletePost('.$post['id'].', 1)');
 		}
 
 		$post['links'] = $links;
@@ -84,7 +85,8 @@ function request($id, $from=0)
 	// Set read date to the max date of the posts displayed in this page.
 	// If the user is not viewing the last page, he will still see the unread marker.
 	$readdate = 0;
-	foreach($posts as $post) {
+	foreach($posts as $post)
+	{
 		$readdate = max($readdate, $post['date']);
 
 		//Last post's editdate also counts.

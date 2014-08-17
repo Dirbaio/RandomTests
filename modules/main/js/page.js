@@ -23,4 +23,17 @@ angular.module('app')
 		setCookie("mobileversion", enabled, 20*365*24*60*60, "/");
 		$window.location.reload();
 	}
+
+	$scope.deletePost = function(pid, del) {
+		var reason = '';
+		if(del)
+			reason = prompt("Enter a reason for deletion:");
+		
+		if(reason === null)
+			return;
+
+		ajax('/api/deletepost', {pid: pid, del:del, reason:reason}, function(redirect) {
+			window.location = redirect;
+		});
+	}
 })
