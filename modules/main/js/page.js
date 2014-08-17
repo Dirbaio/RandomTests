@@ -30,7 +30,7 @@ angular.module('app')
 		if(reason === null)
 			return;
 
-		$scope.doAction('/api/deletepost', {pid: pid, del:del, reason:reason});
+		$scope.doAction('/api/deletepost', {pid: pid, del:1, reason:reason});
 	}
 
 	$scope.renameThread = function(tid) {

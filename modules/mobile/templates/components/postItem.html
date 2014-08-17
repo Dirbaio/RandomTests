@@ -2,103 +2,41 @@
 
 <a name="{{post.id}}"></a>
 
-{% if post.restricted %}
-	<table class="outline margin mobile-postBox" id="post{{ post.id }}">
-		<tr class="header0 mobile-postHeader">
-			<th>
-				<table>
-					<tr>
-						<td>
-							<div class="mobile-userAvatarBox">
-								<img src="/avatar/{{ post.userposted.id }}" alt="" style="max-width: 40px; max-height: 40px;"/>
+<table class="outline margin mobile-postBox" id="post{{ post.id }}">
+	<tr class="header0 mobile-postHeader">
+		<th>
+			<table>
+				<tr>
+					<td>
+						<div class="mobile-userAvatarBox">
+							<img src="/avatar/{{ post.userposted.id }}" alt="" style="max-width: 40px; max-height: 40px;"/>
+						</div>
+					</td>
+					<td class="mobile-postInfoCell" style="width: 99%; overflow: hidden;">
+						<div style="position: relative; height: 40px; top: 0; left: 0;">
+							<div style="position: absolute; top: 0; left: 0;">
+								{{ userlink(post.userposted) }}<br>
+								<span class="date">
+									{% include 'components/postItemMeta.html' %}
+								</span>
 							</div>
-						</td>
-						<td class="mobile-postInfoCell" style="width: 99%; overflow: hidden;">
-							<div style="position: relative; height: 40px; top: 0; left: 0;">
-								<div style="position: absolute; top: 0; left: 0;">
-									{{ userlink(post.userposted) }}<br>
-									<span class="date">
-										(in a restricted forum)
-									</span>
-								</div>
-							</div>
-						</td>
-					</tr>
-				</table>
-			</th>
-		</tr>
-	</table>
-{% elseif post.deleted %}
-	<table class="outline margin mobile-postBox" id="post{{ post.id }}">
-		<tr class="header0 mobile-postHeader">
-			<th>
-				<table>
-					<tr>
-						<td>
-							<div class="mobile-userAvatarBox">
-								<img src="/avatar/{{ post.userposted.id }}" alt="" style="max-width: 40px; max-height: 40px;"/>
-							</div>
-						</td>
-						<td class="mobile-postInfoCell" style="width: 99%; overflow: hidden;">
-							<div style="position: relative; height: 40px; top: 0; left: 0;">
-								<div style="position: absolute; top: 0; left: 0;">
-									{{ userlink(post.userposted) }}<br>
-									<span class="date">
-										deleted
-										{%- if post.userdeleted.name %}
-											by {{userlink(post.userdeleted) -}}
-										{% endif %}
-										{%- if post.reason -%}
-											: {{ post.reason }}
-										{% endif %}
-									</span>
-								</div>
-							</div>
-							<span style="text-align:left; display: none;" id="dyna_{{post.id}}">
-								&nbsp;
-							</span>
-						</td>
-						<td>
-							{{ macros.list(post.links, '', 'pipemenu') }}
-						</td>
-					</tr>
-				</table>
-			</th>
-		</tr>
-	</table>
-{% else %}
-	<table class="outline margin mobile-postBox" id="post{{ post.id }}">
-		<tr class="header0 mobile-postHeader">
-			<th>
-				<table>
-					<tr>
-						<td>
-							<div class="mobile-userAvatarBox">
-								<img src="/avatar/{{ post.userposted.id }}" alt="" style="max-width: 40px; max-height: 40px;"/>
-							</div>
-						</td>
-						<td class="mobile-postInfoCell" style="width: 99%; overflow: hidden;">
-							<div style="position: relative; height: 40px; top: 0; left: 0;">
-								<div style="position: absolute; top: 0; left: 0;">
-									{{ userlink(post.userposted) }}<br>
-									<span class="date">Posted on {{ post.date | date }}</span>
-								</div>
-							</div>
-							<span style="text-align:left; display: none;" id="dyna_{{post.id}}">
-								&nbsp;
-							</span>
-						</td>
-						<td>
-							{{ macros.list(post.links, '', 'pipemenu') }}
-						</td>
-					</tr>
-				</table>
-			</th>
-		</tr>
-		<tr>
-			<td colspan="3" class="cell0 mobile-postBox">
-				{{post.text | cleanUpPost | raw}}
-			</td>
-		</tr>
-	</table>
-{% endif %}
+						</div>
+						<span style="text-align:left; display: none;" id="dyna_{{post.id}}">
+							&nbsp;
+						</span>
+					</td>
+					<td>
+						{{ macros.list(post.links, '', 'pipemenu') }}
+					</td>
+				</tr>
+			</table>
+		</th>
+	</tr>
+	{% if not post.deleted and not post.restricted %}
+	<tr>
+		<td colspan="3" class="cell0 mobile-postBox">
+			{{post.text | cleanUpPost | raw}}
+		</td>
+	</tr>
+	{% endif %}
+</table>

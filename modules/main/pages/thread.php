@@ -56,7 +56,7 @@ function request($id, $from=0)
 			if(Permissions::canDeletePost($post, $thread, $forum))
 			{
 				//$links[] = array('title' => __('View'));
-				$links[] = array('title' => __('Undelete'), 'ng' => 'deletePost('.$post['id'].', 0)');
+				$links[] = array('title' => __('Undelete'), 'ng' => 'doAction("api/deletepost", {pid:'.$post['id'].', del:0})');
 			}
 		}
 		else
