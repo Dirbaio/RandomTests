@@ -119,9 +119,22 @@ function request($id, $from=0)
 	);
 
 	$actionlinks = array(
-//		array('url' => Url::format('/#-#/newthread', $forum['id'], $forum['title']), 'title' => __('Post thread'))
 	);
 
+	if(Permissions::canMod($forum)) {
+		if($thread['closed'])
+			$actionlinks[] = array('title' => __('Open'), 'ng' => 'doAction("/api/openthread", {tid: '.$tid.'})');
+		else
+			$actionlinks[] = array('title' => __('Close'), 'ng' => 'doAction("/api/closethread", {tid: '.$tid.'})');
+
+		if($thread['sticky'])
+			$actionlinks[] = array('title' => __('Unstick'), 'ng' => 'doAction("/api/unstickthread", {tid: '.$tid.'})');
+		else
+			$actionlinks[] = array('title' => __('Stick'), 'ng' => 'doAction("/api/stickthread", {tid: '.$tid.'})');
+	}
+
+	if(Permissions::canEditThread($thread, $forum))
+		$actionlinks[] = array('title' => __('Rename'), 'ng' => 'renameThread('.$tid.')');
 
 	//Render page
 	renderPage('thread.html', array(

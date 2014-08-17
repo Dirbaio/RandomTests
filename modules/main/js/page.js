@@ -24,15 +24,26 @@ angular.module('app')
 		$window.location.reload();
 	}
 
-	$scope.deletePost = function(pid, del) {
-		var reason = '';
-		if(del)
-			reason = prompt("Enter a reason for deletion:");
+	$scope.deletePost = function(pid) {
+		var reason = prompt("Enter a reason for deletion:");
 		
 		if(reason === null)
 			return;
 
-		ajax('/api/deletepost', {pid: pid, del:del, reason:reason}, function(redirect) {
+		$scope.doAction('/api/deletepost', {pid: pid, del:del, reason:reason});
+	}
+
+	$scope.renameThread = function(tid) {
+		var name = prompt("Enter new thread name");
+		
+		if(name === null)
+			return;
+
+		$scope.doAction('/api/renamethread', {tid: tid, name: name});
+	}
+
+	$scope.doAction = function(api, args) {
+		ajax(api, args, function(redirect) {
 			window.location = redirect;
 		});
 	}
