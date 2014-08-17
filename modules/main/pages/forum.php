@@ -33,7 +33,7 @@ function request($id, $from=0)
 					WHERE p.thread=t.id AND IF(p.id = t.lastpostid, p.editdate, p.date) > IFNULL(tr.date, 0)
 				) numnew,
 				(
-					SELECT MAX(p.id)
+					SELECT MIN(p.id)
 					FROM {posts} p
 					WHERE p.thread=t.id AND IF(p.id = t.lastpostid, p.editdate, p.date) > IFNULL(tr.date, 0)
 				) idnew,
