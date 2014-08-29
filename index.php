@@ -33,17 +33,6 @@ else
 	ModuleHandler::loadModule('/modules/nsmbhd');
 
 
-// Set up stuff
-//============================
-
-Config::load(__DIR__.'/config.php');
-
-Sql::connect(Config::get('mysql'));
-
-session_start(); //For Csrf class
-Session::load();
-
-
 // Run the page
 //============================
 

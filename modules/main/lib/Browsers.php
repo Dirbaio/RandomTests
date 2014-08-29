@@ -144,4 +144,22 @@ class Browsers
 		}
 		return $version;
 	}
+
+	public static function isBot()
+	{
+		$bots = array(
+			"Microsoft URL Control",
+			"Yahoo! Slurp",
+			"Mediapartners-Google",
+			"Twiceler",
+			"facebook",
+			"bot","spider", //catch-all
+		);
+
+		foreach($bots as $bot)
+			if(strpos($_SERVER['HTTP_USER_AGENT'], $bot))
+				return true;
+		
+		return false;
+	}
 }

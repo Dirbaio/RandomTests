@@ -59,9 +59,11 @@ function request($id)
 	{
 		header('Content-Type: '.$ctype);
 		if($download)
-			header('Content-Disposition: attachment; filename=\''.$file['name'].'\';');
+			$type = 'attachment';
 		else
-			header('Content-Disposition: filename=\''.$file['name'].'\'');
+			$type = 'inline';
+
+		header('Content-Disposition: '.$type.'; filename="'.$file['name'].'";');
 		header('Content-Transfer-Encoding: binary');
 		header('Content-Length: '.$fsize);
 
