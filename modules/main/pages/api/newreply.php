@@ -45,7 +45,7 @@ function request($text='', $tid=0)
 	Sql::query("UPDATE {forums} SET numposts=numposts+1, lastpostdate=?, lastpostuser=?, lastpostid=? WHERE id=?",
 		$now, Session::id(), $pid, $fid);
 
-	Sql::query("UPDATE {threads} SET lastposter=?, lastpostdate=?, replies=replies+1, lastpostid=? WHERE id=?",
+	Sql::query("UPDATE {threads} SET lastpostuser=?, lastpostdate=?, replies=replies+1, lastpostid=? WHERE id=?",
 		Session::id(), $now, $pid, $tid);
 
 	//Erase the draft
