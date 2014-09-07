@@ -93,7 +93,7 @@ class Permissions
 			throw new Exception('You must pass a thread and its forum to canReply');
 
 		return self::canMod($forum, $user) || 
-			($thread['user'] == $user['id'] && canReply($thread, $forum, $user));
+			($thread['user'] == $user['id'] && self::canReply($thread, $forum, $user));
 	}
 
 	public static function assertCanEditThread($thread, $forum, $user = null)
