@@ -7,6 +7,10 @@ class Session
 
 	public static function load()
 	{
+		//delete expired sessions
+		Sql::query('DELETE FROM {sessions} WHERE expiration != 0 and expiration < ?',
+			time());
+
 		if(isset($_COOKIE[self::$cookieName]) && $_COOKIE[self::$cookieName])
 		{
 			$session = Sql::querySingle('SELECT * FROM sessions WHERE id=?', Util::hash($_COOKIE[self::$cookieName]));
