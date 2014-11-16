@@ -4,6 +4,7 @@ require(__DIR__.'/Browsers.php');
 require(__DIR__.'/Config.php');
 require(__DIR__.'/Csrf.php');
 require(__DIR__.'/Fetch.php');
+require(__DIR__.'/IpBan.php');
 require(__DIR__.'/OnlineUsers.php');
 require(__DIR__.'/Permissions.php');
 require(__DIR__.'/Records.php');
@@ -25,30 +26,6 @@ Sql::connect(Config::get('mysql'));
 session_start(); //For Csrf class
 Session::load();
 Records::update();
-OnlineUsers::update();
-
-// CHeck IP Bans
-function isIPBanned($ip)
-{
-	$rIPBan = Sql::query('SELECT * FROM {ipbans} WHERE instr(?, ip)=1', $ip);
-	
-	$result = false;
-	while($ipban = Sql::fetch($rIPBan))
-	{
-		if (IPMatches($ip, $ipban['ip']))
-			if ($ipban['whitelisted'])
-				return false;
-			else
-				$result = $ipban;
-	}
-	return $result;
-}
-
-function IPMatches($ip, $mask) {
-	return $ip === $mask || $mask[strlen($mask) - 1] === '.';
-}
-
-$ipban = isIPBanned($_SERVER['REMOTE_ADDR']);
-
-if($ipban)
-	fail('You\'re banned.');
+IpBan::check();
+// OnlineUsers update is called after running the page
+//OnlineUsers::update();

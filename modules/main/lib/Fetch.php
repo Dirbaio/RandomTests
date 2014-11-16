@@ -9,7 +9,7 @@ class Fetch
 			return $res;
 
 		if($fail)
-			fail(__('Unknown thread ID.'));
+			fail(__('Unknown forum ID.'));
 		else
 			return null;
 	}
@@ -39,7 +39,7 @@ class Fetch
 			return $res;
 
 		if($fail)
-			fail(__('Unknown thread ID.'));
+			fail(__('Unknown post ID.'));
 		else
 			return null;
 	}
@@ -51,7 +51,7 @@ class Fetch
 			return $res;
 
 		if($fail)
-			fail(__('Unknown thread ID.'));
+			fail(__('Unknown user ID.'));
 		else
 			return null;
 	}

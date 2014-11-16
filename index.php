@@ -87,6 +87,19 @@ function renderPage($template, $vars)
 			array('url' => '/login', 'title' => __('Log in')),
 		);
  
+ 	$onlineFid = 0;
+ 	if(isset($vars['forum']))
+ 		$onlineFid = $vars['forum']['id'];
+
+ 	global $is404;
+ 	if($is404) {
+	    header('HTTP/1.0 404 Not Found');
+	    header('Status: 404 Not Found');
+ 		$onlineFid = -1;
+ 	}
+ 	else
+ 		ViewCounter::get();
+
 	$layout = array(
 		'template' => $template,
 		'css' => ModuleHandler::toWebPath(ModuleHandler::getFilesMatching('/css/**.css')),
@@ -95,10 +108,11 @@ function renderPage($template, $vars)
 		'pora' => true,
 		'poratext' => 'Hello World',
 		'poratitle' => 'ASDF',
-		'views' => 12345678,
+		'views' => Records::getViewCounter(),
 		'user' => $user,
 		'navigation' => $navigation,
 		'userpanel' => $userpanel,
+		'onlineUsers' => OnlineUsers::update($onlineFid)
 	);
 	$vars['layout'] = $layout;
 	$vars['loguser'] = Session::get();
@@ -174,8 +188,11 @@ function runPage()
 		}
 	}
 
-	if(!$foundPagefile)
+	if(!$foundPagefile) {
 		$foundPagefile = __DIR__.'/modules/main/pages/404.php';
+		global $is404;
+		$is404 = true;
+	}
 
 	$input['input'] = $input;
 

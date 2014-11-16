@@ -80,9 +80,14 @@ class Sql
 		}, $query);
 
 		//Prepare statement
-		$stmt = self::$db->prepare($query);
-		$stmt->execute($args);
-
+		try {
+			$stmt = self::$db->prepare($query);
+			$stmt->execute($args);
+		}
+		catch(PDOException $e) {
+			echo "SQL QUERY:", $query;
+			throw $e;
+		}
 		return $stmt;
 	}
 

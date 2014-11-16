@@ -182,19 +182,19 @@ class Schema
 			(
 				'fields' => array
 				(
-					'id' => $AI,
-					'ip' => $ip,
-					'date' => $int,
+					'lastip' => $ip,
+
+					'bot' => $bool,
+					'lastactivity' => $int,
 					'lasturl' => self::varchar(128),
 					'lastforum' => $int,
-					'useragent' => self::varchar(128),
-					'bot' => $bool,
+					'lastuseragent' => self::varchar(2048),
 				),
 				'keys' => array
 				(
-					$keyID,
 					array(
-						'fields' => array('ip'),
+						'fields' => array('lastip'),
+						'type' => 'primary'
 					),
 					array(
 						'fields' => array('bot'),
@@ -619,7 +619,6 @@ class Schema
 					),
 				),
 			),
-			/*
 			'users' => array
 			(
 				'fields' => array
@@ -641,7 +640,6 @@ class Schema
 					'sex' => $int,
 					'rankset' => self::varchar(128),
 					'realname' => self::varchar(64),
-					'lastknownbrowser' => $text,
 					'location' => self::varchar(128),
 					'birthday' => $int,
 					'email' => self::varchar(64),
@@ -652,6 +650,7 @@ class Schema
 					'lastip' => self::varchar(64),
 					'lasturl' => self::varchar(128),
 					'lastforum' => $int,
+					'lastuseragent' => $text,
 					'postsperpage' => $int,
 					'threadsperpage' => $int,
 					'timezone' => $float,
@@ -697,7 +696,6 @@ class Schema
 					),
 				),
 			),
-			*/
 			'uservotes' => array
 			(
 				'fields' => array

@@ -157,7 +157,10 @@ class SchemaUpdater
 					$found = true;
 
 			if(!$found)
-				$alters[] = "DROP KEY $keyName";
+				if($keyName == 'PRIMARY')
+					$alters[] = "DROP PRIMARY KEY";
+				else
+					$alters[] = "DROP KEY $keyName";
 		}
 
 		if(!is_array($keys))

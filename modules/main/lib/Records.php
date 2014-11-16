@@ -40,6 +40,13 @@ class Records
 				'UPDATE misc SET maxpostsday = ?, maxpostsdaydate = ?',
 				$records['day'], time());
 
-		Sql::query('UPDATE misc SET views=views+1');
+		if(!Browsers::isBot())
+			Sql::query('UPDATE misc SET views=views+1');
+	}
+
+	public static function getViewCounter()
+	{
+		return Sql::queryValue("SELECT views FROM {misc}");
 	}
 }
+
