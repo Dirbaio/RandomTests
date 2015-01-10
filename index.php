@@ -29,9 +29,9 @@ ModuleHandler::loadModule('/url_styles/simple');
 ModuleHandler::loadModule('/themes/cheese');
 
 if(isset($_COOKIE['mobileversion']) && $_COOKIE['mobileversion'] && $_COOKIE['mobileversion'] != 'false')
-	ModuleHandler::loadModule('/modules/mobile');
+	ModuleHandler::loadModule('/layouts/mobile');
 else
-	ModuleHandler::loadModule('/modules/nsmbhd');
+	ModuleHandler::loadModule('/layouts/nsmbhd');
 
 // Run the page
 //============================
