@@ -136,10 +136,9 @@ function renderPage($template, $vars)
 
 }
 
-function runPage()
+function runPage($path)
 {
 	$pages = getPages();
-	$path = UrlStyle::getPath();
 
 	//Kill trailing and extra slashes.
 	$origpath = $path;
@@ -225,7 +224,7 @@ function runPage()
 
 try
 {
-	runPage();
+	runPage(UrlStyle::getPath());
 }
 catch(Exception $e)
 {
