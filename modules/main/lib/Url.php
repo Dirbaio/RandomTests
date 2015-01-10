@@ -4,8 +4,7 @@ class Url
 {
 	public static function getPath()
 	{
-		global $urlHandler;
-		return $urlHandler->getPath();
+		return UrlStyle::getPath();
 	}
 
 	public static function slugify($urlname)
@@ -42,18 +41,16 @@ class Url
 
 	public static function format()
 	{
-		global $urlHandler;
 		$path = self::formatPath(func_get_args());
-		return $urlHandler->getUrlForPath($path);
+		return UrlStyle::getUrlForPath($path);
 	}
 
 	public static function setCanonicalUrl()
 	{
-		global $urlHandler;
 		$path = self::formatPath(func_get_args());
 		$currUrl = self::getPath();
 		if($currUrl !== $path)
-			self::redirect($urlHandler->getUrlForPath($path));
+			self::redirect(UrlStyle::getUrlForPath($path));
 	}
 
 
