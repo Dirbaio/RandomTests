@@ -31,8 +31,12 @@
 				</td>
 				<td class="smallFonts center fulllink">
 					<a class="nolink" href='/post/{{forum.lastpostid}}'>
-						{{forum.lastpostdate | date}}<br />
-						by {{usertext(forum.lu)}}
+						{% if forum.lastpostdate %}
+							{{forum.lastpostdate | date}}<br />
+							by {{usertext(forum.lu)}}
+						{% else %}
+							None
+						{% endif %}
 					</a>
 				</td>
 			</tr>
