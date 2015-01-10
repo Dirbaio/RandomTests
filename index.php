@@ -22,18 +22,16 @@ register_shutdown_function('my_error_handler');
 //============================
 
 require(__DIR__.'/ModuleHandler.php');
-require(__DIR__.'/UrlHandler.php');
 require(__DIR__.'/vendor/autoload.php');
 ModuleHandler::init();
 ModuleHandler::loadModule('/modules/main');
+ModuleHandler::loadModule('/url_styles/simple');
 ModuleHandler::loadModule('/themes/cheese');
 
 if(isset($_COOKIE['mobileversion']) && $_COOKIE['mobileversion'] && $_COOKIE['mobileversion'] != 'false')
 	ModuleHandler::loadModule('/modules/mobile');
 else
 	ModuleHandler::loadModule('/modules/nsmbhd');
-
-$urlHandler = new SimpleUrlHandler();
 
 // Run the page
 //============================
@@ -140,9 +138,8 @@ function renderPage($template, $vars)
 
 function runPage()
 {
-	global $urlHandler;
 	$pages = getPages();
-	$path = $urlHandler->getPath();
+	$path = UrlStyle::getPath();
 
 	//Kill trailing and extra slashes.
 	$origpath = $path;

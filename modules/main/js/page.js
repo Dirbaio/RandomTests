@@ -3,7 +3,6 @@
 angular.module('app')
 
 .controller('PageCtrl', function($scope, $window, ajax) {
-		
 	function setCookie(sKey, sValue, vEnd, sPath, sDomain, bSecure) {  
 		if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/.test(sKey)) { return; }  
 		var sExpires = "";  

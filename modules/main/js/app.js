@@ -9,11 +9,11 @@ angular.module('app', [
 	$interpolateProvider.startSymbol('{[').endSymbol(']}');
 })
 
-.factory('ajax', function($http) {
+.factory('ajax', function($http, urlStyle) {
 	return function (path, param, callback, error) {
 		$http({
 			method: 'POST',
-			url: path,
+			url: urlStyle(path),
 			data: angular.toJson(param),
 			transformResponse: []
 		})
