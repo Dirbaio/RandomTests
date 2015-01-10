@@ -1,8 +1,8 @@
 <?php 
-//page /members/#id/threads
-//page /members/#id-:/threads
-//page /members/#id/threads/p#from
-//page /members/#id-:/threads/p#from
+//page /u#id/threads
+//page /u#id-:/threads
+//page /u#id/threads/p#from
+//page /u#id-:/threads/p#from
 
 //ABXD LEGACY
 //page /listthreads/#id
@@ -14,9 +14,9 @@ function request($id, $from=0)
 	$user = Fetch::user($id);
 
 	if($from)
-		Url::setCanonicalUrl('/members/#-#/threads/p#', $user['id'], $user['name'], $from);
+		Url::setCanonicalUrl('/u#-:/threads/p#', $user['id'], $user['name'], $from);
 	else
-		Url::setCanonicalUrl('/members/#-#/threads', $user['id'], $user['name']);
+		Url::setCanonicalUrl('/u#-:/threads', $user['id'], $user['name']);
 
 
 	$tpp = 50;
@@ -47,7 +47,7 @@ function request($id, $from=0)
 			WHERE user=?
 			ORDER BY date ASC 
 			LIMIT ?, ?', 
-			Session::id(), $id, $from, $tpp);
+			Session::id(), $user['id'], $from, $tpp);
 	else
 		$threads = Sql::queryAll(
 			'SELECT
@@ -64,7 +64,7 @@ function request($id, $from=0)
 			WHERE user=?
 			ORDER BY date ASC 
 			LIMIT ?, ?', 
-			$id, $from, $tpp);
+			$user['id'], $from, $tpp);
 
 	// Permissions
 	foreach($threads as &$thread)
@@ -72,12 +72,12 @@ function request($id, $from=0)
 			$thread['restricted'] = true;
 	unset($thread);
 
-	$total = Sql::queryValue('SELECT COUNT(*) FROM {threads} WHERE user=?', $id);
+	$total = Sql::queryValue('SELECT COUNT(*) FROM {threads} WHERE user=?', $user['id']);
 
 	$breadcrumbs = array(
 		array('url' => Url::format('/members'), 'title' => __("Members")),
 		array('user' => $user),
-		array('url' => Url::format('/members/#-#/threads', $user['id'], $user['name']), 'title' => __('Threads'), 'weak' => true),
+		array('url' => Url::format('/u#-:/threads', $user['id'], $user['name']), 'title' => __('Threads'), 'weak' => true),
 	);
 
 	$actionlinks = array();
@@ -90,7 +90,7 @@ function request($id, $from=0)
 			'perpage' => $tpp,
 			'from' => $from,
 			'total' => $total,
-			'base' => Url::format('/members/#-#/threads', $user['id'], $user['name']),
+			'base' => Url::format('/u#-:/threads', $user['id'], $user['name']),
 		),
 		'breadcrumbs' => $breadcrumbs, 
 		'actionlinks' => $actionlinks,

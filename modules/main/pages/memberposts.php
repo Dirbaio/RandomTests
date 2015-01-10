@@ -1,8 +1,8 @@
 <?php 
-//page /members/#id/posts
-//page /members/#id-:/posts
-//page /members/#id/posts/p#from
-//page /members/#id-:/posts/p#from
+//page /u#id/posts
+//page /u#id-:/posts
+//page /u#id/posts/p#from
+//page /u#id-:/posts/p#from
 
 //ABXD LEGACY
 //page /listposts/#id
@@ -14,9 +14,9 @@ function request($id, $from=0)
 	$user = Fetch::user($id);
 
 	if($from)
-		Url::setCanonicalUrl('/members/#-#/posts/p#', $user['id'], $user['name'], $from);
+		Url::setCanonicalUrl('/u#-:/posts/p#', $user['id'], $user['name'], $from);
 	else
-		Url::setCanonicalUrl('/members/#-#/posts', $user['id'], $user['name']);
+		Url::setCanonicalUrl('/u#-:/posts', $user['id'], $user['name']);
 
 	$ppp = 20;
 
@@ -47,7 +47,7 @@ function request($id, $from=0)
 	$breadcrumbs = array(
 		array('url' => Url::format('/members'), 'title' => __("Members")),
 		array('user' => $user),
-		array('url' => Url::format('/members/#-#/posts', $user['id'], $user['name']), 'title' => __('Posts'), 'weak' => true),
+		array('url' => Url::format('/u#-:/posts', $user['id'], $user['name']), 'title' => __('Posts'), 'weak' => true),
 	);
 
 	$actionlinks = array();
@@ -60,7 +60,7 @@ function request($id, $from=0)
 			'perpage' => $ppp,
 			'from' => $from,
 			'total' => $user['posts'],
-			'base' => Url::format('/members/#-#/posts', $user['id'], $user['name']),
+			'base' => Url::format('/u#-:/posts', $user['id'], $user['name']),
 		),
 		'breadcrumbs' => $breadcrumbs, 
 		'actionlinks' => $actionlinks,

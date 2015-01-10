@@ -22,6 +22,7 @@ register_shutdown_function('my_error_handler');
 //============================
 
 require(__DIR__.'/ModuleHandler.php');
+require(__DIR__.'/UrlHandler.php');
 require(__DIR__.'/vendor/autoload.php');
 ModuleHandler::init();
 ModuleHandler::loadModule('/modules/main');
@@ -32,6 +33,7 @@ if(isset($_COOKIE['mobileversion']) && $_COOKIE['mobileversion'] && $_COOKIE['mo
 else
 	ModuleHandler::loadModule('/modules/nsmbhd');
 
+$urlHandler = new SimpleUrlHandler();
 
 // Run the page
 //============================
@@ -61,15 +63,23 @@ function getPages()
 	return $pages;
 }
 
+function getBase() {
+	$base = $_SERVER["DOCUMENT_URI"];
+	$idx = strrpos($base, '/');
+	if($idx !== false)
+		$base = substr($base, 0, $idx+1);
+	return $base;
+}
+
 function renderPage($template, $vars)
 {
 	$navigation = array(
-		array('url' => '/', 'title' => __('Main')),
-		array('url' => '/members', 'title' => __('Members')),
-		array('url' => '/online', 'title' => __('Online users')),
-		array('url' => '/search', 'title' => __('Search')),
-		array('url' => '/lastposts', 'title' => __('Last posts')),
-		array('url' => '/faq', 'title' => __('FAQ/Rules')),
+		array('url' => Url::format('/'), 'title' => __('Main')),
+		array('url' => Url::format('/members'), 'title' => __('Members')),
+		array('url' => Url::format('/online'), 'title' => __('Online users')),
+		array('url' => Url::format('/search'), 'title' => __('Search')),
+		array('url' => Url::format('/lastposts'), 'title' => __('Last posts')),
+		array('url' => Url::format('/faq'), 'title' => __('FAQ/Rules')),
 	);
 
 	$user = Session::get();
@@ -77,14 +87,14 @@ function renderPage($template, $vars)
 	if($user)
 		$userpanel = array(
 			array('user' => $user),
-			array('url' => Url::format('/members/#-#/edit', $user['id'], $user['name']), 'title' => __('Edit profile')),
-			array('url' => '/private', 'title' => __('Private messages')),
-			array('url' => '/logout', 'title' => __('Log out')),
+			array('url' => Url::format('/u#-:/edit', $user['id'], $user['name']), 'title' => __('Edit profile')),
+			array('url' => Url::format('/u#-:/messages', $user['id'], $user['name']), 'title' => __('Messages')),
+			array('url' => Url::format('/logout'), 'title' => __('Log out')),
 		);
 	else
 		$userpanel = array(
-			array('url' => '/register', 'title' => __('Register')),
-			array('url' => '/login', 'title' => __('Log in')),
+			array('url' => Url::format('/register'), 'title' => __('Register')),
+			array('url' => Url::format('/login'), 'title' => __('Log in')),
 		);
  
  	$onlineFid = 0;
@@ -97,8 +107,6 @@ function renderPage($template, $vars)
 	    header('Status: 404 Not Found');
  		$onlineFid = -1;
  	}
- 	else
- 		ViewCounter::get();
 
 	$layout = array(
 		'template' => $template,
@@ -112,7 +120,8 @@ function renderPage($template, $vars)
 		'user' => $user,
 		'navigation' => $navigation,
 		'userpanel' => $userpanel,
-		'onlineUsers' => OnlineUsers::update($onlineFid)
+		'onlineUsers' => OnlineUsers::update($onlineFid),
+		'base' => getBase(),
 	);
 	$vars['layout'] = $layout;
 	$vars['loguser'] = Session::get();
@@ -131,8 +140,9 @@ function renderPage($template, $vars)
 
 function runPage()
 {
+	global $urlHandler;
 	$pages = getPages();
-	$path = Url::getPath();
+	$path = $urlHandler->getPath();
 
 	//Kill trailing and extra slashes.
 	$origpath = $path;
@@ -164,7 +174,7 @@ function runPage()
 			function($matches) use (&$names) 
 			{
 				if($matches[1] == '#')
-					$regex = '[0-9]+';
+					$regex = '-?[0-9]+';
 				else if($matches[1] == '$')
 					$regex = '[^/]+';
 				else

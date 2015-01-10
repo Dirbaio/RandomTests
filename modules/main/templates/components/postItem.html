@@ -26,7 +26,7 @@
 				<img src="/avatar/{{post.userposted.id}}" alt="" /><br />
 			{% endif %}
 			Karma: {{post.userposted.karma}}<br />
-			Posts: {{post.num}}/{{post.userposted.posts}}<br />
+			Posts: {% if post.num %}{{post.num}}/{% endif %}{{post.userposted.posts}}<br />
 			Since: {{post.userposted.regdate | date}}<br />
 		</td>
 		<td class="post mainbar{{post.userposted.id}}" id="post_{{post.id}}">

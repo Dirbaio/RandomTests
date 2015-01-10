@@ -15,7 +15,7 @@ function request($id, $from=0)
 	Permissions::assertCanViewForum($forum);
 	Permissions::assertCanCreateThread($forum);
 
-	Url::setCanonicalUrl('/#-#/newthread', $forum['id'], $forum['title']);
+	Url::setCanonicalUrl('/#-:/newthread', $forum['id'], $forum['title']);
 
 	// Retrieve the draft.
 	$draft = Fetch::draft(1, $fid);
@@ -23,8 +23,8 @@ function request($id, $from=0)
 
 
 	$breadcrumbs = array(
-		array('url' => Url::format('/#-#', $forum['id'], $forum['title']), 'title' => $forum['title']),
-		array('url' => Url::format('/#-#/newthread', $forum['id'], $forum['title']), 'title' => __('New thread'), 'weak' => true)
+		array('url' => Url::format('/#-:', $forum['id'], $forum['title']), 'title' => $forum['title']),
+		array('url' => Url::format('/#-:/newthread', $forum['id'], $forum['title']), 'title' => __('New thread'), 'weak' => true)
 	);
 
 	$actionlinks = array(

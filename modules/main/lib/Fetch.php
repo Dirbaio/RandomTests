@@ -44,6 +44,28 @@ class Fetch
 			return null;
 	}
 
+	public static function message($id, $fail = true)
+	{
+		$res = Sql::querySingle(
+			'SELECT p.*, pt.*,
+			ufrom.(_userfields,rankset,title,picture,posts,postheader,signature,signsep,lastposttime,lastactivity,regdate,globalblock),
+			uto.(_userfields)
+			FROM {pmsgs} p
+			LEFT JOIN {pmsgs_text} pt on pt.pid = p.id
+			LEFT JOIN {users} ufrom ON ufrom.id=p.userfrom
+			LEFT JOIN {users} uto ON uto.id=p.userto
+			WHERE p.id=?', 
+			$id);
+
+		if($res)
+			return $res;
+
+		if($fail)
+			fail(__('Unknown message ID.'));
+		else
+			return null;
+	}
+
 	public static function user($id, $fail = true)
 	{
 		$res = Sql::querySingle('SELECT * FROM {users} WHERE id=?', $id);

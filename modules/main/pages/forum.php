@@ -17,9 +17,9 @@ function request($id, $from=0)
 	Permissions::assertCanViewForum($forum);
 
 	if($from == 0)
-		Url::setCanonicalUrl('/#-#', $forum['id'], $forum['title']);
+		Url::setCanonicalUrl('/#-:', $forum['id'], $forum['title']);
 	else
-		Url::setCanonicalUrl('/#-#/p#', $forum['id'], $forum['title'], $from);
+		Url::setCanonicalUrl('/#-:/p#', $forum['id'], $forum['title'], $from);
 
 	$tpp = 50;
 
@@ -109,14 +109,14 @@ function request($id, $from=0)
 	);
 
 	$breadcrumbs = array(
-		array('url' => Url::format('/#-#', $forum['id'], $forum['title']), 'title' => $forum['title'])
+		array('url' => Url::format('/#-:', $forum['id'], $forum['title']), 'title' => $forum['title'])
 	);
 
 	$actionlinks = array(
 	);
 
 	if(Permissions::canCreateThread($forum))
-		$actionlinks[] = array('url' => Url::format('/#-#/newthread', $forum['id'], $forum['title']), 'title' => __('Post thread'));
+		$actionlinks[] = array('url' => Url::format('/#-:/newthread', $forum['id'], $forum['title']), 'title' => __('Post thread'));
 	if(Session::isLoggedIn())
 		$actionlinks[] = array('title' => __('Mark as read'), 'ng' => 'doAction("/api/markasread", {fid: '.$fid.'})');
 
@@ -129,7 +129,7 @@ function request($id, $from=0)
 			'perpage' => $tpp,
 			'from' => $from,
 			'total' => $forum['numthreads'],
-			'base' => Url::format('/#-#', $forum['id'], $forum['title']),
+			'base' => Url::format('/#-:', $forum['id'], $forum['title']),
 		),
 		'breadcrumbs' => $breadcrumbs, 
 		'actionlinks' => $actionlinks,

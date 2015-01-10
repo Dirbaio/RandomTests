@@ -24,9 +24,9 @@ function request($id, $from=0)
 	Permissions::assertCanViewForum($forum);
 
 	if($from == 0)
-		Url::setCanonicalUrl('/#-#/#-#', $forum['id'], $forum['title'], $thread['id'], $thread['title']);
+		Url::setCanonicalUrl('/#-:/#-:', $forum['id'], $forum['title'], $thread['id'], $thread['title']);
 	else
-		Url::setCanonicalUrl('/#-#/#-#/p#', $forum['id'], $forum['title'], $thread['id'], $thread['title'], $from);
+		Url::setCanonicalUrl('/#-:/#-:/p#', $forum['id'], $forum['title'], $thread['id'], $thread['title'], $from);
 
 	$ppp = 20;
 
@@ -114,8 +114,8 @@ function request($id, $from=0)
 
 	//Layout stuff
 	$breadcrumbs = array(
-		array('url' => Url::format('/#-#', $forum['id'], $forum['title']), 'title' => $forum['title']),
-		array('url' => Url::format('/#-#/#-#', $forum['id'], $forum['title'], $thread['id'], $thread['title']), 'title' => $thread['title']),
+		array('url' => Url::format('/#-:', $forum['id'], $forum['title']), 'title' => $forum['title']),
+		array('url' => Url::format('/#-:/#-:', $forum['id'], $forum['title'], $thread['id'], $thread['title']), 'title' => $thread['title']),
 	);
 
 	$actionlinks = array(
@@ -148,7 +148,7 @@ function request($id, $from=0)
 			'perpage' => $ppp,
 			'from' => $from,
 			'total' => $thread['replies'] + 1, //+1 for the OP
-			'base' => Url::format('/#-#/#-#', $forum['id'], $forum['title'], $thread['id'], $thread['title']),
+			'base' => Url::format('/#-:/#-:', $forum['id'], $forum['title'], $thread['id'], $thread['title']),
 		),
 		'breadcrumbs' => $breadcrumbs, 
 		'actionlinks' => $actionlinks,

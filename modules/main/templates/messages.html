@@ -1,0 +1,26 @@
+<table class="outline margin width100">
+
+<tr class="header1">
+	<th>Title</th>
+	<th>From</th>
+	<th>Date</th>
+</tr>
+
+
+{% for message in messages %}
+	<tr class="cell{{ loop.index%2 }}">
+		<td class="fulllink">
+			<a href="{{ urlformat('u#-:/messages/#', user.id, user.name, message.id) }}">
+				{{ message.title }}
+			</a>
+		</td>
+		<td class="center fulllink">
+			{{ userlink(message.ufrom) }}
+		</td>
+		<td>
+			{{ message.date | date }}
+		</td>
+	</tr>
+{% endfor %}
+
+</table>

@@ -1,6 +1,6 @@
 <?php 
-//page /members/#id
-//page /members/#id-:
+//page /u#id
+//page /u#id-:
 
 //ABXD LEGACY
 //page /profile/#id
@@ -11,7 +11,7 @@ function request($id)
 {
 	$user = Fetch::user($id);
 
-	Url::setCanonicalUrl('/members/#-#', $user['id'], $user['name']);
+	Url::setCanonicalUrl('/u#-:', $user['id'], $user['name']);
 
 	$breadcrumbs = array(
 		array('url' => Url::format('/members'), 'title' => __("Members")),
@@ -21,10 +21,12 @@ function request($id)
 	$actionlinks = array();
 
 	if(Permissions::canEditUser($user))
-		$actionlinks[] = array('url' => Url::format('/members/#-#/edit', $user['id'], $user['name']), 'title' => __('Edit profile'));
+		$actionlinks[] = array('url' => Url::format('/u#-:/edit', $user['id'], $user['name']), 'title' => __('Edit profile'));
+	if(Permissions::canReadMessages($user))
+		$actionlinks[] = array('url' => Url::format('/u#-:/messages', $user['id'], $user['name']), 'title' => __('Messages'));
 
-	$actionlinks[] = array('url' => Url::format('/members/#-#/threads', $user['id'], $user['name']), 'title' => __('Threads'));
-	$actionlinks[] = array('url' => Url::format('/members/#-#/posts', $user['id'], $user['name']), 'title' => __('Posts'));
+	$actionlinks[] = array('url' => Url::format('/u#-:/threads', $user['id'], $user['name']), 'title' => __('Threads'));
+	$actionlinks[] = array('url' => Url::format('/u#-:/posts', $user['id'], $user['name']), 'title' => __('Posts'));
 
 	renderPage('member.html', array(
 		'user' => $user,

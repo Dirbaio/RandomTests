@@ -31,7 +31,7 @@
 		{% endif %}
 	</td>
 	<td style="border-left: 0px none;" class="fulllink">
-		 <a href="{{ urlformat('/#-#/#-#', forum.id, forum.title, thread.id, thread.title) }}">
+		 <a href="{{ urlformat('/#-:/#-:', forum.id, forum.title, thread.id, thread.title) }}">
 			{% if thread.poll %}
 				<img src="{{ modulefile('/img/poll.png') }}"/>
 			{% endif %}

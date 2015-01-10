@@ -2,34 +2,10 @@
 
 class Url
 {
-
 	public static function getPath()
 	{
-		// Allow running from CLI
-		global $argv;
-		if(php_sapi_name() === 'cli')
-		{
-			if($argv[1])
-				return $argv[1];
-			else
-				return '/';
-		}
-
-		// Legacy ABXD compat
-		if(!empty($_GET['page']))
-			return '/'.$_GET['page'].'.php';
-
-		// Try to figure out the pathinfo
-		if(!empty($_SERVER['PATH_INFO']))
-			return $_SERVER['PATH_INFO'];
-
-		if(!empty($_SERVER['ORIG_PATH_INFO']) && $_SERVER['ORIG_PATH_INFO'] !== '/index.php')
-			return $_SERVER['ORIG_PATH_INFO'];
-
-		if(!empty($_SERVER['REQUEST_URI']))
-			return (strpos($_SERVER['REQUEST_URI'], '?') > 0) ? strstr($_SERVER['REQUEST_URI'], '?', true) : $_SERVER['REQUEST_URI'];
-
-		return '/';
+		global $urlHandler;
+		return $urlHandler->getPath();
 	}
 
 	public static function slugify($urlname)
@@ -43,11 +19,11 @@ class Url
 		return $urlname;
 	}
 
-	public static function format()
+	public static function formatPath()
 	{
 		//Get the string and the args
 		$args = func_get_args();
-		if (is_array($args[0])) $args = $args[0];
+		while (is_array($args[0])) $args = $args[0];
 
 		$format = array_shift($args);
 
@@ -56,19 +32,28 @@ class Url
 			$char = $match[0];
 			if($char == '$')
 				return rawurlencode($arg);
+			else if($char == '#')
+				return (int) $arg;
 			else
 				return self::slugify($arg);
 		}, $format);
 		return $format;
 	}
 
+	public static function format()
+	{
+		global $urlHandler;
+		$path = self::formatPath(func_get_args());
+		return $urlHandler->getUrlForPath($path);
+	}
+
 	public static function setCanonicalUrl()
 	{
-		$url = self::format(func_get_args());
+		global $urlHandler;
+		$path = self::formatPath(func_get_args());
 		$currUrl = self::getPath();
-
-		if($currUrl !== $url)
-			self::redirect($url);
+		if($currUrl !== $path)
+			self::redirect($urlHandler->getUrlForPath($path));
 	}
 
 

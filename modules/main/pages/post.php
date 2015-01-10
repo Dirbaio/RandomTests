@@ -21,9 +21,9 @@ function request($pid)
 	$from = (floor($count / $ppp)) * $ppp;
 
 	if($from == 0)
-		$url = Url::format('/#-#/#-#', $forum['id'], $forum['title'], $thread['id'], $thread['title']);
+		$url = Url::format('/#-:/#-:', $forum['id'], $forum['title'], $thread['id'], $thread['title']);
 	else
-		$url = Url::format('/#-#/#-#/p#', $forum['id'], $forum['title'], $thread['id'], $thread['title'], $from);
+		$url = Url::format('/#-:/#-:/p#', $forum['id'], $forum['title'], $thread['id'], $thread['title'], $from);
 
 	$url .= '#'.$pid;
 

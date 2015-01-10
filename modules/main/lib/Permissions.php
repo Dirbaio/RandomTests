@@ -161,5 +161,22 @@ class Permissions
 			fail(__('You are not allowed to edit this user.'));
 	}
 
+	
+	public static function canReadMessages($victim, $user = null)
+	{
+		if(!Session::isLoggedIn()) return false;
+		if($user === null) $user = Session::get();
+
+		return 
+			$victim['id'] == $user['id'] || 
+			$user['powerlevel'] >= 3;
+	}
+
+	public static function assertCanReadMessages($victim, $user = null)
+	{
+		if(!self::canReadMessages($victim, $user))
+			fail(__('You are not allowed to read other users\' messages.'));
+	}
+
 
 }
