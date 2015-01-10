@@ -31,7 +31,7 @@ class ModuleHandler
 		{
 			if(endsWith($file, '.')) continue;
 
-			$moduleFiles[] = $file->getPathname();
+			$moduleFiles[] = str_replace('\\', '/', $file->getPathname());
 		}
 
 		sort($moduleFiles);

@@ -64,7 +64,7 @@ function getPages()
 }
 
 function getBase() {
-	$base = $_SERVER["DOCUMENT_URI"];
+	$base = $_SERVER["SCRIPT_NAME"];
 	$idx = strrpos($base, '/');
 	if($idx !== false)
 		$base = substr($base, 0, $idx+1);
